@@ -1,2 +1,14 @@
-
 @use 'custom';
+@use 'base';
+
+//SECTIONS
+@use 'sections/header';
+@use 'sections/navbar';
+@use 'sections/login';
+@use 'sections/buildyourworkout';
+@use 'sections/oefeningen';
+@use 'sections/schema';
+@use 'sections/workout';
+@use 'sections/overons';
+@use 'sections/contact';
+@use 'sections/footer';
