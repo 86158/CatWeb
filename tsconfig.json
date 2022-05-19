@@ -1,0 +1,22 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig.json",
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"removeComments": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"strict": true,
+		"target": "ES2015",
+		"checkJs": true
+	},
+	"include": [
+		"js/**/*.ts"
+	]
+}

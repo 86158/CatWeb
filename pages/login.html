@@ -1,0 +1,22 @@
+<main>
+	<form method=POST class=login>
+		<input type=hidden name=formID value=login>
+		<fieldset style=grid-row:1>
+			<legend>Login informatie</legend>
+			<label>E-mail:<input type=email autocomplete=username name=Username required></label>
+			<label>Wachtwoord:<input type=password name=Password autocomplete=current-password required></label>
+		</fieldset>
+		<fieldset style=grid-row:2 hidden>
+			<legend>Factuur informatie</legend>
+			<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
+			<label>Voornaam:<input type=text autocomplete=given-name name=nameFirst maxlength=60></label>
+			<label>Achternaam:<input type=text autocomplete=family-name name=nameLast maxlength=60></label>
+			<label>Straat:<input type=text autocomplete=street-address name=street maxlength=60></label>
+			<label>Postcode:<input type=text autocomplete=postal-code name=postcode pattern=^\d{4}[A-Z]{2}$></label>
+			<label>Stad:<input type=text autocomplete=address-level2 name=city maxlength=60></label>
+			<label>Land:<input type=text autocomplete=country name=country value=NL pattern=^[A-Z]{2}$ title="Country code in ISO 3166-1 alpha-2 format. See: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"></label>
+		</fieldset>
+		<input type=reset style=grid-row:3><input type=submit style=grid-row:3>
+		<button style=grid-row:4;grid-column:1/3 onclick='const n=document.querySelector("main>form>fieldset:nth-of-type(2)"),t=document.querySelector("main>form input[type=hidden]"),e=document.querySelector("main>form input[type=password]");e instanceof HTMLInputElement&&t instanceof HTMLInputElement&&n instanceof HTMLFieldSetElement&&(n.hidden?(n.hidden=!1,t.value="newUser",button.innerText="Modus: Nieuw gebruiker aanmaken",e.autocomplete="new-password"):(n.hidden=!0,t.value="login",button.innerText="Modus: Inloggen",e.autocomplete="current-password"))'>Modus: Inloggen</button>
+	</form>
+</main>
