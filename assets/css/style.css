@@ -11118,9 +11118,23 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-img {
+.navbar-section .bg-customnavbar {
+  background-color: #5eb4a8;
+}
+.navbar-section .bg-customnavbar img {
   width: 150px;
   height: auto;
+}
+.navbar-section .d-flex .btn {
+  background-color: #ffffff;
+}
+.navbar-section .d-flex .btn a {
+  text-decoration: none;
+  color: #5eb4a8 !important;
+}
+
+.footer-section .bg-customfooter {
+  background-color: #EBEBEB;
 }
 
 /*# sourceMappingURL=style.css.map */
