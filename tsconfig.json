@@ -15,5 +15,8 @@
 		"strict": true,
 		"target": "ES2015",
 		"checkJs": true
-	}
+	},
+	"include": [
+		"js/**/*.ts"
+	]
 }
