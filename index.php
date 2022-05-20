@@ -35,6 +35,7 @@ if(!(
 	file_exists(__DIR__ .'/pages/head.html')
 )) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+	header("Content-Type: application/json");
 	echo '{"error":"Missing file(s)"}';
 	exit();
 }
