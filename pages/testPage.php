@@ -1,9 +1,4 @@
 <body>
-<<<<<<< HEAD
-
-
-=======
->>>>>>> main
 <section id="js-oefeningen">
 	<article>
 		<h2>Header</h2>

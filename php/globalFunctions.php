@@ -28,7 +28,7 @@ function returnPage(): string {
 		}
 	}
 	// Return the default page if `page` is not defined.
-	if(!isset($_GET['page'])) return 'testPage.php';
+	if(!isset($_GET['page'])) return 'mainpage.php';
 	// Select page
 	switch($_GET['page']) {
 		case 'build':
@@ -46,6 +46,6 @@ function returnPage(): string {
 		case 'login':
 			return 'login.html';
 		default:
-			return 'testPage.php';
+			return 'mainpage.php';
 	}
 }
