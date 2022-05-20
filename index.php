@@ -46,4 +46,4 @@ require __DIR__ .'/pages/head.html';
 // Geting the page.
 require __DIR__ . returnPage();
 // Getting footer.
-// include __DIR__ .'/pages/footer.html';
+include __DIR__ .'/pages/footer.php';
