@@ -17,6 +17,7 @@
 			<label>Land:<input type=text autocomplete=country name=country value=NL pattern=^[A-Z]{2}$ title="Country code in ISO 3166-1 alpha-2 format. See: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2"></label>
 		</fieldset>
 		<input type=reset style=grid-row:3><input type=submit style=grid-row:3>
+		<!-- The value of onclick is from `js/loginNewUser` it switches the formtype from login to create new user and back. -->
 		<button style=grid-row:4;grid-column:1/3 onclick='const n=document.querySelector("main>form>fieldset:nth-of-type(2)"),t=document.querySelector("main>form input[type=hidden]"),e=document.querySelector("main>form input[type=password]");e instanceof HTMLInputElement&&t instanceof HTMLInputElement&&n instanceof HTMLFieldSetElement&&(n.hidden?(n.hidden=!1,t.value="newUser",button.innerText="Modus: Nieuw gebruiker aanmaken",e.autocomplete="new-password"):(n.hidden=!0,t.value="login",button.innerText="Modus: Inloggen",e.autocomplete="current-password"))'>Modus: Inloggen</button>
 	</form>
 </main>

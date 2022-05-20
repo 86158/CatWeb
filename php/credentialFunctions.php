@@ -49,7 +49,7 @@ function DatbQuery(string $query, string $types = '', ...$vars) {
 /** Check the user credentials en permissions.
  * @param int|string $username If using a token use an `int` else it should be a `string`.
  * @param string $pwd Password or token to be validated.
- * @return int|string Int representing permission level or string with error message.
+ * @return int|string Int representing permission level or a String containing an error message.
 */
 function getPerms($username, string $pwd) {
 	/** @param string $m_iv A non-NULL Initialization Vector.*/
@@ -118,7 +118,7 @@ function createPass(string $username, string $pwd, ?string $pwd_old = null, ?str
 }
 /** How to get the encrypted data
  * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
- * @return array<string,string|false>|string Array with the decoded data from the database with false on failure or a string with error message.
+ * @return array<string,string|false|null>|string Array with the decoded data from the database with false on failure or a string with error message.
 */
 function getInfo() {
 	$id = $_SESSION['ID'];
@@ -130,6 +130,8 @@ function getInfo() {
 	$m_result = $m_result->fetch_assoc();
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	if(!is_string($m_userKey)) return 'Decryption failed';
+	// We put the data in a relative array decrypting it first if it is not null.
+	/** @var array<string,(string|false|null)> $decryptedData */
 	$decryptedData = [
 		'username'	=> ($m_result['username'])?	openssl_decrypt($m_result['nameFirst'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
 		'street'		=> ($m_result['street'])?		openssl_decrypt($m_result['street'],		'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
