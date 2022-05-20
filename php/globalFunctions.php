@@ -27,6 +27,8 @@ function returnPage(): string {
 			$m_perms = -1;
 		}
 	}
+	// Return the default page if `page` is not defined.
+	if(!isset($_GET['page'])) return '/pages/testPage.php';
 	// TODO add page URIs and cases for all pages.
 	switch($_GET['page']) {
 		case 'login':

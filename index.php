@@ -35,6 +35,7 @@ if(!(
 	file_exists(__DIR__ .'/pages/head.html')
 )) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+	header("Content-Type: application/json");
 	echo '{"error":"Missing file(s)"}';
 	exit();
 }
@@ -43,6 +44,8 @@ if(!(
 require_once __DIR__ .'/php/globalFunctions.php';
 // Getting the head.
 require __DIR__ .'/pages/head.html';
+// Getting the nav.
+require __DIR__ .'/pages/nav.php';
 // Geting the page.
 require __DIR__ . returnPage();
 // Getting footer.
