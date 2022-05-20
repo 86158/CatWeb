@@ -49,4 +49,4 @@ require __DIR__ .'/pages/nav.php';
 // Geting the page.
 require __DIR__ .'/pages/'. returnPage();
 // Getting footer.
-include __DIR__ .'/pages/footer.php';
+include __DIR__ .'/pages/footer.html';
