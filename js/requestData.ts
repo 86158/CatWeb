@@ -34,25 +34,32 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 	if(container == null) return;
 	// Clear placeholders
 	container.innerHTML = "";
+	// For each row we add a article to the container.
+	// The element is created filled with data and then added to its container.
 	data.forEach(element => {
 		const article = document.createElement('article');
+		// The header element
 		const header = document.createElement('h2');
 		header.innerText = element.name;
 		article.appendChild(header);
+		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
+		// A span for the estimated duration.
 		const duration = document.createElement('span');
 		duration.innerText = 
 			(element.duration)?
 				element.duration.toString()
 				: "-";
 		atribs.appendChild(duration);
+		// A span for the estimated callories.
 		const call = document.createElement('span');
 		call.innerText =
 			(element.calorien)?
 			element.calorien.toString()
 			: "-";
 		atribs.appendChild(call);
+		// A span for the type of exercise.
 		const oType = document.createElement('span');
 		oType.innerText =
 			(element.type)?
@@ -60,28 +67,40 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 			: "-";
 		atribs.appendChild(oType);
 		article.appendChild(atribs);
+		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('description');
 		desc.innerText = element.description;
 		article.appendChild(desc);
+		// The musslegroups a exercise uses as tags under the description.
 		const groups = document.createElement('p');
 		groups.classList.add('tags');
+		// Check if there are any musslegroups accociated with the exercise.
 		if(element.spiergroepen) {
+			// Converting the comma seperated list into an array and iterating over it.
 			element.spiergroepen.split(',').forEach(element => {
+				// Each musslegroup has it's own span.
 				const attrib = document.createElement('span');
 				attrib.innerText = "#" + element;
 				groups.appendChild(attrib);
 			});
 		}
 		article.appendChild(groups);
+		// Lastly the image if one exists.
 		const img = document.createElement('img');
 		if(element.img)
 			img.src = element.img;
+		// An empty string into the alt attribute to mark it as decorative.
+		img.setAttribute("alt", "");
 		article.appendChild(img);
 		container.appendChild(article);
 	});
 }
-function getData(article: "prac"|"fav") {
+/**
+ * Request the article to be added with data.
+ * @param article Whether to get all exercises or only the favorites.
+ */
+function getData(article: null|"all"|"fav"): JQuery.jqXHR<any> {
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		async: true,
