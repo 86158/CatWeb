@@ -6,16 +6,24 @@
 	"description": "Schoolproject",
 	"contributors": [
 		{
-			"name": "Philip Klok"
+			"name": "Philip Klok",
+			"email": "85866@roc-teraa.nl",
+			"url": "https://github.com/PhilipKlok"
 		},
 		{
-			"name": "Juriën Braat"
+			"name": "Juriën Braat",
+			"email": "86158@roc-teraa.nl",
+			"url": "https://github.com/Deadvire"
 		},
 		{
-			"name": "Melanie Hoogenboom"
+			"name": "Melanie Hoogenboom",
+			"email": "86021@roc-teraa.nl",
+			"url": "https://github.com/MelanieTheSquad"
 		},
 		{
-			"name": "Lars Weijenborg"
+			"name": "Lars Weijenborg",
+			"email": "86501@roc-teraa.nl",
+			"url": "https://github.com/S-K-Tiger"
 		}
 	],
 	"scripts": {

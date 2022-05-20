@@ -29,7 +29,7 @@ function returnPage(): string {
 	}
 	// Return the default page if `page` is not defined.
 	if(!isset($_GET['page'])) return 'testPage.php';
-	// TODO add page URIs and cases for all pages.
+	// Select page
 	switch($_GET['page']) {
 		case 'build':
 			return 'buildyourworkout.php';
