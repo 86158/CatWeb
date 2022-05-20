@@ -1,4 +1,24 @@
-img {
-    width: 150px;
-    height: auto;
+@use '../custom' as *;
+
+.navbar-section {
+    .bg-customnavbar {
+        background-color: $primary;
+    
+        img {
+            width: 150px;
+            height: auto;
+        }
+    }
+
+    .d-flex {
+        .btn {
+            background-color: $white;
+
+            a {
+                text-decoration: none;
+                color: $primary !important;
+            }
+        }
+    }
 }
+

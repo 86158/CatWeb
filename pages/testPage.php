@@ -1,5 +1,5 @@
 <body>
-<?php require 'nav.php'; ?>
+
 
 <section id="js-oefeningen">
 	<article>
