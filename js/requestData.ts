@@ -56,15 +56,15 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		const call = document.createElement('span');
 		call.innerText =
 			(element.calorien)?
-			element.calorien.toString()
-			: "-";
+				element.calorien.toString()
+				: "-";
 		atribs.appendChild(call);
 		// A span for the type of exercise.
 		const oType = document.createElement('span');
 		oType.innerText =
 			(element.type)?
-			element.type
-			: "-";
+				element.type
+				: "-";
 		atribs.appendChild(oType);
 		article.appendChild(atribs);
 		// The description.
