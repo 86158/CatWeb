@@ -28,15 +28,24 @@ function returnPage(): string {
 		}
 	}
 	// Return the default page if `page` is not defined.
-	if(!isset($_GET['page'])) return '/pages/testPage.php';
+	if(!isset($_GET['page'])) return 'testPage.php';
 	// TODO add page URIs and cases for all pages.
 	switch($_GET['page']) {
+		case 'build':
+			return 'buildyourworkout.php';
+		case 'prac':
+			return 'oefeningen.php';
+		case 'schema':
+			if($m_perms < 0) return 'login.html';
+			return 'schema.php';
+		case 'work':
+			if($m_perms < 0) return 'login.html';
+			return 'workout.php';
+		case 'info':
+			return 'overons.php';
 		case 'login':
-			return '/login.html';
-		case 'permissionRequiringPage':
-			if($m_perms < 0) return '/login.html';
-			return 'permissionRequiringPageURI';
+			return 'login.html';
 		default:
-			return '/pages/testPage.php';
+			return 'testPage.php';
 	}
 }
