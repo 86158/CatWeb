@@ -14,9 +14,17 @@
         .btn {
             background-color: $white;
 
+            &:hover {
+                background-color: #50948A !important;
+            }
+
             a {
                 text-decoration: none;
                 color: $primary !important;
+
+                &:hover {
+                    color: $white !important;
+                }
             }
         }
     }
