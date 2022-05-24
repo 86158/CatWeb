@@ -37,6 +37,8 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 	// For each row we add a article to the container.
 	// The element is created filled with data and then added to its container.
 	data.forEach(element => {
+		const div = document.createElement('div');
+		div.classList.add('col');
 		const article = document.createElement('article');
 		// The header element
 		const header = document.createElement('h2');
@@ -93,7 +95,8 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
-		container.appendChild(article);
+		div.appendChild(article);
+		container.appendChild(div);
 	});
 }
 /**
