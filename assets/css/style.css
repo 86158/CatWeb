@@ -11165,6 +11165,13 @@ textarea.form-control-lg {
   outline: none;
 }
 
+.homepage-section .container-fluid {
+  padding: 0;
+}
+.homepage-section .container-fluid .carousel-inner {
+  height: 50%;
+}
+
 .footer-section .bg-customfooter {
   background-color: #EBEBEB;
 }
