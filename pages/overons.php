@@ -30,17 +30,36 @@
                         Fitness is razend populair en bij CatWeb doen we er alles aan om het sporten in een sportschool nog leuker en makkelijker te maken voor je.
                     </p>
                 </div>  
+                <br>
                 <div class="voordelen">
-                    <p class="voordelen-heading ">
-
+                    <p class="voordelen-heading fw-bold mt-4">
+                        Leden van CatWeb profiteren van:
                     </p>
                     <p class="voordelen-text ">
-                        <ul class="breadcrumb">
-                            <li>
-                            <i class="fa-solid fa-check"></i>
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni eos repellat consectetur reprehenderit laudantium dolorem eius nobis deleniti quos accusamus labore similique cumque asperiores veritatis cupiditate quae, repellendus dignissimos!
-                            </p>
+                        <ul class="list-group">
+                            <li class="d-flex flex-row">
+                                <i class="fa-regular fa-check $primary"></i>
+                                <p>
+                                    Het recht op toegang op het opslaan van je eigen gemaakte schema's       
+                                </p>
+                            </li>
+                            <li class="d-flex flex-row">
+                                <i class="fa-regular fa-check $primary"></i>
+                                <p>
+                                    Je favoriete workouts toevoegen op je account
+                                </p>
+                            </li>
+                            <li class="d-flex flex-row">
+                                <i class="fa-regular fa-check $primary"></i>
+                                <p>
+                                    Een weekoverzicht met het aantal calorieën en kilo's
+                                </p>
+                            </li>
+                            <li class="d-flex flex-row">
+                                <i class="fa-regular fa-check $primary"></i>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni eos repellat 
+                                </p>
                             </li>
                         </ul>
                     </p>
