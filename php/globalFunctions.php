@@ -45,6 +45,8 @@ function returnPage(): string {
 			return 'overons.php';
 		case 'login':
 			return 'login.html';
+		case  'contact':
+			return 'contact.php';
 		default:
 			return 'homepage.php';
 	}

@@ -1,12 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 20, 2022 at 10:04 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- Generation Time: May 24, 2022 at 09:54 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -20,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `catweb`
 --
+CREATE DATABASE IF NOT EXISTS `catweb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `catweb`;
 
 -- --------------------------------------------------------
 
@@ -27,6 +30,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `site_favorites`
 --
 
+DROP TABLE IF EXISTS `site_favorites`;
 CREATE TABLE `site_favorites` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_users` int(10) UNSIGNED NOT NULL,
@@ -46,12 +50,13 @@ INSERT INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 -- Table structure for table `site_oefeningen`
 --
 
+DROP TABLE IF EXISTS `site_oefeningen`;
 CREATE TABLE `site_oefeningen` (
   `ID` int(10) UNSIGNED NOT NULL,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
   `type` set('Kracht','Cardio') DEFAULT NULL,
-  `spiergroepen` set('Triceps','Buik','Borst','Hamstrings') DEFAULT NULL,
+  `spiergroepen` set('Triceps','Buik','Borst','Hamstrings','Rug') DEFAULT NULL,
   `duration` int(10) UNSIGNED DEFAULT NULL COMMENT 'In seconden',
   `calorien` mediumint(10) UNSIGNED DEFAULT NULL,
   `img` varchar(45) DEFAULT NULL
@@ -73,7 +78,9 @@ INSERT INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroepe
 (9, 'Walk Out', 'Hoewel de oefening hier onder hamstrings vermeld staat, is het een full body (bodyweight) oefening. De hamstrings komen vooral samen met de billen en onderrug in actie tijdens het allerlaatste deel van de oefening dat vergelijkbaar is met een straight leg deadlift. Het is dus een relatief klein deel van de oefening dat je je op deze spieren richt en je voert het met lichaamsgewicht uit. Er zijn dus meer geschikte oefeningen op je hier specifiek op te trainen.\r\n\r\nZoek je echter naar een oefening om onderlichaam én bovenlichaam aan het werk te zetten dan is de walk out een optie. Tijdens het naar voren en terug lopen op de handen, zijn het vooral de schouders, borst en armspieren die in actie komen. Tijdens die beweging zijn de core-spieren actief om het lichaam te stabiliseren.\r\n\r\nDe walk out kan ook in een push up variant worden uitgevoerd waarbij de borst en triceps nog meer worden ingezet.', 'Kracht', 'Hamstrings', NULL, NULL, NULL),
 (10, 'Single leg decline push up', 'De push up is een bekende samengestelde oefening voor het bovenlichaam en de corespieren. Door de houding van een plank moeten de spieren in de onderrug, billen en benen (vooral hamstrings) werken om rug en benen uitgelijnd te houden. Deze spieren hebben dus vooral een stabiliserende functie zoals ze dat in het dagelijkse leven ook vooral hebben.\r\n\r\nDe spieren in de borst (vooral pectoralis major), schouders (vooral voorkant) en armen (vooral triceps) hebben een actievere rol. De borst- en schouderspieren werken hard om de bovenarmen naar voren te trekken terwijl de triceps in actie komen om de armen te strekken.\r\n\r\nIn deze ‘decline’ variant komt (relatief) meer nadruk te liggen op de bovenste vezels van de borstspieren en op de voorkant van de schouders. Doordat bovendien minder gewicht door de voeten wordt gedragen, is deze variant zwaarder dan de normale push up.\r\n\r\nDoor een been op te tillen, komt  onder andere meer nadruk te liggen op de rectus femoris van het steunende been. De buitenste schuine buikspieren moeten bovendien harder werken om je lichaam te stabiliseren. De billen en hamstrings moeten nu ook werken om het opgeheven been omhoog te houden', 'Kracht', 'Borst', NULL, NULL, NULL),
 (11, 'Pike Push-up', 'De pike push up, ook Pike press genoemd zit qua oefening ergens tussen een shoulder press en een push up. Of anders gezegd; tussen een handstand push up en een normale push up. Een handstand push up is immers een shoulder press met het lichaamsgewicht als weerstand. Door de aangepaste hoek komt dan ook meer nadruk op de schouders te liggen en bovenste vezels van de borst. Op de middelste en onderste vezels komt juist minder nadruk te liggen.\r\n\r\nDe pike push up brengt het bovenlichaam bijna in de houding van de handstand push up terwijl de voeten het contact met de vloer behouden. Behalve dat hierdoor minder gewicht gedragen wordt, kunnen ook de borstspieren actiever bijdragen dan in een handstand.\r\n\r\nHoewel lichter dan een handstand push up is de pike push up een stuk zwaarder dan normaal opdrukken. Begin daarom vanuit een normale push up waarbij je de afstand tussen handen en voeten in kleine stappen vergroot. Zorg ook voor een zacht oppervlak of een kussen.', 'Kracht', 'Borst', NULL, NULL, NULL),
-(12, 'Push ups / Push ups / Opdrukken', 'De push up is een bekende samengestelde oefening voor het bovenlichaam en de corespieren. Door de houding van een plank moeten de spieren in de onderrug, billen en benen (vooral hamstrings) werken om rug en benen uitgelijnd te houden. Deze spieren hebben dus vooral een stabiliserende functie zoals ze dat in het dagelijkse leven ook vooral hebben.\r\n\r\nDe spieren in de borst (vooral pectoralis major), schouders (vooral voorkant) en armen (vooral triceps) hebben een actievere rol. De borst- en schouderspieren werken hard om de bovenarmen naar voren te trekken terwijl de triceps in actie komen om de armen te strekken.\r\n\r\nEen wijde stand van de handen zorgt voor meer inzet van de borst terwijl een smallere stand meer van de triceps en schouders vereist.', 'Kracht', 'Borst', NULL, NULL, NULL);
+(12, 'Push ups / Push ups / Opdrukken', 'De push up is een bekende samengestelde oefening voor het bovenlichaam en de corespieren. Door de houding van een plank moeten de spieren in de onderrug, billen en benen (vooral hamstrings) werken om rug en benen uitgelijnd te houden. Deze spieren hebben dus vooral een stabiliserende functie zoals ze dat in het dagelijkse leven ook vooral hebben.\r\n\r\nDe spieren in de borst (vooral pectoralis major), schouders (vooral voorkant) en armen (vooral triceps) hebben een actievere rol. De borst- en schouderspieren werken hard om de bovenarmen naar voren te trekken terwijl de triceps in actie komen om de armen te strekken.\r\n\r\nEen wijde stand van de handen zorgt voor meer inzet van de borst terwijl een smallere stand meer van de triceps en schouders vereist.', 'Kracht', 'Borst', NULL, NULL, NULL),
+(13, 'Dumbbell High Row', 'Alle zogenaamde row of roei-oefeningen, zijn voornamelijk gericht op het naar achteren trekken van de bovenarmen. Dit is een van de belangrijkste functies van de latissimus dorsi, de grote rugspier. Om deze functie met losse gewichten uit te voeren moet het bovenlichaam in (bijna) horizontale positie gebracht worden zodat de zwaartekracht de juiste weerstand kan verzorgen. In deze variant doe je dat door voorover te buigen over een bankje, steunend op één arm.\r\n\r\nHet verschil met de normale dumbell row is dat de ellebogen in de high row niet langs de zij maar naar buiten omhoog worden getrokken (abductie van de schouder). De handen zijn dan ook in een geproneerde positie, met de palmen naar onderen/achter gericht.\r\n\r\nOmdat de bovenarm haaks aan de romp naar achteren (ten opzichte van de romp) wordt getrokken, is hier een grotere rol voor de schouderspier de deltoideus (vooral achterkant) en de kleinere spieren van de rotatorenmanchet die de schouder moeten stabiliseren.', 'Kracht', 'Rug', NULL, NULL, NULL),
+(14, 'Rear Decline Bridge', 'De rear decline bridge / glute bridge is gericht op het strekken van de rug en het in lijn brengen van het bovenlichaam met het onderlichaam. Een functie van de erector spinae in de rug, de bilspieren en hamstrings. Deze oefening past dan ook net zozeer binnen een training voor de billen. De billen werken het hardst in deze oefening. Een goede oefening om de onderrug in het algemeen te trainen ter preventie blessures. En voor mooiere billen natuurlijk.', 'Kracht', 'Rug', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -81,6 +88,7 @@ INSERT INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroepe
 -- Table structure for table `site_schema`
 --
 
+DROP TABLE IF EXISTS `site_schema`;
 CREATE TABLE `site_schema` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_users` int(10) UNSIGNED NOT NULL
@@ -92,6 +100,7 @@ CREATE TABLE `site_schema` (
 -- Table structure for table `site_schemacontent`
 --
 
+DROP TABLE IF EXISTS `site_schemacontent`;
 CREATE TABLE `site_schemacontent` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_schema` int(10) UNSIGNED NOT NULL,
@@ -104,27 +113,24 @@ CREATE TABLE `site_schemacontent` (
 -- Table structure for table `site_users`
 --
 
+DROP TABLE IF EXISTS `site_users`;
 CREATE TABLE `site_users` (
   `ID` int(10) UNSIGNED NOT NULL,
-  `email` varchar(25) NOT NULL,
+  `email` varchar(25) NOT NULL COMMENT 'Regex validation from: https://www.rhyous.com/2010/06/15/csharp-email-regular-expression',
+  `username` varchar(100) DEFAULT NULL,
   `pwd` char(60) NOT NULL,
   `encryptedkey` varchar(120) NOT NULL,
   `token` mediumint(8) UNSIGNED DEFAULT NULL,
   `tokenTime` datetime DEFAULT NULL,
-  `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `username` varchar(100) DEFAULT NULL,
-  `street` varchar(100) DEFAULT NULL,
-  `postcode` char(6) DEFAULT NULL,
-  `city` varchar(100) DEFAULT NULL,
-  `country` char(2) DEFAULT NULL
+  `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_users`
 --
 
-INSERT INTO `site_users` (`ID`, `email`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`, `username`, `street`, `postcode`, `city`, `country`) VALUES
-(1, '86501@roc-teraa.nl', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1, 'ExampleUser', NULL, NULL, NULL, NULL);
+INSERT INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`) VALUES
+(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1);
 
 --
 -- Indexes for dumped tables
@@ -179,7 +185,7 @@ ALTER TABLE `site_favorites`
 -- AUTO_INCREMENT for table `site_oefeningen`
 --
 ALTER TABLE `site_oefeningen`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `site_schema`
@@ -216,6 +222,53 @@ ALTER TABLE `site_schema`
 ALTER TABLE `site_schemacontent`
   ADD CONSTRAINT `schema_id` FOREIGN KEY (`ID_schema`) REFERENCES `site_schema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schema_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Metadata
+--
+USE `phpmyadmin`;
+
+--
+-- Metadata for table site_favorites
+--
+
+--
+-- Metadata for table site_oefeningen
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+INSERT INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_oefeningen', 'img', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
+
+--
+-- Metadata for table site_schema
+--
+
+--
+-- Metadata for table site_schemacontent
+--
+
+--
+-- Metadata for table site_users
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+INSERT INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
+('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
+('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
+
+--
+-- Metadata for database catweb
+--
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

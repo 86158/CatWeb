@@ -1,0 +1,7 @@
+paragraaf toevoegen aan build your workout.
+afbeeldingen toevoegen aan build your workout om het aantrekkelijker te maken.
+later een sessie gebruiken om build your workout in stappen te doen.
+jquery UI kijken of dat handig is.
+arccordion effect in maken.
+extra tabel maken voor afbeeldingen en video's.
+hele website aantrekkelijker maken.
