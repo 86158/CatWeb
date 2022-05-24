@@ -11132,15 +11132,10 @@ textarea.form-control-lg {
 }
 .navbar-section .d-flex .btn {
   background-color: #ffffff;
+  color: #5eb4a8;
 }
 .navbar-section .d-flex .btn:hover {
-  background-color: #50948A !important;
-}
-.navbar-section .d-flex .btn a {
-  text-decoration: none;
-  color: #5eb4a8 !important;
-}
-.navbar-section .d-flex .btn a:hover {
+  background-color: #50948a !important;
   color: #ffffff !important;
 }
 
