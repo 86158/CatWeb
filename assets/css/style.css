@@ -11139,6 +11139,32 @@ textarea.form-control-lg {
   color: #ffffff !important;
 }
 
+.login-section .form {
+  width: 45%;
+  margin: auto;
+}
+.login-section .form .login-form {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0 15%;
+}
+.login-section .form .login-form .email {
+  color: #5eb4a8;
+}
+.login-section .form .login-form .password {
+  color: #5eb4a8;
+}
+.login-section .form .login-form input {
+  width: 100%;
+  padding: 10px 0;
+  color: #5eb4a8;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
+}
+
 .footer-section .bg-customfooter {
   background-color: #EBEBEB;
 }
