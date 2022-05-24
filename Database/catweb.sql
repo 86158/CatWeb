@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2022 at 01:37 PM
+-- Generation Time: May 24, 2022 at 02:35 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -260,6 +260,16 @@ CREATE TABLE IF NOT EXISTS `site_users` (
 REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`) VALUES
 (1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `oefeningmedia`
+--
+DROP TABLE IF EXISTS `oefeningmedia`;
+
+DROP VIEW IF EXISTS `oefeningmedia`;
+CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `oefeningmedia`  AS SELECT `site_oefeningen`.`ID` AS `ID`, `site_oefeningen`.`name` AS `name`, `site_oefeningen`.`description` AS `description`, `site_oefeningen`.`type` AS `type`, `site_oefeningen`.`spiergroepen` AS `spiergroepen`, `site_oefeningen`.`duration` AS `duration`, `site_oefeningen`.`calorien` AS `calorien`, `site_media`.`link` AS `img` FROM (`site_oefeningen` left join (`site_link_media` join `site_media` on(`site_link_media`.`mediaID` = `site_media`.`ID`)) on(`site_link_media`.`oefeningenID` = `site_oefeningen`.`ID`)) GROUP BY `site_oefeningen`.`ID``ID`  ;
+
 --
 -- Constraints for dumped tables
 --
@@ -305,18 +315,6 @@ ALTER TABLE `site_schemacontent`
 USE `phpmyadmin`;
 
 --
--- Metadata for table site_favorites
---
-
---
--- Metadata for table site_link_media
---
-
---
--- Metadata for table site_link_tube
---
-
---
 -- Metadata for table site_media
 --
 
@@ -326,18 +324,6 @@ USE `phpmyadmin`;
 
 REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
 ('catweb', 'site_media', 'link', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
-
---
--- Metadata for table site_oefeningen
---
-
---
--- Metadata for table site_schema
---
-
---
--- Metadata for table site_schemacontent
---
 
 --
 -- Metadata for table site_tube
@@ -363,9 +349,6 @@ REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `commen
 ('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
 ('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
 
---
--- Metadata for database catweb
---
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

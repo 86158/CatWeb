@@ -90,8 +90,8 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
-		if(element.img)
-			img.src = element.img;
+		/*if(element.img)
+			img.src = element.img;*/
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
