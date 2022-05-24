@@ -1,3 +1,3 @@
-js/types/*.js
+*.js
 node_modules/
 .vscode/

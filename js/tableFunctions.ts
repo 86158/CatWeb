@@ -17,7 +17,7 @@ function articleFilter(container: HTMLElement, searchQuery?: string|RegExp|undef
 			article.hidden = true;
 			continue;
 		}
-		if(tags != undefined && tagParaf != null) {
+		if(tags != undefined && tagParaf != null && tags.length > 0) {
 			var noMatch = true;
 			const children = tagParaf.children as HTMLCollectionOf<HTMLSpanElement>;
 			for(let index = 0; index < children.length; index++) {
@@ -32,4 +32,33 @@ function articleFilter(container: HTMLElement, searchQuery?: string|RegExp|undef
 				article.hidden = true;
 		}
 	}
+}
+/**Extracts the results from the form and triggers `tableFilter()`*/
+function handleFilter(event: MouseEvent): void {
+	const form = ((event.target as HTMLButtonElement|HTMLInputElement).form as HTMLFormElement);
+	form.style.pointerEvents = 'none';
+	const formData = new FormData(form);
+	var query: string|undefined = undefined;
+	var tags: Array<string>|undefined = undefined;
+	if((event.target as HTMLButtonElement|HTMLInputElement).type != 'reset') {
+		for(var pair of formData.entries()) {
+			switch(pair[0]) {
+				case 'search':
+					query = pair[1].toString();
+					if(query == '') query = undefined;
+					break;
+				case 'tags':
+					if(pair[1].toString() == '') {
+						tags = undefined;
+					} else {
+						tags = pair[1].toString().split(',');
+					}
+					break;
+			}
+		}
+	}
+	const section = document.getElementById('js-oefeningen');
+	if(section != null)
+		articleFilter(section, query, tags);
+	setTimeout(() => form.style.pointerEvents = '', 950);
 }
