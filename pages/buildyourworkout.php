@@ -1,6 +1,6 @@
 <section class="buildYourWorkout-Section">
     <div class="container">
-        <h1 class="text-center mt-4">Build Your Workout</h1>
+        <h1 class="text-center">Build Your Workout</h1>
         <form>
             <div class="row">
                 <div class="col-6">
