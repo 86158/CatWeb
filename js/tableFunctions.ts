@@ -23,7 +23,7 @@ function articleFilter(container: HTMLElement, searchQuery?: string|RegExp|undef
 			for(let index = 0; index < children.length; index++) {
 				const span = children[index] as HTMLSpanElement;
 				const test = span.innerText.replace('#', '');
-				if(tags.findIndex((value) => {value == test}) != -1) {
+				if(tags.findIndex((value) => { return value == test}) != -1) {
 					noMatch = false;
 					break;
 				}
