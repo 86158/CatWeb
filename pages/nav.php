@@ -20,7 +20,7 @@
 					<!-- Change the content based on whether the user is logged in or not. -->
 					<?php echo (isset($_SESSION['ID']))?
 						'<a href="?logout=logout">Logout</a>':
-						'<button type="button" class="btn me-5"><a class="text-primary" href="?page=login">Login</a></button>';
+						'<a class="btn me-5 text-primary" href="?page=login">Login</a>';
 					?>
 				</form>
 			</div>
