@@ -14,7 +14,7 @@
 					<li class="nav-item"><a class="nav-link text-white pe-4 h5" href="?page=schema">Schema</a></li>
 					<li class="nav-item"><a class="nav-link text-white pe-4 h5" href="?page=work">Workout</a></li>
 					<li class="nav-item"><a class="nav-link text-white pe-4 h5" href="?page=info">Over ons</a></li>
-					<li class="nav-item"><a class="nav-link text-white pe-4 h5" href="?page=info">Contact</a></li>
+					<li class="nav-item"><a class="nav-link text-white pe-4 h5" href="?page=contact">Contact</a></li>
 				</ul>
 				<form class="d-flex">
 					<!-- Change the content based on whether the user is logged in or not. -->
