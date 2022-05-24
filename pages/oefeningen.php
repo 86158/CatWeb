@@ -3,10 +3,13 @@
 	<fieldset id=Search>
 		<legend>Zoeken:</legend>
 		<div><input id=search type=search name=search aria-labelledby=Search></div>
-	</fieldset><fieldset id=Maat>
-		<legend>Maat:</legend>
+	</fieldset><fieldset id=tags>
+		<legend>Spiergroupen:</legend>
 		<select id=tags name=tags multiple>
-			<option value="ExampleTagg" title="Tag for x items">#tagging</option>
+			<option value="Triceps">Triceps</option>
+			<option value="Buik">Buik</option>
+			<option value="Borst">Borst</option>
+			<option value="Hamstrings">Hamstrings</option>
 		</select>
 	</fieldset><fieldset>
 		<legend>Actions:</legend>
