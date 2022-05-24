@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2022 at 11:59 AM
+-- Generation Time: May 24, 2022 at 01:37 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -61,7 +61,16 @@ CREATE TABLE IF NOT EXISTS `site_link_media` (
   PRIMARY KEY (`ID`),
   KEY `oefening_media_link` (`oefeningenID`),
   KEY `media_link` (`mediaID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_link_media`
+--
+
+REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
+(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
+(7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
+(12, 12, 12), (13, 13, 13), (14, 14, 14);
 
 -- --------------------------------------------------------
 
@@ -77,7 +86,16 @@ CREATE TABLE IF NOT EXISTS `site_link_tube` (
   PRIMARY KEY (`ID`),
   KEY `oefening_tube_link` (`oefeningenID`),
   KEY `tube_link` (`mediaID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_link_tube`
+--
+
+REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
+(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
+(7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
+(12, 12, 12), (13, 13, 13), (14, 14, 14);
 
 -- --------------------------------------------------------
 
@@ -87,11 +105,31 @@ CREATE TABLE IF NOT EXISTS `site_link_tube` (
 
 DROP TABLE IF EXISTS `site_media`;
 CREATE TABLE IF NOT EXISTS `site_media` (
-  `ID` int(10) UNSIGNED NOT NULL,
-  `link` varchar(45) NOT NULL,
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `link` varchar(145) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `image_links` (`link`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_media`
+--
+
+REPLACE INTO `site_media` (`ID`, `link`) VALUES
+(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg'),
+(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg'),
+(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg'),
+(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg'),
+(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg'),
+(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg'),
+(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg'),
+(1, 'https://i.stack.imgur.com/g8eij.jpg'),
+(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg'),
+(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg'),
+(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg'),
+(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg'),
+(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg'),
+(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg');
 
 -- --------------------------------------------------------
 
@@ -127,7 +165,7 @@ REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroep
 (9, 'Walk Out', 'Hoewel de oefening hier onder hamstrings vermeld staat, is het een full body (bodyweight) oefening. De hamstrings komen vooral samen met de billen en onderrug in actie tijdens het allerlaatste deel van de oefening dat vergelijkbaar is met een straight leg deadlift. Het is dus een relatief klein deel van de oefening dat je je op deze spieren richt en je voert het met lichaamsgewicht uit. Er zijn dus meer geschikte oefeningen op je hier specifiek op te trainen.\r\n\r\nZoek je echter naar een oefening om onderlichaam én bovenlichaam aan het werk te zetten dan is de walk out een optie. Tijdens het naar voren en terug lopen op de handen, zijn het vooral de schouders, borst en armspieren die in actie komen. Tijdens die beweging zijn de core-spieren actief om het lichaam te stabiliseren.\r\n\r\nDe walk out kan ook in een push up variant worden uitgevoerd waarbij de borst en triceps nog meer worden ingezet.', 'Kracht', 'Hamstrings', NULL, NULL),
 (10, 'Single leg decline push up', 'De push up is een bekende samengestelde oefening voor het bovenlichaam en de corespieren. Door de houding van een plank moeten de spieren in de onderrug, billen en benen (vooral hamstrings) werken om rug en benen uitgelijnd te houden. Deze spieren hebben dus vooral een stabiliserende functie zoals ze dat in het dagelijkse leven ook vooral hebben.\r\n\r\nDe spieren in de borst (vooral pectoralis major), schouders (vooral voorkant) en armen (vooral triceps) hebben een actievere rol. De borst- en schouderspieren werken hard om de bovenarmen naar voren te trekken terwijl de triceps in actie komen om de armen te strekken.\r\n\r\nIn deze ‘decline’ variant komt (relatief) meer nadruk te liggen op de bovenste vezels van de borstspieren en op de voorkant van de schouders. Doordat bovendien minder gewicht door de voeten wordt gedragen, is deze variant zwaarder dan de normale push up.\r\n\r\nDoor een been op te tillen, komt  onder andere meer nadruk te liggen op de rectus femoris van het steunende been. De buitenste schuine buikspieren moeten bovendien harder werken om je lichaam te stabiliseren. De billen en hamstrings moeten nu ook werken om het opgeheven been omhoog te houden', 'Kracht', 'Borst', NULL, NULL),
 (11, 'Pike Push-up', 'De pike push up, ook Pike press genoemd zit qua oefening ergens tussen een shoulder press en een push up. Of anders gezegd; tussen een handstand push up en een normale push up. Een handstand push up is immers een shoulder press met het lichaamsgewicht als weerstand. Door de aangepaste hoek komt dan ook meer nadruk op de schouders te liggen en bovenste vezels van de borst. Op de middelste en onderste vezels komt juist minder nadruk te liggen.\r\n\r\nDe pike push up brengt het bovenlichaam bijna in de houding van de handstand push up terwijl de voeten het contact met de vloer behouden. Behalve dat hierdoor minder gewicht gedragen wordt, kunnen ook de borstspieren actiever bijdragen dan in een handstand.\r\n\r\nHoewel lichter dan een handstand push up is de pike push up een stuk zwaarder dan normaal opdrukken. Begin daarom vanuit een normale push up waarbij je de afstand tussen handen en voeten in kleine stappen vergroot. Zorg ook voor een zacht oppervlak of een kussen.', 'Kracht', 'Borst', NULL, NULL),
-(12, 'Push ups / Push ups / Opdrukken', 'De push up is een bekende samengestelde oefening voor het bovenlichaam en de corespieren. Door de houding van een plank moeten de spieren in de onderrug, billen en benen (vooral hamstrings) werken om rug en benen uitgelijnd te houden. Deze spieren hebben dus vooral een stabiliserende functie zoals ze dat in het dagelijkse leven ook vooral hebben.\r\n\r\nDe spieren in de borst (vooral pectoralis major), schouders (vooral voorkant) en armen (vooral triceps) hebben een actievere rol. De borst- en schouderspieren werken hard om de bovenarmen naar voren te trekken terwijl de triceps in actie komen om de armen te strekken.\r\n\r\nEen wijde stand van de handen zorgt voor meer inzet van de borst terwijl een smallere stand meer van de triceps en schouders vereist.', 'Kracht', 'Borst', NULL, NULL),
+(12, 'Push ups / Opdrukken', 'De push up is een bekende samengestelde oefening voor het bovenlichaam en de corespieren. Door de houding van een plank moeten de spieren in de onderrug, billen en benen (vooral hamstrings) werken om rug en benen uitgelijnd te houden. Deze spieren hebben dus vooral een stabiliserende functie zoals ze dat in het dagelijkse leven ook vooral hebben.\r\n\r\nDe spieren in de borst (vooral pectoralis major), schouders (vooral voorkant) en armen (vooral triceps) hebben een actievere rol. De borst- en schouderspieren werken hard om de bovenarmen naar voren te trekken terwijl de triceps in actie komen om de armen te strekken.\r\n\r\nEen wijde stand van de handen zorgt voor meer inzet van de borst terwijl een smallere stand meer van de triceps en schouders vereist.', 'Kracht', 'Borst', NULL, NULL),
 (13, 'Dumbbell High Row', 'Alle zogenaamde row of roei-oefeningen, zijn voornamelijk gericht op het naar achteren trekken van de bovenarmen. Dit is een van de belangrijkste functies van de latissimus dorsi, de grote rugspier. Om deze functie met losse gewichten uit te voeren moet het bovenlichaam in (bijna) horizontale positie gebracht worden zodat de zwaartekracht de juiste weerstand kan verzorgen. In deze variant doe je dat door voorover te buigen over een bankje, steunend op één arm.\r\n\r\nHet verschil met de normale dumbell row is dat de ellebogen in de high row niet langs de zij maar naar buiten omhoog worden getrokken (abductie van de schouder). De handen zijn dan ook in een geproneerde positie, met de palmen naar onderen/achter gericht.\r\n\r\nOmdat de bovenarm haaks aan de romp naar achteren (ten opzichte van de romp) wordt getrokken, is hier een grotere rol voor de schouderspier de deltoideus (vooral achterkant) en de kleinere spieren van de rotatorenmanchet die de schouder moeten stabiliseren.', 'Kracht', 'Rug', NULL, NULL),
 (14, 'Rear Decline Bridge', 'De rear decline bridge / glute bridge is gericht op het strekken van de rug en het in lijn brengen van het bovenlichaam met het onderlichaam. Een functie van de erector spinae in de rug, de bilspieren en hamstrings. Deze oefening past dan ook net zozeer binnen een training voor de billen. De billen werken het hardst in deze oefening. Een goede oefening om de onderrug in het algemeen te trainen ter preventie blessures. En voor mooiere billen natuurlijk.', 'Kracht', 'Rug', NULL, NULL);
 
@@ -173,7 +211,27 @@ CREATE TABLE IF NOT EXISTS `site_tube` (
   `link` varchar(15) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `tube_links` (`link`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_tube`
+--
+
+REPLACE INTO `site_tube` (`ID`, `link`) VALUES
+(9, '-FW8DNKsAh8'),
+(6, '7UVgs18Y1P4'),
+(10, 'gbFiLWpt-YM'),
+(2, 'HjlgKNAqD8k'),
+(8, 'i4rmRxPBmkY'),
+(3, 'lwqhMCTg2Nw'),
+(7, 'MB8LoopNjPE'),
+(5, 'N_s9em1xTqU'),
+(12, 'P3D2PPMYWjk'),
+(13, 's9eW5yyZKOY'),
+(1, 'Vs0k_0y1A1E'),
+(11, 'x7_I5SUAd00'),
+(14, 'y7kU3OvDwTM'),
+(4, 'ZVfcRHhcBgg');
 
 -- --------------------------------------------------------
 
