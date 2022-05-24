@@ -7,6 +7,7 @@
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -29,7 +30,8 @@ USE `catweb`;
 -- Table structure for table `site_favorites`
 --
 
-CREATE TABLE IF NOT EXISTS `site_favorites` (
+DROP TABLE IF EXISTS `site_favorites`;
+CREATE TABLE `site_favorites` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
@@ -51,7 +53,8 @@ INSERT INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 -- Table structure for table `site_oefeningen`
 --
 
-CREATE TABLE IF NOT EXISTS `site_oefeningen` (
+DROP TABLE IF EXISTS `site_oefeningen`;
+CREATE TABLE `site_oefeningen` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
@@ -89,7 +92,8 @@ INSERT INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroepe
 -- Table structure for table `site_schema`
 --
 
-CREATE TABLE IF NOT EXISTS `site_schema` (
+DROP TABLE IF EXISTS `site_schema`;
+CREATE TABLE `site_schema` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ID`),
@@ -102,7 +106,8 @@ CREATE TABLE IF NOT EXISTS `site_schema` (
 -- Table structure for table `site_schemacontent`
 --
 
-CREATE TABLE IF NOT EXISTS `site_schemacontent` (
+DROP TABLE IF EXISTS `site_schemacontent`;
+CREATE TABLE `site_schemacontent` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_schema` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
@@ -117,7 +122,8 @@ CREATE TABLE IF NOT EXISTS `site_schemacontent` (
 -- Table structure for table `site_users`
 --
 
-CREATE TABLE IF NOT EXISTS `site_users` (
+DROP TABLE IF EXISTS `site_users`;
+CREATE TABLE `site_users` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(25) NOT NULL,
   `pwd` char(60) NOT NULL,
@@ -159,6 +165,7 @@ ALTER TABLE `site_schema`
 ALTER TABLE `site_schemacontent`
   ADD CONSTRAINT `schema_id` FOREIGN KEY (`ID_schema`) REFERENCES `site_schema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schema_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
