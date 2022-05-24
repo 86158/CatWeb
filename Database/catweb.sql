@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2022 at 08:55 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- Generation Time: May 24, 2022 at 09:54 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -32,13 +32,10 @@ USE `catweb`;
 
 DROP TABLE IF EXISTS `site_favorites`;
 CREATE TABLE `site_favorites` (
-  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ID` int(10) UNSIGNED NOT NULL,
   `ID_users` int(10) UNSIGNED NOT NULL,
-  `ID_oefeningen` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fav_oefening` (`ID_oefeningen`),
-  KEY `fav_user` (`ID_users`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  `ID_oefeningen` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_favorites`
@@ -55,16 +52,15 @@ INSERT INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 
 DROP TABLE IF EXISTS `site_oefeningen`;
 CREATE TABLE `site_oefeningen` (
-  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ID` int(10) UNSIGNED NOT NULL,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
   `type` set('Kracht','Cardio') DEFAULT NULL,
   `spiergroepen` set('Triceps','Buik','Borst','Hamstrings','Rug') DEFAULT NULL,
   `duration` int(10) UNSIGNED DEFAULT NULL COMMENT 'In seconden',
   `calorien` mediumint(10) UNSIGNED DEFAULT NULL,
-  `img` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+  `img` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_oefeningen`
@@ -94,10 +90,8 @@ INSERT INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroepe
 
 DROP TABLE IF EXISTS `site_schema`;
 CREATE TABLE `site_schema` (
-  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `ID_users` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `schema_users` (`ID_users`)
+  `ID` int(10) UNSIGNED NOT NULL,
+  `ID_users` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -110,10 +104,7 @@ DROP TABLE IF EXISTS `site_schemacontent`;
 CREATE TABLE `site_schemacontent` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_schema` int(10) UNSIGNED NOT NULL,
-  `ID_oefeningen` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `schema_id` (`ID_schema`),
-  KEY `schema_oefening` (`ID_oefeningen`)
+  `ID_oefeningen` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -124,23 +115,89 @@ CREATE TABLE `site_schemacontent` (
 
 DROP TABLE IF EXISTS `site_users`;
 CREATE TABLE `site_users` (
-  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `email` varchar(25) NOT NULL,
+  `ID` int(10) UNSIGNED NOT NULL,
+  `email` varchar(25) NOT NULL COMMENT 'Regex validation from: https://www.rhyous.com/2010/06/15/csharp-email-regular-expression',
+  `username` varchar(100) DEFAULT NULL,
   `pwd` char(60) NOT NULL,
   `encryptedkey` varchar(120) NOT NULL,
   `token` mediumint(8) UNSIGNED DEFAULT NULL,
   `tokenTime` datetime DEFAULT NULL,
-  `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `username` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_users`
 --
 
-INSERT INTO `site_users` (`ID`, `email`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`, `username`) VALUES
-(1, '86501@roc-teraa.nl', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1, 'ExampleUser');
+INSERT INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`) VALUES
+(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `site_favorites`
+--
+ALTER TABLE `site_favorites`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `fav_oefening` (`ID_oefeningen`),
+  ADD KEY `fav_user` (`ID_users`);
+
+--
+-- Indexes for table `site_oefeningen`
+--
+ALTER TABLE `site_oefeningen`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `site_schema`
+--
+ALTER TABLE `site_schema`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `schema_users` (`ID_users`);
+
+--
+-- Indexes for table `site_schemacontent`
+--
+ALTER TABLE `site_schemacontent`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `schema_id` (`ID_schema`),
+  ADD KEY `schema_oefening` (`ID_oefeningen`);
+
+--
+-- Indexes for table `site_users`
+--
+ALTER TABLE `site_users`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `site_favorites`
+--
+ALTER TABLE `site_favorites`
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `site_oefeningen`
+--
+ALTER TABLE `site_oefeningen`
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `site_schema`
+--
+ALTER TABLE `site_schema`
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `site_users`
+--
+ALTER TABLE `site_users`
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
@@ -165,6 +222,52 @@ ALTER TABLE `site_schema`
 ALTER TABLE `site_schemacontent`
   ADD CONSTRAINT `schema_id` FOREIGN KEY (`ID_schema`) REFERENCES `site_schema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schema_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Metadata
+--
+USE `phpmyadmin`;
+
+--
+-- Metadata for table site_favorites
+--
+
+--
+-- Metadata for table site_oefeningen
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+INSERT INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_oefeningen', 'img', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
+
+--
+-- Metadata for table site_schema
+--
+
+--
+-- Metadata for table site_schemacontent
+--
+
+--
+-- Metadata for table site_users
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+INSERT INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
+('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
+('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
+
+--
+-- Metadata for database catweb
+--
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
