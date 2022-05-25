@@ -22,7 +22,6 @@
 	<div class="row">
 	<script src="js/requestData.js"></script>
 	<script src="js/tableFunctions.js"></script>
-	<script>getData("prac");</script>
 	</div>
 </div>
 </body>

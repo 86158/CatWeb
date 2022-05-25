@@ -1,4 +1,6 @@
 <?php
+// I need to find this in the options later.
+mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_STRICT);
 /**
  * Wrapper for class mysqli.
  * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
@@ -13,7 +15,11 @@ function DatbQuery(string $query, string $types = '', ...$vars) {
 	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
 	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
 	// Create connection based on hardcoded values.
-	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+	try {
+		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+	} catch (mysqli_sql_exception $th) {
+		return $th->getTraceAsString();
+	}
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
 	// Get the statement object and check for errors.
