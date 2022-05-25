@@ -9,18 +9,18 @@ if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
 require_once __DIR__ .'/credentialFunctions.php';
 $result = DatbQuery(
 	"SELECT
-			site_oefeningen.*,
-			GROUP_CONCAT(site_media.link ORDER BY site_media.ID ASC SEPARATOR ' ') AS images,
-			GROUP_CONCAT(site_tube.link ORDER BY site_tube.ID ASC SEPARATOR ' ') AS videos
-		FROM site_oefeningen
-		LEFT JOIN (
-			site_link_media JOIN site_media ON site_link_media.mediaID = site_media.ID
-		) ON site_link_media.oefeningenID = site_oefeningen.ID
-		LEFT JOIN (
-			site_link_tube JOIN site_tube ON site_link_tube.mediaID = site_tube.ID
-		) ON site_link_tube.oefeningenID = site_oefeningen.ID
-		GROUP BY site_oefeningen.ID
-		ORDER BY site_oefeningen.ID ASC;"
+		o.*,
+		GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
+		GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos
+	FROM site_oefeningen o
+	LEFT JOIN (
+		site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
+	) ON ml.oefeningenID = o.ID
+	LEFT JOIN (
+		site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
+	) ON tl.oefeningenID = o.ID
+	GROUP BY o.ID
+	ORDER BY o.ID ASC;"
 );
 if(!($result instanceof mysqli_result)) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
@@ -34,9 +34,9 @@ $output = $result->fetch_all(MYSQLI_ASSOC);
 $result->close();
 for($i=0; $i < count($output); $i++) { 
 	if($output[$i]['images'] != null)
-		$output[$i]['images'] = explode(" ", $output[$i]['images']);
+		$output[$i]['images'] = explode("\n", $output[$i]['images']);
 	if($output[$i]['videos'] != null)
-		$output[$i]['videos'] = explode(" ", $output[$i]['videos']);
+		$output[$i]['videos'] = explode("\n", $output[$i]['videos']);
 }
 /** @var array<int,array<string,string|int|array|null>> $output */
 $output = json_encode($output);
