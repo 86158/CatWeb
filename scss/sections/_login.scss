@@ -1,6 +1,8 @@
 @use '../custom' as *;
 
 .login-section {
+    padding-bottom: 56px;
+
     .form {
         width: 45%;
         margin: auto;
@@ -30,8 +32,46 @@
             }
         }
 
+        .fieldset-signup {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding: 0 15%;
+
+            input {
+                width: 100%;
+                padding: 10px 0;
+                color: $primary;
+                margin-bottom: 30px;
+                border: none;
+                border-bottom: 1px solid $black;
+                outline: none;
+
+            }
+
+            label {
+                color: $primary;
+                ;
+            }
+        }
+
         .buttons {
-            color: rebeccapurple;
+            align-items: center;
+
+            .btn {
+                width: 35%;
+                height: 45px;
+
+                &:hover {
+                    background-color: $primary-dark;
+                    color: $white;
+                }
+            }
+
+            .button-below {
+                border: none;
+                background-color: $white;
+            }
         }
     }
 }

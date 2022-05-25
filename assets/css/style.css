@@ -11143,6 +11143,9 @@ body {
   color: #ffffff !important;
 }
 
+.login-section {
+  padding-bottom: 56px;
+}
 .login-section .form {
   width: 45%;
   margin: auto;
@@ -11168,8 +11171,38 @@ body {
   border-bottom: 1px solid #000000;
   outline: none;
 }
+.login-section .form .fieldset-signup {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0 15%;
+}
+.login-section .form .fieldset-signup input {
+  width: 100%;
+  padding: 10px 0;
+  color: #5eb4a8;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
+}
+.login-section .form .fieldset-signup label {
+  color: #5eb4a8;
+}
 .login-section .form .buttons {
-  color: rebeccapurple;
+  align-items: center;
+}
+.login-section .form .buttons .btn {
+  width: 35%;
+  height: 45px;
+}
+.login-section .form .buttons .btn:hover {
+  background-color: #50948a;
+  color: #ffffff;
+}
+.login-section .form .buttons .button-below {
+  border: none;
+  background-color: #ffffff;
 }
 
 .homepage-section {
