@@ -11164,6 +11164,9 @@ textarea.form-control-lg {
   border-bottom: 1px solid #000000;
   outline: none;
 }
+.login-section .form .buttons {
+  color: rebeccapurple;
+}
 
 .homepage-section .container-fluid {
   padding: 0;
