@@ -11210,6 +11210,9 @@ textarea.form-control-lg {
   left: 0;
   min-height: 755px;
 }
+.homepage-section .container-fluid .carousel-inner .carousel-item .carousel-caption {
+  padding-bottom: 17%;
+}
 
 .footer-section .bg-customfooter {
   background-color: #EBEBEB;

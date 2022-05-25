@@ -46,8 +46,61 @@ function DatbQuery(string $query, string $types = '', ...$vars) {
 	$m_conn->close();
 	return $m_result;
 }
+/**
+ * Wrapper for class mysqli.
+ * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
+ * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type. 's' for string, 'd' for float, 'i' for int, 'b' for BLOB
+ * @param string|int|float|BLOB ...$vars
+ * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
+ * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
+ * @throws InvalidArgumentException If $types does not match the constrants.
+ */
+function DatbQuery_3(mysqli &$conn = null, string $query, string $types = '', ...$vars) {
+	// Ensure types doesn't contain obvious errors.
+	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
+	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
+	// Ensure connection
+	$m_close = false;
+	if($conn == null) {
+		$conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		$m_close = true;
+	}
+	// Check if the connection succeeded.
+	if($conn->connect_error) return $conn->connect_error;
+	// Get the statement object and check for errors.
+	$m_prep = $conn->prepare($query);
+	if($m_prep == false) {
+		$error = $conn->error_list;
+		if($m_close) $conn->close();
+		return var_export($error, true);
+	}
+	// Attempt to bind parameters to their relative placeholders.
+	if($types != '') {
+		if(!($m_prep->bind_param($types, ...$vars))) {
+			$error = $m_prep->error_list;
+			$m_prep->close(); if($m_close) $conn->close();
+			return var_export($error, true);
+		}
+	}
+	// Execute the querry.
+	if(!$m_prep->execute()) {
+		$error = $m_prep->error_list;
+		$m_prep->close(); if($m_close) $conn->close();
+		return var_export($error, true);
+	}
+	// Get the results.
+	$m_result = $m_prep->get_result();
+	if($m_result == false)
+		$m_result = ($m_prep->errno == 0)?
+			$m_prep->affected_rows :
+			var_export($m_prep->error_list, true);
+	// close connection
+	$m_prep->close();
+	if($m_close) $conn->close();
+	return $m_result;
+}
 /** Check the user credentials en permissions.
- * @param int|string $username If using a token use an `int` else it should be a `string`.
+ * @param int|string $username If using a token use an `int` else it should be the email of the user as a `string`.
  * @param string $pwd Password or token to be validated.
  * @return int|string Int representing permission level or a String containing an error message.
 */
@@ -124,7 +177,7 @@ function getInfo() {
 	$id = $_SESSION['ID'];
 	$pwdKey = $_SESSION['pwdKey'];
 	$m_iv = "0000000000000069";
-	$m_result = DatbQuery('SELECT `encryptedkey`, `username`, `street`, `postcode`, `city`, `country` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	$m_result = DatbQuery('SELECT `encryptedkey`, `username` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
 		return 'Database request mislukt at SELECT `encryptedkey`';
 	$m_result = $m_result->fetch_assoc();
@@ -133,18 +186,14 @@ function getInfo() {
 	// We put the data in a relative array decrypting it first if it is not null.
 	/** @var array<string,(string|false|null)> $decryptedData */
 	$decryptedData = [
-		'username'	=> ($m_result['username'])?	openssl_decrypt($m_result['nameFirst'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
-		'street'		=> ($m_result['street'])?		openssl_decrypt($m_result['street'],		'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
-		'postcode'	=> ($m_result['postcode'])?	openssl_decrypt($m_result['postcode'],		'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
-		'city'		=> ($m_result['city'])?			openssl_decrypt($m_result['city'],			'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
-		'country'	=> ($m_result['country'])?		openssl_decrypt($m_result['country'],		'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null
+		'username'	=> ($m_result['username'])?	openssl_decrypt($m_result['nameFirst'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null
 	];
 	return $decryptedData;
 }
 /** Update/change user info
  * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
  */
-function setInfo(int $id, string $pwdKey, ?string $nameFirst = null, ?string $nameLast = null, ?string $street = null, ?string $postcode = null, ?string $city = null, ?string $country = null): ?string {
+function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
 	$m_iv = "0000000000000069";
 	$m_result = DatbQuery('SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
@@ -152,58 +201,21 @@ function setInfo(int $id, string $pwdKey, ?string $nameFirst = null, ?string $na
 	$m_result = $m_result->fetch_assoc();
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	// We basically go over all given arguments and change those that are set.
-	if(isset($nameFirst))
-		DatbQuery('UPDATE `site_users` SET `nameFirst`=? WHERE `ID`=?', 'si', openssl_encrypt($nameFirst, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($nameLast))
-		DatbQuery('UPDATE `site_users` SET `nameLast`=? WHERE `ID`=?', 'si', openssl_encrypt($nameLast, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($street))
-		DatbQuery('UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($street, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($postcode) && preg_match('/^\d{4}[A-Z]{2}$/', $postcode))
-		DatbQuery('UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($postcode, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($city))
-		DatbQuery('UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($city, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($country) && preg_match('/^[A-Z]{2}$/', $country))
-		DatbQuery('UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($country, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+	if(isset($username))
+		DatbQuery('UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+	if(isset($perms))
+		DatbQuery('UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
 	return null;
 }
 /** Update/change user info
  * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
  */
-function setInfo2(int $id, string $pwdKey, ?string $nameFirst = null, ?string $nameLast = null, ?string $street = null, ?string $postcode = null, ?string $city = null, ?string $country = null): ?string {
-	/** Version of DatbQuery that doesn't close the connection */
-	function connReuse(mysqli $m_conn, string $query, string $types, ...$vars) {
-		$m_prep = $m_conn->prepare($query);
-		if($m_prep == false) {
-			$error = $m_conn->error_list;
-			return var_export($error, true);
-		}
-		// Attempt to bind parameters to their relative placeholders.
-		if($types != '') {
-			if(!($m_prep->bind_param($types, ...$vars))) {
-				$error = $m_prep->error_list;
-				$m_prep->close();
-				return var_export($error, true);
-			}
-		}
-		// Execute the querry.
-		if(!$m_prep->execute()) {
-			$error = $m_prep->error_list;
-			$m_prep->close();
-			return var_export($error, true);
-		}
-		// Get the results.
-		$m_result = $m_prep->get_result();
-		if($m_result == false)
-			$m_result = ($m_prep->errno == 0)? $m_prep->affected_rows : var_export($m_prep->error_list, true);
-		// close connection
-		$m_prep->close();
-		return $m_result;
-	}
+function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
 	$m_iv = "0000000000000069";
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
-	$m_result = connReuse($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	$m_result = DatbQuery_3($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
 		return 'Database request mislukt at SELECT `email`';
 	$m_result = $m_result->fetch_assoc();
@@ -211,18 +223,10 @@ function setInfo2(int $id, string $pwdKey, ?string $nameFirst = null, ?string $n
 	if($m_userKey == false) return 'Decryption failed';
 	$m_results = [];
 	// We basically go over all given arguments and change those that are set.
-	if(isset($nameFirst))
-		$m_results[] = connReuse($m_conn, 'UPDATE `site_users` SET `nameFirst`=? WHERE `ID`=?', 'si', openssl_encrypt($nameFirst, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($nameLast))
-		$m_results[] = connReuse($m_conn, 'UPDATE `site_users` SET `nameLast`=? WHERE `ID`=?', 'si', openssl_encrypt($nameLast, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($street))
-		$m_results[] = connReuse($m_conn, 'UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($street, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($postcode) && preg_match('/^\d{4}[A-Z]{2}$/', $postcode))
-		$m_results[] = connReuse($m_conn, 'UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($postcode, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($city))
-		$m_results[] = connReuse($m_conn, 'UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($city, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($country) && preg_match('/^[A-Z]{2}$/', $country))
-		$m_results[] = connReuse($m_conn, 'UPDATE `site_users` SET `street`=? WHERE `ID`=?', 'si', openssl_encrypt($country, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+	if(isset($username))
+		$m_results[] = DatbQuery_3($m_conn, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+	if(isset($perms))
+		$m_results[] = DatbQuery_3($m_conn, 'UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
 	$m_conn->close();
 	return null;
 }
@@ -230,11 +234,9 @@ function setInfo2(int $id, string $pwdKey, ?string $nameFirst = null, ?string $n
  * Create a new account with encrypted personal details.
  * @return null|string null on success. Error message on failure.
 */
-function createAccount(string $email, string $pwd, ?string $username, ?string $street, ?string $postcode, ?string $city, ?string $country): ?string {
+function createAccount(string $email, string $pwd, ?string $username, ?int $perms = null): ?string {
 	// Verify contents
-	if(!preg_match('/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/', $email)) return 'Incorrect e-mail format';
-	if(!preg_match('/^\d{4}[A-Z]{2}$/', $postcode)) return 'Incorrect postcode format';
-	if(!preg_match('/^[A-Z]{2}$/', $country)) return 'Land code moet in ISO 3166-1 alpha-2 format';
+	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	$m_iv = "0000000000000069";
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt';
@@ -244,13 +246,10 @@ function createAccount(string $email, string $pwd, ?string $username, ?string $s
 		$m_pass[0],	// encrypted_userKey
 		// Data encrypted with userKey
 		($username)?	openssl_encrypt($username,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
-		($street)?		openssl_encrypt($street,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
-		($postcode)?	openssl_encrypt($postcode,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
-		($city)?			openssl_encrypt($city,		'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
-		($country)?		openssl_encrypt($country,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null
+		$perms
 	];
 	if(array_search(false, $m_vars) !== false) return 'Encryptie mislukt';
-	$m_return = DatbQuery('INSERT INTO `site_users` (`email`, `pwd`, `encryptedkey`, `username`, `street`, `postcode`, `city`, `country`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', 'ssssssss', ...$m_vars);
+	$m_return = DatbQuery('INSERT INTO `site_users` (`email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?)', 'ssssi', ...$m_vars);
 	if(is_string($m_return)) return $m_return;
 	return null;
 }

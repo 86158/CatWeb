@@ -1,4 +1,24 @@
 // For filling the table with data.
+interface site_oefeningen {
+	/**A positive integer.*/
+	ID: number;
+	/** The name of the exercise.*/
+	name: string;
+	/** The description of the exercise.*/
+	description: string;
+	/** Comma separated list of types.*/
+	type: string|null;
+	/** Comma separated list of musslegroups used in the exercise.*/
+	spiergroepen: string|null;
+	/** Estimated duration in seconds.*/
+	duration: number|null;
+	/** Estimated callori usage.*/
+	calorien: number|null;
+	/** Images */
+	images: Array<string>|null;
+	/** Videos */
+	videos: Array<string>|null;
+}
 /**
  * A function to be called if the request fails.
  * The function receives three arguments:
@@ -90,8 +110,8 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
-		/*if(element.img)
-			img.src = element.img;*/
+		if(element.images && element.images[0])
+			img.src = element.images[0];
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
