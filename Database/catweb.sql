@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2022 at 09:38 AM
+-- Generation Time: May 25, 2022 at 12:38 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -116,21 +116,21 @@ CREATE TABLE `site_media` (
 --
 
 REPLACE INTO `site_media` (`ID`, `link`) VALUES
+(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg'),
+(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg'),
+(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg'),
+(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg'),
+(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg'),
+(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg'),
+(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg'),
 (1, 'https://i.stack.imgur.com/g8eij.jpg'),
 (2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg'),
-(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg'),
-(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg'),
-(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg'),
-(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg'),
-(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg'),
 (8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg'),
-(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg'),
-(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg'),
-(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg'),
+(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png'),
 (12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg'),
-(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg'),
-(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg'),
-(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png');
+(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg'),
+(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg'),
+(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg');
 
 -- --------------------------------------------------------
 
@@ -219,21 +219,21 @@ CREATE TABLE `site_tube` (
 --
 
 REPLACE INTO `site_tube` (`ID`, `link`) VALUES
-(1, 'Vs0k_0y1A1E'),
-(2, 'HjlgKNAqD8k'),
-(3, 'lwqhMCTg2Nw'),
-(4, 'ZVfcRHhcBgg'),
-(5, 'N_s9em1xTqU'),
-(6, '7UVgs18Y1P4'),
-(7, 'MB8LoopNjPE'),
-(8, 'i4rmRxPBmkY'),
 (9, '-FW8DNKsAh8'),
+(15, '0UIS7TDHMQU'),
+(6, '7UVgs18Y1P4'),
 (10, 'gbFiLWpt-YM'),
-(11, 'x7_I5SUAd00'),
+(2, 'HjlgKNAqD8k'),
+(8, 'i4rmRxPBmkY'),
+(3, 'lwqhMCTg2Nw'),
+(7, 'MB8LoopNjPE'),
+(5, 'N_s9em1xTqU'),
 (12, 'P3D2PPMYWjk'),
 (13, 's9eW5yyZKOY'),
+(1, 'Vs0k_0y1A1E'),
+(11, 'x7_I5SUAd00'),
 (14, 'y7kU3OvDwTM'),
-(15, '0UIS7TDHMQU');
+(4, 'ZVfcRHhcBgg');
 
 -- --------------------------------------------------------
 
@@ -261,6 +261,16 @@ CREATE TABLE `site_users` (
 
 REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`) VALUES
 (1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `site_oefening_media`
+--
+DROP TABLE IF EXISTS `site_oefening_media`;
+
+DROP VIEW IF EXISTS `site_oefening_media`;
+CREATE OR REPLACE VIEW `site_oefening_media`  AS SELECT `o`.`ID` AS `ID`, `o`.`name` AS `name`, `o`.`description` AS `description`, `o`.`type` AS `type`, `o`.`spiergroepen` AS `spiergroepen`, `o`.`duration` AS `duration`, `o`.`calorien` AS `calorien`, group_concat(distinct `m`.`link` order by `m`.`ID` ASC separator '\n') AS `images`, group_concat(distinct `t`.`link` order by `t`.`ID` ASC separator '\n') AS `videos` FROM ((`site_oefeningen` `o` left join (`site_link_media` `ml` join `site_media` `m` on(`ml`.`mediaID` = `m`.`ID`)) on(`ml`.`oefeningenID` = `o`.`ID`)) left join (`site_link_tube` `tl` join `site_tube` `t` on(`tl`.`mediaID` = `t`.`ID`)) on(`tl`.`oefeningenID` = `o`.`ID`)) GROUP BY `o`.`ID` ORDER BY `o`.`ID` ASC  ;
 
 --
 -- Constraints for dumped tables
@@ -340,6 +350,7 @@ REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `commen
 ('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
 ('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
 ('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
+
 
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
