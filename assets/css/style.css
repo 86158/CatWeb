@@ -11139,6 +11139,9 @@ textarea.form-control-lg {
   color: #ffffff !important;
 }
 
+.login-section {
+  padding-bottom: 56px;
+}
 .login-section .form {
   width: 45%;
   margin: auto;
