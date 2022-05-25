@@ -14,4 +14,8 @@ interface site_oefeningen {
 	duration: number|null;
 	/** Estimated callori usage.*/
 	calorien: number|null;
+	/** Images */
+	img: Array<string>|null;
+	/** Videos */
+	vid: Array<string>|null;
 }

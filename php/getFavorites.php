@@ -8,8 +8,11 @@
  */
 function array_reindex(array &$array): void {
 	$i = 0;
-	foreach($array as $value) {
-		$array[$i] = $value;
+	foreach($array as $key => $value) {
+		if($i != $key) {
+			$array[$i] = $value;
+			unset($array[$key]);
+		}
 		$i++;
 	}
 }
@@ -58,7 +61,8 @@ $result = DatbQuery(
 			site_link_tube JOIN site_tube ON site_link_tube.mediaID = site_tube.ID
 		) ON site_link_tube.oefeningenID = o.ID
 		INNER JOIN site_favorites f ON o.`ID` = f.`ID_oefeningen`
-		WHERE f.ID_users=?",
+		WHERE f.ID_users=?
+		ORDER BY o.ID ASC",
 	'i', $_SERVER['PHP_AUTH_USER']
 );
 if(!($result instanceof mysqli_result)) {
@@ -72,21 +76,22 @@ if(!($result instanceof mysqli_result)) {
 $output = $result->fetch_all(MYSQLI_ASSOC);
 $result->close();
 $prevIndex = 0;
-for($i=1; $i < count($output); $i++) { 
+$count = count($output);
+$output[0]['img'] = [$output[0]['img']];
+$output[0]['vid'] = [$output[0]['vid']];
+for($i=1; $i < $count; $i++) {
 	$prev = $output[$prevIndex];
 	$curr = $output[$i];
-	if(!is_array($prev['img'])) {
-		$prev['img'] = [$prev['img']];
-		$prev['vid'] = [$prev['vid']];
-		$output[$prevIndex] = $prev;
-	}
+	$curr['img'] = [$curr['img']];
+	$curr['vid'] = [$curr['vid']];
+	$output[$i] = $curr;
 	if($prev['ID'] != $curr['ID']) {
 		$prevIndex = $i;
 		continue;
 	}
-	array_push($prev['img'], $curr['img']);
+	array_push($prev['img'], $curr['img'][0]);
 	$prev['img'] = array_unique($prev['img']);
-	array_push($prev['vid'], $curr['vid']);
+	array_push($prev['vid'], $curr['vid'][0]);
 	$prev['vid'] = array_unique($prev['vid']);
 	$output[$prevIndex] = $prev;
 	unset($output[$i]);
