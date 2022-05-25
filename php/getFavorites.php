@@ -1,21 +1,4 @@
 <?php
-/**
- * Returns all the values from the array and indexes the array numerically.
- * In contrast to array_values() this function does this transformation inplace.
- * This is more memory efficient than `$array = array_values($array);`
- * @param array &$array The array to reindex.
- * @see https://www.php.net/manual/en/function.array-values.php#36837
- */
-function array_reindex(array &$array): void {
-	$i = 0;
-	foreach($array as $key => $value) {
-		if($i != $key) {
-			$array[$i] = $value;
-			unset($array[$key]);
-		}
-		$i++;
-	}
-}
 header("Content-Type: application/json");
 if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
@@ -52,17 +35,21 @@ if(!is_int($perm)) {
 *if($perm < 1) {header($_SERVER["SERVER_PROTOCOL"] .' 403 Forbidden', true, 403); echo '{"responce":"User has insuficient permissions"}'; exit;}
 */
 $result = DatbQuery(
-	"SELECT o.*, site_media.link AS img, site_tube.link AS vid
-		FROM site_oefeningen o 
+	"SELECT
+			site_oefeningen.*,
+			GROUP_CONCAT(site_media.link ORDER BY site_media.ID ASC SEPARATOR ' ') AS images,
+			GROUP_CONCAT(site_tube.link ORDER BY site_tube.ID ASC SEPARATOR ' ') AS videos
+		FROM site_oefeningen
 		LEFT JOIN (
 			site_link_media JOIN site_media ON site_link_media.mediaID = site_media.ID
-		) ON site_link_media.oefeningenID = o.ID
+		) ON site_link_media.oefeningenID = site_oefeningen.ID
 		LEFT JOIN (
 			site_link_tube JOIN site_tube ON site_link_tube.mediaID = site_tube.ID
-		) ON site_link_tube.oefeningenID = o.ID
-		INNER JOIN site_favorites f ON o.`ID` = f.`ID_oefeningen`
-		WHERE f.ID_users=?
-		ORDER BY o.ID ASC",
+		) ON site_link_tube.oefeningenID = site_oefeningen.ID
+		INNER JOIN site_favorites ON site_oefeningen.`ID` = site_favorites.ID_oefeningen
+		WHERE site_favorites.ID_users=?
+		GROUP BY site_oefeningen.ID
+		ORDER BY site_oefeningen.ID ASC;",
 	'i', $_SERVER['PHP_AUTH_USER']
 );
 if(!($result instanceof mysqli_result)) {
@@ -72,31 +59,16 @@ if(!($result instanceof mysqli_result)) {
 		'{"error":"Expected mysqli_result but got int instead"}';
 	exit();
 }
-/** @var array<int,array<string,string|int|array>> $output */
+/** @var array<int,array<string,string|int|null>> $output */
 $output = $result->fetch_all(MYSQLI_ASSOC);
 $result->close();
-$prevIndex = 0;
-$count = count($output);
-$output[0]['img'] = [$output[0]['img']];
-$output[0]['vid'] = [$output[0]['vid']];
-for($i=1; $i < $count; $i++) {
-	$prev = $output[$prevIndex];
-	$curr = $output[$i];
-	$curr['img'] = [$curr['img']];
-	$curr['vid'] = [$curr['vid']];
-	$output[$i] = $curr;
-	if($prev['ID'] != $curr['ID']) {
-		$prevIndex = $i;
-		continue;
-	}
-	array_push($prev['img'], $curr['img'][0]);
-	$prev['img'] = array_unique($prev['img']);
-	array_push($prev['vid'], $curr['vid'][0]);
-	$prev['vid'] = array_unique($prev['vid']);
-	$output[$prevIndex] = $prev;
-	unset($output[$i]);
+for($i=0; $i < count($output); $i++) { 
+	if($output[$i]['images'] != null)
+		$output[$i]['images'] = explode(" ", $output[$i]['images']);
+	if($output[$i]['videos'] != null)
+		$output[$i]['videos'] = explode(" ", $output[$i]['videos']);
 }
-array_reindex($output);
+/** @var array<int,array<string,string|int|array|null>> $output */
 $output = json_encode($output);
 if($output == false) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);

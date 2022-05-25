@@ -15,9 +15,9 @@ interface site_oefeningen {
 	/** Estimated callori usage.*/
 	calorien: number|null;
 	/** Images */
-	img: Array<string|null>;
+	images: Array<string>|null;
 	/** Videos */
-	vid: Array<string|null>;
+	videos: Array<string>|null;
 }
 /**
  * A function to be called if the request fails.
@@ -110,8 +110,8 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
-		if(element.img[0])
-			img.src = element.img[0];
+		if(element.images && element.images[0])
+			img.src = element.images[0];
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
