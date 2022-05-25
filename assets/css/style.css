@@ -11118,6 +11118,10 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+body {
+  height: 100%;
+}
+
 .container {
   padding-top: 40px;
   padding-bottom: 96px;
@@ -11168,11 +11172,14 @@ textarea.form-control-lg {
   color: rebeccapurple;
 }
 
+.homepage-section {
+  padding-bottom: 56px;
+}
 .homepage-section .container-fluid {
   padding: 0;
 }
 .homepage-section .container-fluid .carousel-inner .carousel-item {
-  height: 755px;
+  height: 757px;
 }
 .homepage-section .container-fluid .carousel-inner .carousel-item img {
   position: absolute;
@@ -11184,6 +11191,11 @@ textarea.form-control-lg {
   padding-bottom: 17%;
 }
 
+.footer-section {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
 .footer-section .bg-customfooter {
   background-color: #EBEBEB;
 }
