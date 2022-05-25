@@ -12,7 +12,7 @@ function returnPage(): string {
 		session_unset();
 	// Create new user.
 	} elseif(isset($_POST['formID']) && $_POST['formID'] === 'newUser') {
-		$m_result = createAccount($_POST['Username'], $_POST['Password'], $_POST['nameFirst'], $_POST['nameLast'], $_POST['street'], $_POST['postcode'], $_POST['city'], $_POST['country']);
+		$m_result = createAccount($_POST['Username'], $_POST['Password'], $_POST['nameFirst'], $_POST['nameLast']);
 		if(is_string($m_result)) echo '<p class=error role=alert>'. $m_result .'</p>';
 	// Login
 	} else {

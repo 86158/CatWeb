@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 24, 2022 at 02:35 PM
+-- Generation Time: May 25, 2022 at 12:38 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -31,7 +31,7 @@ USE `catweb`;
 --
 
 DROP TABLE IF EXISTS `site_favorites`;
-CREATE TABLE IF NOT EXISTS `site_favorites` (
+CREATE TABLE `site_favorites` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
@@ -54,14 +54,14 @@ REPLACE INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_media`;
-CREATE TABLE IF NOT EXISTS `site_link_media` (
+CREATE TABLE `site_link_media` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `oefeningenID` int(10) UNSIGNED NOT NULL,
   `mediaID` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `oefening_media_link` (`oefeningenID`),
   KEY `media_link` (`mediaID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_link_media`
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `site_link_media` (
 REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
 (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
 (7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
-(12, 12, 12), (13, 13, 13), (14, 14, 14);
+(12, 12, 12), (13, 13, 13), (14, 14, 14), (15, 6, 15);
 
 -- --------------------------------------------------------
 
@@ -79,14 +79,14 @@ REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_tube`;
-CREATE TABLE IF NOT EXISTS `site_link_tube` (
+CREATE TABLE `site_link_tube` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `oefeningenID` int(10) UNSIGNED NOT NULL,
   `mediaID` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `oefening_tube_link` (`oefeningenID`),
   KEY `tube_link` (`mediaID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_link_tube`
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `site_link_tube` (
 REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
 (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
 (7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
-(12, 12, 12), (13, 13, 13), (14, 14, 14);
+(12, 12, 12), (13, 13, 13), (14, 14, 14), (15, 6, 15);
 
 -- --------------------------------------------------------
 
@@ -104,12 +104,12 @@ REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_media`;
-CREATE TABLE IF NOT EXISTS `site_media` (
+CREATE TABLE `site_media` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(145) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `image_links` (`link`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_media`
@@ -126,6 +126,7 @@ REPLACE INTO `site_media` (`ID`, `link`) VALUES
 (1, 'https://i.stack.imgur.com/g8eij.jpg'),
 (2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg'),
 (8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg'),
+(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png'),
 (12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg'),
 (11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg'),
 (9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg'),
@@ -138,7 +139,7 @@ REPLACE INTO `site_media` (`ID`, `link`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_oefeningen`;
-CREATE TABLE IF NOT EXISTS `site_oefeningen` (
+CREATE TABLE `site_oefeningen` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
@@ -176,7 +177,7 @@ REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroep
 --
 
 DROP TABLE IF EXISTS `site_schema`;
-CREATE TABLE IF NOT EXISTS `site_schema` (
+CREATE TABLE `site_schema` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ID`),
@@ -190,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `site_schema` (
 --
 
 DROP TABLE IF EXISTS `site_schemacontent`;
-CREATE TABLE IF NOT EXISTS `site_schemacontent` (
+CREATE TABLE `site_schemacontent` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_schema` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
@@ -206,12 +207,12 @@ CREATE TABLE IF NOT EXISTS `site_schemacontent` (
 --
 
 DROP TABLE IF EXISTS `site_tube`;
-CREATE TABLE IF NOT EXISTS `site_tube` (
+CREATE TABLE `site_tube` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(15) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `tube_links` (`link`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_tube`
@@ -219,6 +220,7 @@ CREATE TABLE IF NOT EXISTS `site_tube` (
 
 REPLACE INTO `site_tube` (`ID`, `link`) VALUES
 (9, '-FW8DNKsAh8'),
+(15, '0UIS7TDHMQU'),
 (6, '7UVgs18Y1P4'),
 (10, 'gbFiLWpt-YM'),
 (2, 'HjlgKNAqD8k'),
@@ -240,7 +242,7 @@ REPLACE INTO `site_tube` (`ID`, `link`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_users`;
-CREATE TABLE IF NOT EXISTS `site_users` (
+CREATE TABLE `site_users` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(25) NOT NULL COMMENT 'Regex validation from: https://www.rhyous.com/2010/06/15/csharp-email-regular-expression',
   `username` varchar(100) DEFAULT NULL,
@@ -263,12 +265,12 @@ REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `to
 -- --------------------------------------------------------
 
 --
--- Structure for view `oefeningmedia`
+-- Structure for view `site_oefening_media`
 --
-DROP TABLE IF EXISTS `oefeningmedia`;
+DROP TABLE IF EXISTS `site_oefening_media`;
 
-DROP VIEW IF EXISTS `oefeningmedia`;
-CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `oefeningmedia`  AS SELECT `site_oefeningen`.`ID` AS `ID`, `site_oefeningen`.`name` AS `name`, `site_oefeningen`.`description` AS `description`, `site_oefeningen`.`type` AS `type`, `site_oefeningen`.`spiergroepen` AS `spiergroepen`, `site_oefeningen`.`duration` AS `duration`, `site_oefeningen`.`calorien` AS `calorien`, `site_media`.`link` AS `img` FROM (`site_oefeningen` left join (`site_link_media` join `site_media` on(`site_link_media`.`mediaID` = `site_media`.`ID`)) on(`site_link_media`.`oefeningenID` = `site_oefeningen`.`ID`)) GROUP BY `site_oefeningen`.`ID``ID`  ;
+DROP VIEW IF EXISTS `site_oefening_media`;
+CREATE OR REPLACE VIEW `site_oefening_media`  AS SELECT `o`.`ID` AS `ID`, `o`.`name` AS `name`, `o`.`description` AS `description`, `o`.`type` AS `type`, `o`.`spiergroepen` AS `spiergroepen`, `o`.`duration` AS `duration`, `o`.`calorien` AS `calorien`, group_concat(distinct `m`.`link` order by `m`.`ID` ASC separator '\n') AS `images`, group_concat(distinct `t`.`link` order by `t`.`ID` ASC separator '\n') AS `videos` FROM ((`site_oefeningen` `o` left join (`site_link_media` `ml` join `site_media` `m` on(`ml`.`mediaID` = `m`.`ID`)) on(`ml`.`oefeningenID` = `o`.`ID`)) left join (`site_link_tube` `tl` join `site_tube` `t` on(`tl`.`mediaID` = `t`.`ID`)) on(`tl`.`oefeningenID` = `o`.`ID`)) GROUP BY `o`.`ID` ORDER BY `o`.`ID` ASC  ;
 
 --
 -- Constraints for dumped tables
@@ -348,6 +350,7 @@ REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `commen
 ('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
 ('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
 ('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
+
 
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
