@@ -19,7 +19,7 @@
             .password {
                 color: $primary;
             }
-    
+
             input {
                 width: 100%;
                 padding: 10px 0;
@@ -29,6 +29,10 @@
                 border-bottom: 1px solid $black;
                 outline: none;
             }
+        }
+
+        .buttons {
+            color: rebeccapurple;
         }
     }
 }
