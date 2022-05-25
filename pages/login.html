@@ -8,10 +8,13 @@
 			<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=username name=Username required></label>
 			<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
 		</fieldset>
-		<fieldset style=grid-row:2 hidden>
+		<fieldset class="fieldset-signup" hidden>
 			<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
-			<label>Voornaam:<input type=text autocomplete=given-name name=nameFirst maxlength=60></label>
-			<label>Achternaam:<input type=text autocomplete=family-name name=nameLast maxlength=60></label>
+			<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=nameFirst maxlength=60></label>
+			<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=nameLast maxlength=60></label>
+			<label class="fw-bold fs-5">Email<input type=text autocomplete=email name=email maxlength=60></label>
+			<label class="fw-bold fs-5">Password<input type=password autocomplete=password name=password maxlength=60></label>
+			<label class="fw-bold fs-5">Confirm Password<input type=password autocomplete=confirm-password name=confirmPassword maxlength=60></label>
 		</fieldset>
 		<div class="buttons d-flex flex-column mt-3">
 			<input class="btn btn-primary" type=submit value="Login"></input>
