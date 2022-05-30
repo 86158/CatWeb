@@ -25,15 +25,15 @@ button.addEventListener('click', () => {
 		fieldset1.hidden = false;
 		fieldset3.hidden = false;
 		formType.value = 'newUser';
-		button.innerText = 'Account aanmaken';
+		button.innerText = 'Heeft u al een account?';
 		pwdField.autocomplete = 'new-password';
-		btnChange.value = 'Account aanmaken';
+		btnChange.value = 'Account Aanmaken';
 		h2.innerText = 'Account Aanmaken';
 	} else {
 		fieldset1.hidden = true;
 		fieldset3.hidden = true;
 		formType.value = 'login';
-		button.innerText = 'Inloggen';
+		button.innerText = 'Heeft u nog geen account?';
 		pwdField.autocomplete = 'current-password';
 		btnChange.defaultValue = btnChange.value = 'Inloggen';
 		h2.innerText = 'Log In';

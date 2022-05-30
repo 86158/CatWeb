@@ -11165,7 +11165,7 @@ body {
 .login-section .form .login-form input {
   width: 100%;
   padding: 10px 0;
-  color: #5eb4a8;
+  color: #000000;
   margin-bottom: 30px;
   border: none;
   border-bottom: 1px solid #000000;
@@ -11180,7 +11180,7 @@ body {
 .login-section .form .fieldset-signup input {
   width: 100%;
   padding: 10px 0;
-  color: #5eb4a8;
+  color: #000000;
   margin-bottom: 30px;
   border: none;
   border-bottom: 1px solid #000000;
