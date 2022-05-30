@@ -11221,7 +11221,7 @@ body {
   min-height: 755px;
 }
 .homepage-section .container-fluid .carousel-inner .carousel-item .carousel-caption {
-  padding-bottom: 17%;
+  height: 50%;
 }
 
 .footer-section {

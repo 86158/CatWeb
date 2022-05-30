@@ -36,10 +36,10 @@ function returnPage(): string {
 		case 'prac':
 			return 'oefeningen.php';
 		case 'schema':
-			if($m_perms < 0) return 'login.html';
+			//if($m_perms < 0) return 'login.html';
 			return 'schema.php';
 		case 'work':
-			if($m_perms < 0) return 'login.html';
+			//if($m_perms < 0) return 'login.html';
 			return 'workout.php';
 		case 'info':
 			return 'overons.php';

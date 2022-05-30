@@ -25,7 +25,7 @@ if(session_status() == PHP_SESSION_NONE) {
 		'use_strict_mode' => '1',
 		'cookie_lifetime' => 3600,
 		'cookie_secure' => '1', 'cookie_httponly' => '1',
-		'cookie_samesite' => 'Strict'
+		'cookie_samesite' => 'Strict',
 	]);
 }
 // Check if the files we need exist
@@ -42,6 +42,7 @@ if(!(
 // defining global vars
 // Getting functions
 require_once __DIR__ .'/php/globalFunctions.php';
+require_once __DIR__ . "/php/FunctionsBuildYourWorkout.php";
 // Getting the head.
 require __DIR__ .'/pages/head.html';
 // Getting the nav.

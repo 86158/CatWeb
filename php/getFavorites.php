@@ -1,4 +1,13 @@
 <?php
+// Gets the data from the `site_oefeningen` table that are part of the favorited of the current user and returns it as JSON
+if(
+	(isset($_SERVER['HTTP_ACCEPT']) && !preg_match('/(application\/(json|\*))|\*\/\*/', $_SERVER['HTTP_ACCEPT'])) ||
+	(isset($_SERVER['HTTP_ACCEPT_CHARSET']) && !preg_match('/utf-8/i', $_SERVER['HTTP_ACCEPT_CHARSET']))
+) {
+	header($_SERVER["SERVER_PROTOCOL"]." 406 Not Acceptable", true, 406);
+	echo '{"error":"Can only provide \'application/json; charset=UTF-8\'"}';
+	exit();
+}
 header("Content-Type: application/json");
 if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);

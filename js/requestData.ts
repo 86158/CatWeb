@@ -123,7 +123,7 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
  * Request the article to be added with data.
  * @param article Whether to get all exercises or only the favorites.
  */
-function getData(article: null|"all"|"fav"): JQuery.jqXHR<any> {
+function getData(article: null|"all"|"fav" = null): JQuery.jqXHR<any> {
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		async: true,
@@ -143,3 +143,6 @@ function getData(article: null|"all"|"fav"): JQuery.jqXHR<any> {
 	}
 	return $.ajax(settings);
 }
+window.addEventListener('load', function() {
+	getData();
+});
