@@ -1,6 +1,7 @@
 <?php
 // I need to find this in the options later.
-mysqli_report(MYSQLI_REPORT_ALL ^ MYSQLI_REPORT_STRICT);
+// Reporting throws an error while I want to handle said errors in the code.
+mysqli_report(MYSQLI_REPORT_OFF);
 /**
  * Wrapper for class mysqli.
  * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
