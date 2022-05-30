@@ -13,7 +13,7 @@
             <!-- Items -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img src="img/fitness1.jpg" class="d-block w-100" alt="...">
+                    <img src="img/fitness1.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Build Your Menu</h5>
                         <p>Als jij nog niet zo goed weet wat je allemaal moet doen om jouw doel te bereiken, dan kan je onze vragenlijst invullen en daarop gebasseerd wordt jouw workout uitgekozen!</p>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="img/fitness2.jpg" class="d-block w-100" alt="...">
+                    <img src="img/fitness2.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Schema</h5>
                         <p>Maak je eigen schema met je doelen die je wilt behalen!.</p>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img src="img/fitness3.jpg" class="d-block w-100" alt="...">
+                    <img src="img/fitness3.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Contact</h5>
                         <p>Heb je een probleem of wil je iets extra's weten wat niet in onze veelgestelde vragen staat, kunt u ons altijd bereiken via onze conatct pagina.</p>
