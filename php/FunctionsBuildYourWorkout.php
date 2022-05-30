@@ -4,7 +4,7 @@
         <section class="buildYourWorkout-Section">
             <div class="container">
                 <h1 class="text-center">Build Your Workout</h1>
-                <form>
+                <form action="" method="post">
                     <input type=hidden name="page" value="build">
                     <div class="row">
                         <div class="col-6">
@@ -133,5 +133,9 @@
             </div>
         </section>
         <?php
+    }
+
+    function GetExercises(){
+        
     }
 ?>
