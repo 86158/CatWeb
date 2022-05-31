@@ -124,14 +124,6 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		img.setAttribute("alt", "");
 		article.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
-<<<<<<< HEAD
-		if (page == 'schema')
-		  {
-				const btn = document.createElement('button');
-				btn.textContent = 'Voeg toe aan schema';
-				article.appendChild(btn);
-		  }
-=======
 		if(page == 'schema') {
 			const btn = document.createElement('button');
 			btn.textContent = 'Voeg toe aan schema';
@@ -166,7 +158,6 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 			);
 			article.appendChild(checkboxLabel);
 		}
->>>>>>> main
 		div.appendChild(article);
 		container.appendChild(div);
 	});
