@@ -1,6 +1,7 @@
 interface setFavorite {
-	user: number;
+	/** The ID of the oefening to favorite */
 	oefening: number;
+	/** Set to true to remove it instead of add a favorite.*/
 	remove: boolean;
 }
 /**
@@ -34,3 +35,15 @@ function setData(favorites: setFavorite[]): JQuery.jqXHR<any> {
 	};
 	return $.ajax(settings);
 }
+/* Example implementation
+var a = (document.getElementById('test') as HTMLButtonElement);
+a.addEventListener("click", function(this: HTMLButtonElement, _ev: MouseEvent) {
+	var b: setFavorite[] = [
+		{
+			oefening: Number(a.id),
+			remove: this.classList.contains("checked")
+		}
+	];
+	setData(b);
+});
+*/
