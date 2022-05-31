@@ -1,5 +1,6 @@
 <?php
-    function Questions(){
+    function Questions()
+    {
         ?>
         <section class="buildYourWorkout-Section">
             <div class="container">
@@ -135,7 +136,8 @@
         <?php
     }
 
-    function GetExercises(){
+    function GetExercises()
+    {
         
     }
 ?>
