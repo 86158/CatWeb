@@ -14,7 +14,6 @@
     }
     else
     {
-        // echo "I should only show this in the beginning.";
         Questions();
     }
 ?>

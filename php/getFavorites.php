@@ -29,7 +29,7 @@ $perm = null;
 // if(!isBlocked($_SERVER['REMOTE_ADDR']) {
 if(session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['ID'])) {
 	$perm = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
-} elseif (isset($_SERVER['PHP_AUTH_USER'])) {
+} elseif(isset($_SERVER['PHP_AUTH_USER'])) {
 	$perm = getPerms($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 }
 if(!is_int($perm)) {
@@ -77,7 +77,6 @@ for($i=0; $i < count($output); $i++) {
 	if($output[$i]['videos'] != null)
 		$output[$i]['videos'] = explode("\n", $output[$i]['videos']);
 }
-/** @var array<int,array<string,string|int|array|null>> $output */
 $output = json_encode($output);
 if($output == false) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
