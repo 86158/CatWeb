@@ -38,25 +38,25 @@
                     <p class="voordelen-text ">
                         <ul class="list-group">
                             <li class="d-flex flex-row">
-                                <i class="fa-regular fa-check $primary"></i>
+                                <i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i>                                
                                 <p>
                                     Het recht op toegang op het opslaan van je eigen gemaakte schema's       
                                 </p>
                             </li>
                             <li class="d-flex flex-row">
-                                <i class="fa-regular fa-check $primary"></i>
+                            <i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i>                                 
                                 <p>
                                     Je favoriete workouts toevoegen op je account
                                 </p>
                             </li>
                             <li class="d-flex flex-row">
-                                <i class="fa-regular fa-check $primary"></i>
+                                <i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i>                                 
                                 <p>
                                     Een weekoverzicht met het aantal calorieën en kilo's
                                 </p>
                             </li>
                             <li class="d-flex flex-row">
-                                <i class="fa-regular fa-check $primary"></i>
+                                <i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i> 
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni eos repellat 
                                 </p>
