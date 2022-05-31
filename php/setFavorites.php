@@ -62,19 +62,21 @@ try {
 	echo '{"error": "failed to get database connection", "trace": "'. $th->getTraceAsString() .'"}';
 	exit();
 }
-try {
-	/** @var array<int,array<string,bool|int>> $value */
-	foreach ($value as $instance) {
-		if($instance['remove']) {
-			DatbQuery_3($m_conn, 'DELETE FROM site_favorites WHERE ID_users = ? AND ID_oefeningen = ?', 'ii', $_SERVER['PHP_AUTH_USER'], $instance['oefening']);
-		} else {
-			DatbQuery_3($m_conn, 'REPLACE INTO site_favorites(ID_users,ID_oefeningen) VALUE (?, ?)', 'ii', $_SERVER['PHP_AUTH_USER'], $instance['oefening']);
-		}
+$error = null;
+/** @var array<int,array<string,bool|int>> $value */
+foreach($value as $instance) {
+	if($instance['remove']) {
+		$error = DatbQuery_3($m_conn, 'DELETE FROM site_favorites WHERE ID_users = ? AND ID_oefeningen = ?', 'ii', $_SERVER['PHP_AUTH_USER'], $instance['oefening']);
+	} else {
+		$error = DatbQuery_3($m_conn, 'REPLACE INTO site_favorites(ID_users,ID_oefeningen) VALUE (?, ?)', 'ii', $_SERVER['PHP_AUTH_USER'], $instance['oefening']);
 	}
-} catch (ValueError $th) {
-	header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
-	echo '{"error":"JSON was not of the expected schema"}';
-	exit();
-} 
+	if(is_string($error)) {
+		$m_conn->close();
+		header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
+		echo '{"error":"JSON was not of the expected schema", "trace": "'. var_export($error, true) .'"}';
+		exit();
+	}
+}
+$m_conn->close();
 header($_SERVER["SERVER_PROTOCOL"]." 200 OK", true, 200);
 exit();
