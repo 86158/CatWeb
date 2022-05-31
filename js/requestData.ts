@@ -130,32 +130,33 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 			article.appendChild(btn);
 		}
 		if(element.favorite != undefined) {
-			const imageCheckbox = document.createElement('img');
-			imageCheckbox.id = element.ID.toString();
-			imageCheckbox.src = "./assets/star.svg";
-			imageCheckbox.setAttribute("role", "checkbox");
-			imageCheckbox.setAttribute("aria-checked", (element.favorite)? "true": "false");
-			imageCheckbox.style.fill = (element.favorite)? "yellow" : "none";
-			imageCheckbox.addEventListener('click',
-				function(this: HTMLImageElement, _ev: MouseEvent): void {
-					if(this.style.fill == "yellow") {
-						this.style.fill = "none";
-						this.setAttribute("aria-checked", "false");
-						setData([{
-							oefening: Number(this.id),
-							remove: true
-						}]);
-					} else {
-						this.style.fill = "yellow";
-						this.setAttribute("aria-checked", "true");
-						setData([{
-							oefening: Number(this.id),
-							remove: false
-						}]);
-					}
+			const checkboxLabel = document.createElement('label');
+			checkboxLabel.innerHTML = `<label><svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox"/></label>`;
+			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
+			checkboxInput.style.fill = (element.favorite)? "yellow" : "none";
+			checkboxInput.checked = element.favorite;
+			checkboxInput.id = element.ID.toString();
+			checkboxInput.addEventListener('input',
+				function(this: HTMLInputElement, ev: Event): void {
+					ev.preventDefault();
+					this.disabled = true;
+					const checked = (this.style.fill == "yellow");
+					var waiter = setData([{
+						oefening: Number(this.id),
+						remove: checked
+					}]);
+					waiter.done(() => {
+						this.checked = !checked;
+						this.style.fill = (checked)? "none": "yellow";
+						this.disabled = false;
+					});
+					waiter.fail(() => {
+						console.warn("Failed to update favorite status");
+						this.disabled = false;
+					});
 				}
 			);
-			article.appendChild(imageCheckbox);
+			article.appendChild(checkboxLabel);
 		}
 		div.appendChild(article);
 		container.appendChild(div);
