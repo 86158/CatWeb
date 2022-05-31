@@ -18,6 +18,8 @@ interface site_oefeningen {
 	images: Array<string>|null;
 	/** Videos */
 	videos: Array<string>|null;
+	/** If logged in shows whether the item is marked as a favorite */
+	favorite?: boolean;
 }
 /**
  * A function to be called if the request fails.
@@ -122,38 +124,57 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		img.setAttribute("alt", "");
 		article.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
-		if (page == 'schema')
-        {
-            const btn = document.createElement('button');
+		if(page == 'schema') {
+			const btn = document.createElement('button');
 			btn.textContent = 'Voeg toe aan schema';
-            article.appendChild(btn);
-        }
+			article.appendChild(btn);
+		}
+		if(element.favorite != undefined) {
+			const imageCheckbox = document.createElement('img');
+			imageCheckbox.id = element.ID.toString();
+			imageCheckbox.src = "./assets/star.svg";
+			imageCheckbox.setAttribute("role", "checkbox");
+			imageCheckbox.setAttribute("aria-checked", (element.favorite)? "true": "false");
+			imageCheckbox.style.fill = (element.favorite)? "yellow" : "none";
+			imageCheckbox.addEventListener('click',
+				function(this: HTMLImageElement, _ev: MouseEvent): void {
+					if(this.style.fill == "yellow") {
+						this.style.fill = "none";
+						this.setAttribute("aria-checked", "false");
+						setData([{
+							oefening: Number(this.id),
+							remove: true
+						}]);
+					} else {
+						this.style.fill = "yellow";
+						this.setAttribute("aria-checked", "true");
+						setData([{
+							oefening: Number(this.id),
+							remove: false
+						}]);
+					}
+				}
+			);
+			article.appendChild(imageCheckbox);
+		}
 		div.appendChild(article);
 		container.appendChild(div);
 	});
 }
 /**
  * Request the article to be added with data.
- * @param article Whether to get all exercises or only the favorites.
  */
-function getData(article: null|"all"|"fav" = null): JQuery.jqXHR<any> {
+function getData(): JQuery.jqXHR<any> {
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		async: true,
 		cache: true,
 		dataType: "json",
 		method: "GET",
+		url: "./php/getOefeningen.php",
 		success: successHandling,
 		error: errorHandling
 	};
-	switch(article) {
-		case "fav":
-			settings.url = "./php/getFavorites.php"; // Check what url to use
-			break;
-		default:
-			settings.url = "./php/getOefeningen.php"; // Check what url to use
-			break;
-	}
 	return $.ajax(settings);
 }
 window.addEventListener('load', function() {
