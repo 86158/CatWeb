@@ -18,6 +18,8 @@ interface site_oefeningen {
 	images: Array<string>|null;
 	/** Videos */
 	videos: Array<string>|null;
+	/** If logged in shows whether the item is marked as a favorite */
+	favorite?: boolean;
 }
 /**
  * A function to be called if the request fails.
@@ -122,38 +124,58 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		img.setAttribute("alt", "");
 		article.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
-		if (page == 'schema')
-        {
-            const btn = document.createElement('button');
+		if(page == 'schema') {
+			const btn = document.createElement('button');
 			btn.textContent = 'Voeg toe aan schema';
-            article.appendChild(btn);
-        }
+			article.appendChild(btn);
+		}
+		if(element.favorite != undefined) {
+			const checkboxLabel = document.createElement('label');
+			checkboxLabel.innerHTML = `<label><svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox"/></label>`;
+			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
+			checkboxInput.style.fill = (element.favorite)? "yellow" : "none";
+			checkboxInput.checked = element.favorite;
+			checkboxInput.id = element.ID.toString();
+			checkboxInput.addEventListener('input',
+				function(this: HTMLInputElement, ev: Event): void {
+					ev.preventDefault();
+					this.disabled = true;
+					const checked = (this.style.fill == "yellow");
+					var waiter = setData([{
+						oefening: Number(this.id),
+						remove: checked
+					}]);
+					waiter.done(() => {
+						this.checked = !checked;
+						this.style.fill = (checked)? "none": "yellow";
+						this.disabled = false;
+					});
+					waiter.fail(() => {
+						console.warn("Failed to update favorite status");
+						this.disabled = false;
+					});
+				}
+			);
+			article.appendChild(checkboxLabel);
+		}
 		div.appendChild(article);
 		container.appendChild(div);
 	});
 }
 /**
  * Request the article to be added with data.
- * @param article Whether to get all exercises or only the favorites.
  */
-function getData(article: null|"all"|"fav" = null): JQuery.jqXHR<any> {
+function getData(): JQuery.jqXHR<any> {
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		async: true,
 		cache: true,
 		dataType: "json",
 		method: "GET",
+		url: "./php/getOefeningen.php",
 		success: successHandling,
 		error: errorHandling
 	};
-	switch(article) {
-		case "fav":
-			settings.url = "./php/getFavorites.php"; // Check what url to use
-			break;
-		default:
-			settings.url = "./php/getOefeningen.php"; // Check what url to use
-			break;
-	}
 	return $.ajax(settings);
 }
 window.addEventListener('load', function() {
