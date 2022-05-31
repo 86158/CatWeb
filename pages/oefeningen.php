@@ -14,7 +14,7 @@
 	</fieldset><fieldset>
 		<legend>Actions:</legend>
 		<input type=reset value=Resetten onclick=handleFilter(event);>
-		<button type=button onclick=handleFilter(event);>Indienen</button>
+		<button type=button onclick=handleFilter(event)>Indienen</button>
 	</fieldset>
 </form>
 <section id="js-oefeningen"></section>
