@@ -123,11 +123,11 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		article.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
 		if (page == 'schema')
-        {
-            const btn = document.createElement('button');
-			btn.textContent = 'Voeg toe aan schema';
-            article.appendChild(btn);
-        }
+		  {
+				const btn = document.createElement('button');
+				btn.textContent = 'Voeg toe aan schema';
+				article.appendChild(btn);
+		  }
 		div.appendChild(article);
 		container.appendChild(div);
 	});
