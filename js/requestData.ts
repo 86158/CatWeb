@@ -50,6 +50,12 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		errorHandling(jqXHR, "parsererror");
 		return;
 	}
+	//get parameter from the URL of the page
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const page = urlParams.get('page')
+	console.log(page);
+		
 	const container = document.getElementById("js-oefeningen");
 	if(container == null) return;
 	// Clear placeholders
@@ -115,6 +121,13 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
+		// adds a button to allow oefening to be added to schema.
+		if (page == 'schema')
+        {
+            const btn = document.createElement('button');
+			btn.textContent = 'Voeg toe aan schema';
+            article.appendChild(btn);
+        }
 		div.appendChild(article);
 		container.appendChild(div);
 	});
