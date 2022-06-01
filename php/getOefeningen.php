@@ -15,6 +15,7 @@ if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
 	exit();
 }
 require_once __DIR__ .'/credentialFunctions.php';
+<<<<<<< Updated upstream
 $perm = null;
 if(session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['ID'])) {
 	$perm = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
@@ -57,6 +58,23 @@ if(!is_int($perm)) {
 		'i', $_SERVER['PHP_AUTH_USER']
 	);
 }
+=======
+$result = DatbQuery(
+	"SELECT
+		o.*,
+		GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
+		GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos
+	FROM site_oefeningen o
+	LEFT JOIN (
+		site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
+	) ON ml.oefeningenID = o.ID
+	LEFT JOIN (
+		site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
+	) ON tl.oefeningenID = o.ID
+	GROUP BY o.ID
+	ORDER BY o.ID ASC;"
+);
+>>>>>>> Stashed changes
 if(!($result instanceof mysqli_result)) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
 	echo (is_string($result))?
