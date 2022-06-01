@@ -11121,6 +11121,24 @@ textarea.form-control-lg {
 body {
   height: 100%;
 }
+body .schema-section,
+body .workout-section,
+body .contact-section,
+body .oefening-section,
+body .homepage-section,
+body .overons-section,
+body .buildYourWorkout-Section {
+  animation: fadeInAnimation 3s;
+  animation-iteration-count: 1;
+}
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 .container {
   padding-top: 40px;
@@ -11223,9 +11241,34 @@ hr {
   top: 0;
   left: 0;
   min-height: 755px;
+  background-color: 0.5 #000000 !important;
 }
 .homepage-section .container-fluid .carousel-inner .carousel-item .carousel-caption {
-  height: 50%;
+  height: 60%;
+  animation: fadeIn 5s;
+}
+.homepage-section .container-fluid .carousel-inner .carousel-item .carousel-caption button {
+  width: 200px;
+  height: 50px;
+  color: #ffffff;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+  20% {
+    opacity: 0.5;
+    transform: translateY(0%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
 }
 
 .footer-section {

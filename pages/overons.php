@@ -1,5 +1,6 @@
 <section class="overons-section">
 	<div class="container">
+		<!-- Heading of the page -->
 		<div class="row justify-content-between">
 			<div class="text col-6">
 				<h1>Over Ons</h1>
@@ -7,12 +8,14 @@
 					Welkom op onze Website, een fitnesswebsite waarmee<br>
 					je je eigen workouts kan maken en bekijken.
 				</p>
+				<!-- Explanation of what the website actually is -->
 				<p>
 					Wij zijn CatWeb, wij zijn een groep uit klas IC.20SD.a op het ROC Ter AA in Helmond.
 					Dit is een proftaakopdracht van leerjaar 2, waarmee wij alles mochten verzinnen om te maken.
 					Wij hopen dat u een goede ervaring heeft op onze eigen gemaakte website!
 				</p>
 			</div>
+			<!-- Image -->
 			<div class="image w-30 col-5 mt-2 mb-3">
 				<img src="img/overons.jpg" class="img-fluid" alt="Group_foto">
 			</div>
@@ -21,6 +24,7 @@
 			<div class="col-2">
 			</div>
 			<div class="col-8">
+				<!-- Text -->
 				<div class="text-fit text-center mt-5">
 					<p class="heading-1 fw-bold">
 						Lekker fit!
@@ -31,6 +35,7 @@
 					</p>
 				</div>
 				<br>
+				<!-- Text about the benefits of the website -->
 				<div class="voordelen">
 					<p class="voordelen-heading fw-bold mt-4">
 						Leden van CatWeb profiteren van:
@@ -55,17 +60,9 @@
 									Een weekoverzicht met het aantal calorieën en kilo's
 								</p>
 							</li>
-							<li class="d-flex flex-row">
-								<i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i> 
-								<p>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam magni eos repellat
-								</p>
-							</li>
 						</ul>
 					</p>
 				</div>
-			</div>
-			<div class="col-2">
 			</div>
 		</div>
 	</div>
