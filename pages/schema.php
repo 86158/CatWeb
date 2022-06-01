@@ -1,4 +1,4 @@
-<section id="js-oefeningen"></section>
+<section id="js-oefeningen" class="schema-section"></section>
 <div class="container">
 	<div class="row">
 	<script src="js/requestData.js"></script>

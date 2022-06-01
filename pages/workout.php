@@ -1,3 +1,4 @@
+<section class="workout-section">
 <div class="col-4">
 	<h5>Vooraf gemaakte workouts</h5>
 	<hr/>
@@ -64,4 +65,5 @@
 		</div>
 	</div>
 </div>
+</section>
 <script src="js/presetWorkout.js"></script>
