@@ -13,7 +13,6 @@
             <!-- Items -->
             <div class="carousel-inner">
                 <div class="carousel-item active">
-<<<<<<< Updated upstream
                     <img src="img/fitness1.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Build Your Menu</h5>
@@ -35,26 +34,6 @@
                         <h5>Contact</h5>
                         <p>Heb je een probleem of wil je iets extra's weten wat niet in onze veelgestelde vragen staat, kunt u ons altijd bereiken via onze conatct pagina.</p>
                         <a href="?page=contact"><button class="btn btn-primary">Contact</button></a>
-=======
-                    <img src="img/fitness1.jpg" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Build Your Menu</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, exercitationem debitis expedita adipisci odit laborum.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="img/fitness2.jpg" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Second slide label</h5>
-                        <p>Some representative placeholder content for the second slide.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="img/fitness3.jpg" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>Third slide label</h5>
-                        <p>Some representative placeholder content for the third slide.</p>
->>>>>>> Stashed changes
                     </div>
                 </div>
             </div>

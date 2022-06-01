@@ -1,6 +1,7 @@
 <section class="contact-section">
     <div class="container">
-        <h1 class="text-center mb-2">Contact</h1>
+        <h1 class="text-center">Contact</h1>
+        <p class="text-center pb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, quasi!</p>
         <div class="row justify-content-between">
             <div class="col-6">
                 <h5>Formulier</h5>
