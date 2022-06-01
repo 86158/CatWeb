@@ -67,13 +67,15 @@ if(!($result instanceof mysqli_result)) {
 /** @var array<int,array<string,string|int|null>> $output */
 $output = $result->fetch_all(MYSQLI_ASSOC);
 $result->close();
-for($i=0; $i < count($output); $i++) { 
+/** @var array<int,array<string,string|int|string[]|null|bool>> $output */
+for($i=0; $i < count($output); $i++) {
 	if($output[$i]['images'] != null)
 		$output[$i]['images'] = explode("\n", $output[$i]['images']);
 	if($output[$i]['videos'] != null)
 		$output[$i]['videos'] = explode("\n", $output[$i]['videos']);
+	if(isset($output[$i]['favorite']))
+		$output[$i]['favorite'] = boolval($output[$i]['favorite']);
 }
-/** @var array<int,array<string,string|int|array|null>> $output */
 $output = json_encode($output);
 if($output == false) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
