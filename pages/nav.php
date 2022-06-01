@@ -33,31 +33,34 @@
 						<button type="button" class="btn-close position-end" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-					<main class="login-section">
-						<form class="form" method=POST class=login>
-							<input type=hidden name=formID value=login>
-							<h2 class="text-center mt-5">Log In</h2>
-							<br><br>
-							<fieldset class="fieldset-signup" hidden>
-								<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
-								<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=nameFirst maxlength=60></label>
-								<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=nameLast maxlength=60></label>
-							</fieldset>
-							<fieldset class="login-form align-middle" style=grid-row:1>
-								<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=username name=Username required></label>
-								<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
-							</fieldset>
-							<fieldset class="fieldset-signup" hidden>
-								<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
-								<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=confirm-password name=confirmPassword maxlength=60></label>
-							</fieldset>
-							<div class="buttons d-flex flex-column mt-3">
-								<input class="btn btn-primary" type=submit value="Login"></input>
-								<!-- The value of onclick is from `js/loginNewUser` it switches the formtype from login to create new user and back. -->
-								<button class="button-below mt-3 mb-3" id=newUserButton>Heeft u nog geen account?</button> 
+						<main class="login-section">
+							<form class="form" method=POST class=login>
+								<input type=hidden name=formID value=login>
+								<h2 class="text-center mt-5">Log In</h2>
+								<br><br>
+								<fieldset class="fieldset-signup" hidden>
+									<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
+									<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=nameFirst maxlength=60></label>
+									<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=nameLast maxlength=60></label>
+								</fieldset>
+								<fieldset class="login-form align-middle" style=grid-row:1>
+									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=username name=Username required></label>
+									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
+								</fieldset>
+								<fieldset class="fieldset-signup" hidden>
+									<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
+									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=confirm-password name=confirmPassword maxlength=60></label>
+								</fieldset>
+								<div class="buttons d-flex flex-column mt-3">
+									<input class="btn btn-primary" type=submit value="Login"></input>
+									<!-- The value of onclick is from `js/loginNewUser` it switches the formtype from login to create new user and back. -->
+									<button class="button-below mt-3 mb-3" id=newUserButton>Heeft u nog geen account?</button> 
+								</div>
+							</form>
+							<div hidden>
+								<script src="js/loginNewUser.js"></script>
 							</div>
-						</form>
-					</main>
+						</main>
 					</div>
 				</div>
 			</div>
