@@ -56,7 +56,6 @@ function nextHandling(data: JSON|site_oefeningen[], _textStatus: string|null, jq
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const page = urlParams.get('page')
-	console.log(page);
 		
 	const container = document.getElementById("js-oefeningen");
 	if(container == null) return;
