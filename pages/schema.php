@@ -5,4 +5,3 @@
 	<script src="js/tableFunctions.js"></script>
 	</div>
 </div>
-</body>

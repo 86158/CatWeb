@@ -1,4 +1,4 @@
-<body>
+<section class="oefening-section">
 <form id="js-filters" aria-label="Filters">
 	<fieldset id=Search>
 		<legend>Zoeken:</legend>
@@ -24,4 +24,4 @@
 	<script src="js/tableFunctions.js"></script>
 	</div>
 </div>
-</body>
+</section>

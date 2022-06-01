@@ -15,24 +15,24 @@
                 <div class="carousel-item active">
                     <img src="img/fitness1.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Build Your Menu</h5>
-                        <p>Als jij nog niet zo goed weet wat je allemaal moet doen om jouw doel te bereiken, dan kan je onze vragenlijst invullen en daarop gebasseerd wordt jouw workout uitgekozen!</p>
+                        <h1 class="mb-2">Build Your Workout</h1>
+                        <p class="h4 mb-5">Als jij nog niet zo goed weet wat je allemaal moet doen om jouw doel te bereiken, dan kan je onze vragenlijst invullen en daarop gebasseerd wordt jouw workout uitgekozen!</p>
                         <a href="?page=build"><button class="btn btn-primary">Build Your Workout</button></a>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="img/fitness2.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Schema</h5>
-                        <p>Maak je eigen schema met je doelen die je wilt behalen!.</p>
+                        <h1 class="mb-2">Schema</h1>
+                        <p class="h4 mb-5">Maak je eigen schema met je doelen die je wilt behalen!.</p>
                         <a href="?page=schema"><button class="btn btn-primary">Schema</button></a>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img src="img/fitness3.jpg" class="d-block w-100" alt="">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Contact</h5>
-                        <p>Heb je een probleem of wil je iets extra's weten wat niet in onze veelgestelde vragen staat, kunt u ons altijd bereiken via onze conatct pagina.</p>
+                        <h1 class="mb-2">Contact</h1>
+                        <p class="h4 mb-5">Heb je een probleem of wil je iets extra's weten wat niet in onze veelgestelde vragen staat, kunt u ons altijd bereiken via onze conatct pagina.</p>
                         <a href="?page=contact"><button class="btn btn-primary">Contact</button></a>
                     </div>
                 </div>
