@@ -35,7 +35,7 @@ interface site_oefeningen {
  * Note: This handler is not called for cross-domain script and cross-domain JSONP requests.
  * This is an Ajax Event.
  */
-function errorHandling(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|"parsererror"|null, errorThrown?: string) {
+function errorMessage(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|"parsererror"|null, errorThrown?: string) {
 	console.error(textStatus);
 	if(errorThrown)
 		console.error(errorThrown);
@@ -47,9 +47,9 @@ function errorHandling(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abor
  ** if specified; a string describing the status;
  ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.
  */
-function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null, jqXHR: JQuery.jqXHR) {
+function nextHandling(data: JSON|site_oefeningen[], _textStatus: string|null, jqXHR: JQuery.jqXHR) {
 	if(!(data instanceof Array)) {
-		errorHandling(jqXHR, "parsererror");
+		errorMessage(jqXHR, "parsererror");
 		return;
 	}
 	//get parameter from the URL of the page
@@ -165,7 +165,7 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 /**
  * Request the article to be added with data.
  */
-function getData(): JQuery.jqXHR<any> {
+function GetExercises(): JQuery.jqXHR<any> {
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		async: true,
@@ -173,11 +173,11 @@ function getData(): JQuery.jqXHR<any> {
 		dataType: "json",
 		method: "GET",
 		url: "./php/getOefeningen.php",
-		success: successHandling,
-		error: errorHandling
+		success: nextHandling,
+		error: errorMessage
 	};
 	return $.ajax(settings);
 }
 window.addEventListener('load', function() {
-	getData();
+	GetExercises();
 });
