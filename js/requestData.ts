@@ -55,9 +55,8 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 	//get parameter from the URL of the page
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
-	const page = urlParams.get('page')
-	console.log(page);
-		
+	const page = urlParams.get('page');
+	console.log(page); // DEBUG
 	const container = document.getElementById("js-oefeningen");
 	if(container == null) return;
 	// Clear placeholders
@@ -151,7 +150,7 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 						this.disabled = false;
 					});
 					waiter.fail(() => {
-						console.warn("Failed to update favorite status");
+						console.error("Failed to update favorite status");
 						this.disabled = false;
 					});
 				}
