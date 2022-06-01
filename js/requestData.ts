@@ -18,11 +18,8 @@ interface site_oefeningen {
 	images: Array<string>|null;
 	/** Videos */
 	videos: Array<string>|null;
-<<<<<<< Updated upstream
 	/** If logged in shows whether the item is marked as a favorite */
 	favorite?: boolean;
-=======
->>>>>>> Stashed changes
 }
 /**
  * A function to be called if the request fails.
