@@ -107,7 +107,8 @@ function DatbQuery_3(mysqli &$conn = null, string $query, string $types = '', ..
 	return $m_result;
 }
 /** Check the user credentials en permissions.
- * @param int|string $username If using a token use an `int` else it should be the email of the user as a `string`.
+ * @param int|string $username If using a token use an `int` else it should be the email or username of the user as a `string`.
+ * Usernames should not contain a `@` character.
  * @param string $pwd Password or token to be validated.
  * @return int|string Int representing permission level or a String containing an error message.
 */
@@ -116,12 +117,17 @@ function getPerms($username, string $pwd) {
 	$m_iv = "0000000000000069";
 	// Autentication with password
 	if(is_string($username)) {
+		$isMail = strpos($username, "@") != FALSE;
 		// Get `pwd` to verify the given password with. `ID` so we know what user we have and `perms` for their permission level.
-		$m_result = DatbQuery('SELECT `ID`, `pwd`, `perms` FROM `site_users` WHERE `email`=?', 's', $username);
+		if($isMail) {
+			$m_result = DatbQuery('SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `email`=?', 's', $username);
+		} else {
+			$m_result = DatbQuery('SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `username`=?', 's', $username);
+		}
 		if(!is_object($m_result))
 			return 'Database request failed at SELECT `pwd`';
 		$m_result = $m_result->fetch_assoc();
-		if(!is_array($m_result) || !password_verify(($pwd . $username), $m_result['pwd']))
+		if(!is_array($m_result) || !password_verify(($pwd . $m_result['email']), $m_result['pwd']))
 			return 'Incorrecte gebruikersnaam, wachtwoord combination.';
 		$permLevel = $m_result['perms'];
 		// Create a login token as we should not store the password in the session.
@@ -160,13 +166,13 @@ function getPerms($username, string $pwd) {
  * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
  * @return array<int,string>|null [encrypted_userKey, userKey]
  */
-function createPass(string $username, string $pwd, ?string $pwd_old = null, ?string $encryptedKey_old = null): ?array {
+function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string $encryptedKey_old = null): ?array {
 	$m_iv = "0000000000000069";
 	// Derive old password key from old password and new password key from new password.
 	/** @var ?string $m_pwdkey_old Old Encryption Key*/
-	$m_pwdKey_old = openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $pwd_old, 0, $m_iv);
+	$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_old, 0, $m_iv);
 	/** @var ?string $m_pwdkey_new New Key Encryption Key*/
-	$m_pwdkey_new = openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+	$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 	// Decrypt user-key using old key
 	/** @var ?string $m_userKey Data Encryption Key*/
 	$m_userKey = (isset($a_oldEncryptedkey))? openssl_decrypt($encryptedKey_old, 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv) : random_bytes(60);
@@ -241,10 +247,11 @@ function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms
  * Create a new account with encrypted personal details.
  * @return null|string null on success. Error message on failure.
 */
-function createAccount(string $email, string $pwd, ?string $username, ?int $perms = null): ?string {
+function createAccount(string $email, string $pwd, ?string $username = null, ?int $perms = null): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
-	$m_iv = "0000000000000069";
+	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
+	// $m_iv = "0000000000000069";
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt';
 	$m_vars = [
@@ -252,7 +259,8 @@ function createAccount(string $email, string $pwd, ?string $username, ?int $perm
 		password_hash($pwd . $email, '2y'),	// Hash to verify if the password is correct.
 		$m_pass[0],	// encrypted_userKey
 		// Data encrypted with userKey
-		($username)?	openssl_encrypt($username,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
+		// ($username)?	openssl_encrypt($username,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
+		$username, // Because username is used to login it's no longer encrypted
 		$perms
 	];
 	if(array_search(false, $m_vars) !== false) return 'Encryptie mislukt';
