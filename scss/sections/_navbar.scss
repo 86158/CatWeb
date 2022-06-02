@@ -42,6 +42,10 @@
                         display: flex;
                         flex-direction: column;
                         flex-wrap: wrap;
+
+                        .username {
+                            color: $primary;
+                        }
             
                         .email {
                             color: $primary;
@@ -91,6 +95,8 @@
                         .btn {
                             width: 35%;
                             height: 45px;
+                            background-color: $primary;
+                            color: $white;
             
                             &:hover {
                                 background-color: $primary-dark;

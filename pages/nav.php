@@ -37,13 +37,12 @@
 						<main class="login-section">
 							<form class="form" method=POST class=login>
 								<input type=hidden name=formID value=login>
-								<h2 class="text-center mt-5">Log In</h2>
 								<br><br>
 								<fieldset class="fieldset-signup" hidden>
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle" style=grid-row:1>
-									<label class="fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username maxlength=60 required></label>
+									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username maxlength=60 required></label>
 									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
 								</fieldset>
 								<fieldset class="fieldset-signup" hidden>
