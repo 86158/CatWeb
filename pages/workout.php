@@ -10,7 +10,7 @@
 			</button>
 			</h2>
 			<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-				<div class="accordion-body"><article class="test"></article></div>
+				<div class="accordion-body"><article id="test1"></article></div>
 			</div>
 		</div>
 		<div class="accordion-item">
@@ -20,7 +20,7 @@
 			</button>
 			</h2>
 			<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-			<div class="accordion-body"><article class="test"></article></div>
+			<div class="accordion-body"><article id="test2"></article></div>
 			</div>
 		</div>
 		<div class="accordion-item">
@@ -30,7 +30,7 @@
 			</button>
 			</h2>
 			<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-			<div class="accordion-body"><article class="test"></article></div>
+			<div class="accordion-body"><article id="test3"></article></div>
 			</div>
 		</div>
 		<div class="accordion-item">
@@ -40,7 +40,7 @@
 			</button>
 			</h2>
 			<div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-				<div class="accordion-body"><article class="test"></article></div>
+				<div class="accordion-body"><article id="test4"></article></div>
 			</div>
 		</div>
 		<div class="accordion-item">
@@ -50,7 +50,7 @@
 			</button>
 			</h2>
 			<div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-			<div class="accordion-body"><article class="test"></article></div>
+			<div class="accordion-body"><article id="test6"></article></div>
 			</div>
 		</div>
 		<div class="accordion-item">
@@ -60,7 +60,7 @@
 			</button>
 			</h2>
 			<div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-			<div class="accordion-body"><article class="test"></article></div>
+			<div class="accordion-body"><article id="test5"></article></div>
 			</div>
 		</div>
 	</div>

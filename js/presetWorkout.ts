@@ -56,8 +56,10 @@ function nextHandling(data: JSON|site_oefeningen[], _textStatus: string|null, jq
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const page = urlParams.get('page')
-		
-	const container = document.getElementById("js-oefeningen");
+	var i = 0;
+	while(i<6){
+	const idSpecificArticle= "test" + i;
+	const container = document.getElementById(idSpecificArticle);
 	if(container == null) return;
 	// Clear placeholders
 	container.innerHTML = "";
@@ -160,6 +162,8 @@ function nextHandling(data: JSON|site_oefeningen[], _textStatus: string|null, jq
 		div.appendChild(article);
 		container.appendChild(div);
 	});
+	i++;
+}
 }
 /**
  * Request the article to be added with data.
