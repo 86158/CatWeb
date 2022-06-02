@@ -1,23 +1,22 @@
 /** For switching login form from login mode to new user mode and back.*/
 function main() {
-	function checkPwdConform(this: HTMLInputElement, _ev: MouseEvent): boolean {
-		/** The field the password is filled at.*/
-		const pwdField = document.querySelector<HTMLInputElement>('main>form.login fieldset input[name=Password]');
-		/** The field used to comform the password was filled correctly.*/
-		const pwdConformField = document.querySelector<HTMLInputElement>('main>form.login fieldset input[name=confirmPassword]');
-		if(pwdField == null || pwdConformField == null) {
-			console.error("Required field deleted.");
-			return false;
-		}
-		return pwdConformField.value == pwdField.value;
-	}
 	/** The button to switch the modes of the form.*/
 	const button = document.getElementById('newUserButton') as HTMLButtonElement;
 	if(!(button instanceof HTMLButtonElement)) {console.error("button#newUserButton not found"); return;}
+	function checkPwdConform(this: HTMLInputElement, _ev: Event): void {
+		/** The field used to comform the password was filled correctly.*/
+		const pwdConformField = document.querySelector<HTMLInputElement>('main>form.login fieldset input[name=confirmPassword]');
+		if(pwdConformField == null) {
+			console.error("Required field deleted.");
+			return;
+		}
+		// Replace the special characters in the pwd field and use it to test if the pwdConformField matches.
+		pwdConformField.pattern = '^' + this.value.replace(/[^\w]/g, '\\$&') + '$';
+	}
 	button.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {
 		/** The hidden input is for informing the php what the form is for.*/
 		const formType = document.querySelector<HTMLInputElement>('main>form.login input[type=hidden]');
-		const h2 = document.querySelector<HTMLHeadingElement>('main>form h2');
+		const h3 = document.querySelector<HTMLHeadingElement>('div.modal-header>h3');
 		/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
 		const fieldset1 = document.querySelector<HTMLFieldSetElement>('main>form.login>fieldset:nth-of-type(1)');
 		/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
@@ -34,7 +33,7 @@ function main() {
 		const btnChange = document.querySelector<HTMLInputElement>('main>form.login>div input[type=submit]');
 		// ensure the items where correctly selected.
 		if(!(formType instanceof HTMLInputElement)) {console.log("formType not found"); return;}
-		if(!(h2 instanceof HTMLHeadingElement)) {console.log('h2 not found'); return;}
+		if(!(h3 instanceof HTMLHeadingElement)) {console.log('h3 not found'); return;}
 		if(!(fieldset1 instanceof HTMLFieldSetElement)) {console.log("fieldset1 not found"); return;}
 		if(!(fieldset3 instanceof HTMLFieldSetElement)) {console.log("fieldset3 not found"); return;}
 		if(!(usernameField instanceof HTMLInputElement)) {console.log('usernameField not found'); return;}
@@ -46,23 +45,25 @@ function main() {
 		if(fieldset1.hidden) {
 			fieldset1.hidden = fieldset3.hidden = false;
 			emailField.required = pwdConformField.required = true;
-			usernameField.pattern = '^[^@]+$';
+			usernameField.pattern = '^[\w]+$';
+			usernameField.title = 'Usernames may only contain word characters.\nA word character is a character a-z, A-Z, 0-9, including _ (underscore).';
 			formType.value = 'newUser';
 			this.innerText = 'Heeft u al een account?';
 			pwdField.autocomplete = 'new-password';
 			btnChange.value = 'Account Aanmaken';
-			btnChange.addEventListener('click', checkPwdConform);
-			h2.innerText = 'Account Aanmaken';
+			pwdField.addEventListener('input', checkPwdConform);
+			h3.innerText = 'Account Aanmaken';
 		} else {
 			fieldset1.hidden = fieldset3.hidden = true;
 			emailField.required = pwdConformField.required = false;
 			usernameField.pattern = '';
+			usernameField.title = '';
 			formType.value = 'login';
 			this.innerText = 'Heeft u nog geen account?';
 			pwdField.autocomplete = 'current-password';
 			btnChange.value = 'Inloggen';
-			btnChange.removeEventListener('click', checkPwdConform);
-			h2.innerText = 'Log In';
+			pwdField.removeEventListener('input', checkPwdConform);
+			h3.innerText = 'Log In';
 		}
 	});
 }

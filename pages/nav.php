@@ -35,7 +35,7 @@
 					</div>
 					<div class="modal-body">
 						<main class="login-section">
-							<form class="form" method=POST class=login>
+							<form class="form login" method=POST>
 								<input type=hidden name=formID value=login>
 								<br><br>
 								<fieldset class="fieldset-signup" hidden>

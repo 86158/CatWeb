@@ -250,7 +250,7 @@ function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms
 function createAccount(string $email, string $pwd, ?string $username = null, ?int $perms = null): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
-	if($username != null && !preg_match('/^[^@]+$/', $username)) return 'Incorrect username format';
+	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
 	// $m_iv = "0000000000000069";
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt';
