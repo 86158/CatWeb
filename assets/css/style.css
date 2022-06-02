@@ -11271,6 +11271,10 @@ hr {
   }
 }
 
+.schema-section .col-12 {
+  height: 200px;
+}
+
 .footer-section {
   width: 100%;
   position: fixed;
