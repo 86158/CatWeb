@@ -20,7 +20,7 @@
 					<!-- Change the content based on whether the user is logged in or not. -->
 					<?php echo (isset($_SESSION['ID']))?
 						'<a href="?logout=logout">Logout</a>':
-						'<a role="button" class="btn me-5 text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a>';
+						'<button type="button" class="btn me-5 text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>';
 					?>
 				</form>
 			</div>
