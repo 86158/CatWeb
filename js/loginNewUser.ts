@@ -2,7 +2,7 @@
 
 /** The button to switch the modes of the form.*/
 const button = document.getElementById('newUserButton') as HTMLButtonElement;
-button.addEventListener('click', () => {
+button.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {
 	/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
 	const fieldset1 = document.querySelector<HTMLFieldSetElement>('main>form>fieldset:nth-of-type(1)');
 	/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
@@ -25,14 +25,14 @@ button.addEventListener('click', () => {
 	if(fieldset1.hidden) {
 		fieldset1.hidden = fieldset3.hidden = false;
 		formType.value = 'newUser';
-		button.innerText = 'Heeft u al een account?';
+		this.innerText = 'Heeft u al een account?';
 		pwdField.autocomplete = 'new-password';
 		btnChange.value = 'Account Aanmaken';
 		h2.innerText = 'Account Aanmaken';
 	} else {
 		fieldset1.hidden = fieldset3.hidden = true;
 		formType.value = 'login';
-		button.innerText = 'Heeft u nog geen account?';
+		this.innerText = 'Heeft u nog geen account?';
 		pwdField.autocomplete = 'current-password';
 		btnChange.value = 'Inloggen';
 		h2.innerText = 'Log In';
