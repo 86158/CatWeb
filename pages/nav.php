@@ -30,7 +30,8 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="btn-close position-end" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h3>Log In</h3>
+						<button type="button" class="btn-close position-end ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<main class="login-section">
