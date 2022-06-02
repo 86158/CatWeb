@@ -43,11 +43,13 @@ if(!(
 // Getting functions
 require_once __DIR__ .'/php/globalFunctions.php';
 require_once __DIR__ . "/php/FunctionsBuildYourWorkout.php";
+// Run the function first to deal with the login/logout functionality.
+$page = returnPage();
 // Getting the head.
 require __DIR__ .'/pages/head.html';
 // Getting the nav.
 require __DIR__ .'/pages/nav.php';
 // Geting the page.
-require __DIR__ .'/pages/'. returnPage();
+require __DIR__ .'/pages/'. $page;
 // Getting footer.
 include __DIR__ .'/pages/footer.html';

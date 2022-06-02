@@ -40,11 +40,8 @@
 		</div>
 	</form>
 </section>
-<section id="js-oefeningen">
-	<div class="container" hidden>
-		<div class="row">
-			<script src="js/requestData.js"></script>
-			<script src="js/tableFunctions.js"></script> 
-		</div>
-	</div>
-</section>
+<section id="js-oefeningen"></section>
+<div class="js-local" hidden>
+	<script src="js/requestData.js" defer></script>
+	<script src="js/tableFunctions.js" defer></script>
+</div>
