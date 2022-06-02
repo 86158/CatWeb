@@ -1,7 +1,6 @@
-/*
- * For switching login form from login mode to new user mode and back.
-*/
-// The 
+// For switching login form from login mode to new user mode and back.
+
+/** The button to switch the modes of the form.*/
 const button = document.getElementById('newUserButton') as HTMLButtonElement;
 button.addEventListener('click', () => {
 	/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
