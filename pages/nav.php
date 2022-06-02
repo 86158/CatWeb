@@ -39,16 +39,13 @@
 								<h2 class="text-center mt-5">Log In</h2>
 								<br><br>
 								<fieldset class="fieldset-signup" hidden>
-									<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
-									<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=nameFirst maxlength=60></label>
-									<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=nameLast maxlength=60></label>
+									<label class="fw-bold fs-5">gebruikersnaam<input type=text autocomplete=nickname name=gebruikersnaam maxlength=60></label>
 								</fieldset>
 								<fieldset class="login-form align-middle" style=grid-row:1>
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=username name=Username required></label>
 									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
 								</fieldset>
 								<fieldset class="fieldset-signup" hidden>
-									<!--While breaking the name down into its components is not prefered it's done because how WooCommerce expects billing information to be formatted-->
 									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=confirm-password name=confirmPassword maxlength=60></label>
 								</fieldset>
 								<div class="buttons d-flex flex-column mt-3">
