@@ -2,21 +2,101 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-7">
+				<!-- Filter and search option -->
 				<div class="row">
-					<div class="col-12 border border-dark rounded my-2">
-						<h3>text</h3>
-						<div class="row">
-							<div class="col-8">
-								<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam eveniet voluptates dolorem, ipsa rem impedit sint quaerat officiis mollitia. Dignissimos culpa aliquid, quidem a illum natus blanditiis rem quasi sint?</p>
-							</div>
-							<div class="col-4">
-								<img src="img/bodybuilder.jpg" alt="">
+					<div class="col-6">
+						<!-- Filter -->
+						<select class="form-select" aria-label="Default select example">
+							<option selected>Open this select menu</option>
+							<option value="1">One</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+					<div class="col-6 d-flex">
+						<!-- Search -->
+						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      					<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+					</div>
+				</div>
+
+				<!-- Oefeningen -->
+				<div class="oefeningen-schema col-custom overflow-auto">
+					<div class="row row-oefening border border-dark rounded my-3 py-2 me-1">
+						<div class="col-8">
+							<div class="row">
+								<div class="col-12">
+									<h3>Oefening</h3>
+								</div>
+								<div class="col-12">
+									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
+								</div>
 							</div>
 						</div>
+						<div class="col-4">
+							<img src="img/logo-CatWeb.png" alt="">
+						</div>
 					</div>
-					<div class="col-12 border border-dark rounded my-2"></div>
-					<div class="col-12 border border-dark rounded my-2"></div>
-					<div class="col-12 border border-dark rounded my-2"></div>
+					<div class="row border border-dark rounded my-3 py-2 me-1">
+						<div class="col-8">
+							<div class="row">
+								<div class="col-12">
+									<h3>Oefening</h3>
+								</div>
+								<div class="col-12">
+									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<img src="img/logo-CatWeb.png" alt="">
+						</div>
+					</div>
+					<div class="row border border-dark rounded my-3 py-2 me-1">
+						<div class="col-8">
+							<div class="row">
+								<div class="col-12">
+									<h3>Oefening</h3>
+								</div>
+								<div class="col-12">
+									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<img src="img/logo-CatWeb.png" alt="">
+						</div>
+					</div>
+					<div class="row border border-dark rounded my-3 py-2 me-1">
+						<div class="col-8">
+							<div class="row">
+								<div class="col-12">
+									<h3>Oefening</h3>
+								</div>
+								<div class="col-12">
+									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<img src="img/logo-CatWeb.png" alt="">
+						</div>
+					</div>
+					<div class="row border border-dark rounded my-3 py-2">
+						<div class="col-8">
+							<div class="row">
+								<div class="col-12">
+									<h3>Oefening</h3>
+								</div>
+								<div class="col-12">
+									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<img src="img/logo-CatWeb.png" alt="">
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -25,10 +105,21 @@
                 <div class="vr h-100 mt-3"></div>
             </div>
 
-			<div class="col-4">
+			<div class="col-4 col-custom">
 				<div class="header text-center">
 					<h1>Schema</h1>
 					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, laboriosam?</p>
+				</div>
+				<div class="row">
+					<div class="col-6">
+					<p>Calorieen:</p>
+					</div>
+					<div class="col-6">
+						<p>Tijd:</p>
+					</div>
+					<div class="col-12">
+						<button class="btn btn-primary w-100 text-white">Opslaan</button>
+					</div>
 				</div>
 			</div>
 

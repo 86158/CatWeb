@@ -1,5 +1,13 @@
 .schema-section {
-    .col-12 {
-        height: 200px;
+    .col-custom {
+        height: 630px;
+
+        .row-oefening {
+            height: 160px;
+        }
+    }
+
+    img {
+        width: 215px;
     }
 }
