@@ -53,7 +53,7 @@
 								<div class="buttons d-flex flex-column mt-3">
 									<input class="btn btn-primary" type=submit value="Login" style="width: 50%"></input>
 									<!-- The value of onclick is from `js/loginNewUser` it switches the formtype from login to create new user and back. -->
-									<button class="button-below mt-3 mb-3" id=newUserButton>Heeft u nog geen account?</button> 
+									<button type=button class="button-below mt-3 mb-3" id=newUserButton>Heeft u nog geen account?</button> 
 								</div>
 							</form>
 						</main>
