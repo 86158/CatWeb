@@ -52,6 +52,9 @@ if(!is_int($perm)) {
 			site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
 		) ON tl.oefeningenID = o.ID
 		LEFT JOIN (SELECT ID_oefeningen FROM site_favorites WHERE ID_users=?) f ON o.ID = f.ID_oefeningen
+		LEFT JOIN (
+			SELECT site_link_workout wl FROM site_workout w WHERE wl.workoutID = m.ID 
+		) ON wl.oefeningID = o.ID
 		GROUP BY o.ID
 		ORDER BY o.ID ASC;",
 		'i', $_SERVER['PHP_AUTH_USER']

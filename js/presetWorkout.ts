@@ -52,13 +52,15 @@ function nextHandling(data: JSON|site_oefeningen[], _textStatus: string|null, jq
 		errorMessage(jqXHR, "parsererror");
 		return;
 	}
+	console.log(data);
 	//get parameter from the URL of the page
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const page = urlParams.get('page')
-	var i = 0;
-	while(i<6){
-	const idSpecificArticle= "test" + i;
+	var i = 1;
+	var idSpecificArticle = '';
+	while(i<7){
+	idSpecificArticle = 'test' + i;
 	const container = document.getElementById(idSpecificArticle);
 	if(container == null) return;
 	// Clear placeholders
