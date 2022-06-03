@@ -66,6 +66,7 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 	data.forEach(element => {
 		const div = document.createElement('div');
 		div.classList.add('col');
+		div.classList.add('oefeningen');
 		const article = document.createElement('article');
 		// The header element
 		const header = document.createElement('h2');
@@ -74,46 +75,47 @@ function successHandling(data: JSON|site_oefeningen[], _textStatus: string|null,
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
-		// A span for the estimated duration.
-		const duration = document.createElement('span');
-		duration.innerText = 
-			(element.duration)?
-				element.duration.toString()
-				: "-";
-		atribs.appendChild(duration);
-		// A span for the estimated callories.
-		const call = document.createElement('span');
-		call.innerText =
-			(element.calorien)?
-				element.calorien.toString()
-				: "-";
-		atribs.appendChild(call);
-		// A span for the type of exercise.
-		const oType = document.createElement('span');
+		// //A span for the estimated duration.
+		// const duration = document.createElement('p');
+		// duration.innerText = 
+		// 	(element.duration)?
+		// 		element.duration.toString()
+		// 		: "-";
+		// atribs.appendChild(duration);
+		// // A span for the estimated callories.
+		// const call = document.createElement('p');
+		// call.innerText =
+		// 	(element.calorien)?
+		// 		element.calorien.toString()
+		// 		: "-";
+		// atribs.appendChild(call);
+		//A span for the type of exercise.
+		const oType = document.createElement('p');
+		oType.classList.add('difficulty');
 		oType.innerText =
 			(element.type)?
 				element.type
 				: "-";
 		atribs.appendChild(oType);
-		article.appendChild(atribs);
-		// The description.
-		const desc = document.createElement('p');
-		desc.classList.add('description');
-		desc.innerText = element.description;
-		article.appendChild(desc);
 		// The musslegroups a exercise uses as tags under the description.
-		const groups = document.createElement('p');
-		groups.classList.add('tags');
-		// Check if there are any musslegroups accociated with the exercise.
 		if(element.spiergroepen) {
 			// Converting the comma seperated list into an array and iterating over it.
 			element.spiergroepen.split(',').forEach(element => {
 				// Each musslegroup has it's own span.
-				const attrib = document.createElement('span');
-				attrib.innerText = "#" + element;
-				groups.appendChild(attrib);
+				const attrib = document.createElement('p');
+				attrib.classList.add('musclegroup');
+				attrib.innerText = element;
+				atribs.appendChild(attrib);
 			});
 		}
+		article.appendChild(atribs);
+		// The description.
+		const desc = document.createElement('p');
+		desc.classList.add('explanation');
+		desc.innerText = element.description;
+		article.appendChild(desc);
+		const groups = document.createElement('span');
+		groups.classList.add('tags');
 		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
@@ -177,6 +179,4 @@ function getData(): JQuery.jqXHR<any> {
 	};
 	return $.ajax(settings);
 }
-window.addEventListener('load', function() {
-	getData();
-});
+window.addEventListener('load', getData);

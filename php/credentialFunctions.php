@@ -169,14 +169,14 @@ function getPerms($username, string $pwd) {
 function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string $encryptedKey_old = null): ?array {
 	$m_iv = "0000000000000069";
 	// Derive old password key from old password and new password key from new password.
-	/** @var ?string $m_pwdkey_old Old Encryption Key*/
+	/** @var string|false $m_pwdkey_old Old Encryption Key*/
 	$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_old, 0, $m_iv);
-	/** @var ?string $m_pwdkey_new New Key Encryption Key*/
+	/** @var string|false $m_pwdkey_new New Key Encryption Key*/
 	$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 	// Decrypt user-key using old key
-	/** @var ?string $m_userKey Data Encryption Key*/
-	$m_userKey = (isset($a_oldEncryptedkey))? openssl_decrypt($encryptedKey_old, 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv) : random_bytes(60);
-	if($m_userKey === null || is_bool($m_pwdkey_new)) return null;
+	/** @var string|false $m_userKey Data Encryption Key*/
+	$m_userKey = (isset($encryptedKey_old))? openssl_decrypt($encryptedKey_old, 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv) : random_bytes(60);
+	if($m_userKey === false || $m_pwdkey_new == false) return null;
 	// Encrypt user-key with new key
 	$m_encrypted_userKey = openssl_encrypt($m_userKey, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
 	if($m_encrypted_userKey === false) return null;
@@ -247,13 +247,13 @@ function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms
  * Create a new account with encrypted personal details.
  * @return null|string null on success. Error message on failure.
 */
-function createAccount(string $email, string $pwd, ?string $username = null, ?int $perms = null): ?string {
+function createAccount(string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
 	// $m_iv = "0000000000000069";
 	$m_pass = createPass($email, $pwd);
-	if($m_pass === null) return 'Encryptie mislukt';
+	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_vars = [
 		$email,
 		password_hash($pwd . $email, '2y'),	// Hash to verify if the password is correct.
@@ -263,7 +263,8 @@ function createAccount(string $email, string $pwd, ?string $username = null, ?in
 		$username, // Because username is used to login it's no longer encrypted
 		$perms
 	];
-	if(array_search(false, $m_vars) !== false) return 'Encryptie mislukt';
+	if($m_vars[1] === false) return 'Encryptie mislukt; Failed to create password hash';
+	if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_return = DatbQuery('INSERT INTO `site_users` (`email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?)', 'ssssi', ...$m_vars);
 	if(is_string($m_return)) return $m_return;
 	return null;

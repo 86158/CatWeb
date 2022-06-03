@@ -16,7 +16,7 @@ function main() {
 	button.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {
 		/** The hidden input is for informing the php what the form is for.*/
 		const formType = document.querySelector<HTMLInputElement>('main>form.login input[type=hidden]');
-		const h3 = document.querySelector<HTMLHeadingElement>('div.modal-header>h3');
+		const h3 = document.querySelector<HTMLHeadingElement>('div.header>h3');
 		/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
 		const fieldset1 = document.querySelector<HTMLFieldSetElement>('main>form.login>fieldset:nth-of-type(1)');
 		/** The 1e and 3e fieldsets contain the imputs for creating a new user.*/
@@ -45,7 +45,7 @@ function main() {
 		if(fieldset1.hidden) {
 			fieldset1.hidden = fieldset3.hidden = false;
 			emailField.required = pwdConformField.required = true;
-			usernameField.pattern = '^[\w]+$';
+			usernameField.pattern = '^[\\w]+$';
 			usernameField.title = 'Usernames may only contain word characters.\nA word character is a character a-z, A-Z, 0-9, including _ (underscore).';
 			formType.value = 'newUser';
 			this.innerText = 'Heeft u al een account?';
@@ -67,4 +67,4 @@ function main() {
 		}
 	});
 }
-main();
+window.addEventListener('load', main);
