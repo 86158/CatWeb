@@ -37,10 +37,10 @@
 					</fieldset>
 				</div>
 			</div>
+			<section id="js-oefeningen"></section>
 		</div>
 	</form>
 </section>
-<section id="js-oefeningen"></section>
 <div class="js-local" hidden>
 	<script src="js/requestData.js" defer></script>
 	<script src="js/tableFunctions.js" defer></script>
