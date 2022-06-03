@@ -30,7 +30,9 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3>Log In</h3>
+						<div class="header">
+							<h3>Log In</h3>
+						</div>
 						<button type="button" class="btn-close position-end ms-0" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
@@ -38,20 +40,20 @@
 							<form class="form login" method=POST>
 								<input type=hidden name=formID value=login>
 								<br><br>
-								<fieldset class="fieldset-signup" hidden>
+								<fieldset class="fieldset-signup p-0" hidden>
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle" style=grid-row:1>
 									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username maxlength=60 required></label>
 									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
 								</fieldset>
-								<fieldset class="fieldset-signup" hidden>
+								<fieldset class="fieldset-signup p-0" hidden>
 									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=new-password name=confirmPassword maxlength=60></label>
 								</fieldset>
 								<div class="buttons d-flex flex-column mt-3">
-									<input class="btn btn-primary" type=submit value="Login"></input>
+									<input class="btn btn-primary" type=submit value="Login" style="width: 50%"></input>
 									<!-- The value of onclick is from `js/loginNewUser` it switches the formtype from login to create new user and back. -->
-									<button class="button-below mt-3 mb-3" id=newUserButton>Heeft u nog geen account?</button> 
+									<button type=button class="button-below mt-3 mb-3" id=newUserButton>Heeft u nog geen account?</button> 
 								</div>
 							</form>
 						</main>

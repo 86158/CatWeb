@@ -179,6 +179,4 @@ function getData(): JQuery.jqXHR<any> {
 	};
 	return $.ajax(settings);
 }
-window.addEventListener('load', function() {
-	getData();
-});
+window.addEventListener('load', getData);
