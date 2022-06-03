@@ -15,10 +15,22 @@ if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
 	exit();
 }
 require_once __DIR__ .'/credentialFunctions.php';
+// We don't mind if there isn't a session but will try to use them.
+if(session_status() == PHP_SESSION_NONE) {
+	session_start([
+		'use_strict_mode' => '1',
+		'cookie_lifetime' => 3600,
+		'cookie_secure' => '1', 'cookie_httponly' => '1',
+		'cookie_samesite' => 'Strict',
+	]);
+}
 $perm = null;
-if(session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['ID'])) {
+$user = null;
+if(isset($_SESSION['ID']) && isset($_SESSION['loginToken'])) {
+	$user = $_SESSION['ID'];
 	$perm = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
 } elseif(isset($_SERVER['PHP_AUTH_USER'])) {
+	$user = $_SERVER['PHP_AUTH_USER'];
 	$perm = getPerms($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 }
 if(!is_int($perm)) {
@@ -54,7 +66,7 @@ if(!is_int($perm)) {
 		LEFT JOIN (SELECT ID_oefeningen FROM site_favorites WHERE ID_users=?) f ON o.ID = f.ID_oefeningen
 		GROUP BY o.ID
 		ORDER BY o.ID ASC;",
-		'i', $_SERVER['PHP_AUTH_USER']
+		'i', $user
 	);
 }
 if(!($result instanceof mysqli_result)) {

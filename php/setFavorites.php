@@ -66,9 +66,9 @@ $error = null;
 /** @var array<int,array<string,bool|int>> $value */
 foreach($value as $instance) {
 	if($instance['remove']) {
-		$error = DatbQuery_3($m_conn, 'DELETE FROM site_favorites WHERE ID_users = ? AND ID_oefeningen = ?', 'ii', $_SERVER['PHP_AUTH_USER'], $instance['oefening']);
+		$error = DatbQuery_3($m_conn, 'DELETE FROM site_favorites WHERE ID_users = ? AND ID_oefeningen = ?', 'ii', $user, $instance['oefening']);
 	} else {
-		$error = DatbQuery_3($m_conn, 'REPLACE INTO site_favorites(ID_users,ID_oefeningen) VALUE (?, ?)', 'ii', $_SERVER['PHP_AUTH_USER'], $instance['oefening']);
+		$error = DatbQuery_3($m_conn, 'REPLACE INTO site_favorites(ID_users,ID_oefeningen) VALUE (?, ?)', 'ii', $user, $instance['oefening']);
 	}
 	if(is_string($error)) {
 		$m_conn->close();
@@ -79,4 +79,5 @@ foreach($value as $instance) {
 }
 $m_conn->close();
 header($_SERVER["SERVER_PROTOCOL"]." 200 OK", true, 200);
+echo '{}';
 exit();
