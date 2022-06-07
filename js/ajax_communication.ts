@@ -22,7 +22,7 @@ interface site_oefeningen {
 	/** If logged in shows whether the item is marked as a favorite */
 	favorite?: boolean;
 }
-interface responce { 
+interface responce {
 	code: number;
 	error?: string;
 	trace?: string;
@@ -145,23 +145,26 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		}
 		if(element.favorite != undefined) {
 			const checkboxLabel = document.createElement('label');
-			checkboxLabel.innerHTML = `<label><svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox"/></label>`;
+			checkboxLabel.classList.add('customCheckbox');
+			checkboxLabel.innerHTML = `<svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox"/>`;
 			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
-			checkboxInput.style.fill = (element.favorite)? "yellow" : "none";
+			checkboxLabel.style.fill = (element.favorite)? "yellow" : "none";
+			checkboxLabel.style.cursor = "pointer";
 			checkboxInput.checked = element.favorite;
-			checkboxInput.id = element.ID.toString();
+			// checkboxInput.id = element.ID.toString();
+			checkboxInput.hidden = true;
 			checkboxInput.addEventListener('input',
 				function(this: HTMLInputElement, ev: Event): void {
 					ev.preventDefault();
 					this.disabled = true;
-					const checked = (this.style.fill == "yellow");
+					const checked = (checkboxLabel.style.fill == "yellow");
 					var waiter = setFavorites([{
-						oefening: Number(this.id),
+						oefening: element.ID,
 						remove: checked
 					}]);
 					waiter.done(() => {
 						this.checked = !checked;
-						this.style.fill = (checked)? "none": "yellow";
+						checkboxLabel.style.fill = (checked)? "none": "yellow";
 						this.disabled = false;
 					});
 					waiter.fail(() => {
