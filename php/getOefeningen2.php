@@ -43,7 +43,8 @@ function getOefeninging(): array {
 			"SELECT
 				o.*,
 				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
-				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos
+				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
+				GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout
 			FROM site_oefeningen o
 			LEFT JOIN (
 				site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
@@ -51,15 +52,19 @@ function getOefeninging(): array {
 			LEFT JOIN (
 				site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
 			) ON tl.oefeningenID = o.ID
+			LEFT JOIN (
+				site_workout w JOIN site_link_workout wl ON wl.workoutID = w.workoutID 
+			) ON wl.oefeningID = o.ID
 			GROUP BY o.ID
 			ORDER BY o.ID ASC;"
 		);
 	} else {
 		$result = DatbQuery(
 			"SELECT
-			o.*,
-			GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
-			GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
+				o.*,
+				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
+				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
+				GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout,
 			IF(f.ID_oefeningen IS NULL,0,1) AS favorite
 			FROM site_oefeningen o
 			LEFT JOIN (
@@ -70,7 +75,7 @@ function getOefeninging(): array {
 			) ON tl.oefeningenID = o.ID
 			LEFT JOIN (SELECT ID_oefeningen FROM site_favorites WHERE ID_users=?) f ON o.ID = f.ID_oefeningen
 			LEFT JOIN (
-				SELECT site_link_workout wl FROM site_workout w WHERE wl.workoutID = m.ID 
+				site_workout w JOIN site_link_workout wl ON wl.workoutID = w.workoutID 
 			) ON wl.oefeningID = o.ID
 			GROUP BY o.ID
 			ORDER BY o.ID ASC;",
@@ -92,6 +97,8 @@ function getOefeninging(): array {
 			$output[$i]['images'] = explode("\n", $output[$i]['images']);
 		if($output[$i]['videos'] != null)
 			$output[$i]['videos'] = explode("\n", $output[$i]['videos']);
+		if($output[$i]['workout'] != null)
+			$output[$i]['workout'] = explode("\n", $output[$i]['workout']);
 		if(isset($output[$i]['favorite']))
 			$output[$i]['favorite'] = boolval($output[$i]['favorite']);
 	}

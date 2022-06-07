@@ -18,6 +18,7 @@ interface site_oefeningen {
 	images: Array<string>|null;
 	/** Videos */
 	videos: Array<string>|null;
+	workout: Array<string>|null;
 	/** If logged in shows whether the item is marked as a favorite */
 	favorite?: boolean;
 }
