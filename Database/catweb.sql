@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2022 at 12:38 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Jun 07, 2022 at 10:21 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.9
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -31,7 +31,7 @@ USE `catweb`;
 --
 
 DROP TABLE IF EXISTS `site_favorites`;
-CREATE TABLE `site_favorites` (
+CREATE TABLE IF NOT EXISTS `site_favorites` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
@@ -54,7 +54,7 @@ REPLACE INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_media`;
-CREATE TABLE `site_link_media` (
+CREATE TABLE IF NOT EXISTS `site_link_media` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `oefeningenID` int(10) UNSIGNED NOT NULL,
   `mediaID` int(10) UNSIGNED NOT NULL,
@@ -68,9 +68,21 @@ CREATE TABLE `site_link_media` (
 --
 
 REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
-(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
-(7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
-(12, 12, 12), (13, 13, 13), (14, 14, 14), (15, 6, 15);
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5),
+(6, 6, 6),
+(7, 7, 7),
+(8, 8, 8),
+(9, 9, 9),
+(10, 10, 10),
+(11, 11, 11),
+(12, 12, 12),
+(13, 13, 13),
+(14, 14, 14),
+(15, 6, 15);
 
 -- --------------------------------------------------------
 
@@ -79,7 +91,7 @@ REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_tube`;
-CREATE TABLE `site_link_tube` (
+CREATE TABLE IF NOT EXISTS `site_link_tube` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `oefeningenID` int(10) UNSIGNED NOT NULL,
   `mediaID` int(10) UNSIGNED NOT NULL,
@@ -93,9 +105,45 @@ CREATE TABLE `site_link_tube` (
 --
 
 REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
-(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
-(7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
-(12, 12, 12), (13, 13, 13), (14, 14, 14), (15, 6, 15);
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5),
+(6, 6, 6),
+(7, 7, 7),
+(8, 8, 8),
+(9, 9, 9),
+(10, 10, 10),
+(11, 11, 11),
+(12, 12, 12),
+(13, 13, 13),
+(14, 14, 14),
+(15, 6, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_link_workout`
+--
+
+DROP TABLE IF EXISTS `site_link_workout`;
+CREATE TABLE IF NOT EXISTS `site_link_workout` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `workoutID` int(10) UNSIGNED NOT NULL,
+  `oefeningID` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `Oefening ID` (`oefeningID`),
+  KEY `Workout ID` (`workoutID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_link_workout`
+--
+
+REPLACE INTO `site_link_workout` (`ID`, `workoutID`, `oefeningID`) VALUES
+(1, 1, 4),
+(2, 1, 13);
 
 -- --------------------------------------------------------
 
@@ -104,7 +152,7 @@ REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_media`;
-CREATE TABLE `site_media` (
+CREATE TABLE IF NOT EXISTS `site_media` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(145) NOT NULL,
   PRIMARY KEY (`ID`),
@@ -139,7 +187,7 @@ REPLACE INTO `site_media` (`ID`, `link`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_oefeningen`;
-CREATE TABLE `site_oefeningen` (
+CREATE TABLE IF NOT EXISTS `site_oefeningen` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
@@ -173,11 +221,30 @@ REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroep
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `site_oefening_media`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `site_oefening_media`;
+CREATE TABLE IF NOT EXISTS `site_oefening_media` (
+`ID` int(10) unsigned
+,`name` varchar(45)
+,`description` text
+,`type` enum('Kracht','Cardio')
+,`spiergroepen` set('Triceps','Buik','Borst','Hamstrings','Rug')
+,`duration` int(10) unsigned
+,`calorien` mediumint(10) unsigned
+,`images` mediumtext
+,`videos` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `site_schema`
 --
 
 DROP TABLE IF EXISTS `site_schema`;
-CREATE TABLE `site_schema` (
+CREATE TABLE IF NOT EXISTS `site_schema` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ID`),
@@ -191,7 +258,7 @@ CREATE TABLE `site_schema` (
 --
 
 DROP TABLE IF EXISTS `site_schemacontent`;
-CREATE TABLE `site_schemacontent` (
+CREATE TABLE IF NOT EXISTS `site_schemacontent` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_schema` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
@@ -207,7 +274,7 @@ CREATE TABLE `site_schemacontent` (
 --
 
 DROP TABLE IF EXISTS `site_tube`;
-CREATE TABLE `site_tube` (
+CREATE TABLE IF NOT EXISTS `site_tube` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(15) NOT NULL,
   PRIMARY KEY (`ID`),
@@ -242,7 +309,7 @@ REPLACE INTO `site_tube` (`ID`, `link`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_users`;
-CREATE TABLE `site_users` (
+CREATE TABLE IF NOT EXISTS `site_users` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(25) NOT NULL COMMENT 'Regex validation from: https://www.rhyous.com/2010/06/15/csharp-email-regular-expression',
   `username` varchar(100) DEFAULT NULL,
@@ -253,14 +320,37 @@ CREATE TABLE `site_users` (
   `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `usernames` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_users`
 --
 
 REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`) VALUES
-(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1);
+(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 14164858, '2022-05-13 10:20:13', 1),
+(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', 11503434, '2022-06-07 09:43:53', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_workout`
+--
+
+DROP TABLE IF EXISTS `site_workout`;
+CREATE TABLE IF NOT EXISTS `site_workout` (
+  `workoutID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `workTitle` varchar(30) NOT NULL,
+  `Beschrijving` text NOT NULL,
+  PRIMARY KEY (`workoutID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_workout`
+--
+
+REPLACE INTO `site_workout` (`workoutID`, `workTitle`, `Beschrijving`) VALUES
+(1, 'Cardio', 'Hier is een tekst om in te vullen waarbij cardio als deze workout hoofddoel wordt gebruikt'),
+(2, 'Kracht', 'Hier is een tekst om in te vullen waarbij kracht als deze workout hoofddoel wordt gebruikt');
 
 -- --------------------------------------------------------
 
@@ -270,7 +360,7 @@ REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `to
 DROP TABLE IF EXISTS `site_oefening_media`;
 
 DROP VIEW IF EXISTS `site_oefening_media`;
-CREATE OR REPLACE VIEW `site_oefening_media`  AS SELECT `o`.`ID` AS `ID`, `o`.`name` AS `name`, `o`.`description` AS `description`, `o`.`type` AS `type`, `o`.`spiergroepen` AS `spiergroepen`, `o`.`duration` AS `duration`, `o`.`calorien` AS `calorien`, group_concat(distinct `m`.`link` order by `m`.`ID` ASC separator '\n') AS `images`, group_concat(distinct `t`.`link` order by `t`.`ID` ASC separator '\n') AS `videos` FROM ((`site_oefeningen` `o` left join (`site_link_media` `ml` join `site_media` `m` on(`ml`.`mediaID` = `m`.`ID`)) on(`ml`.`oefeningenID` = `o`.`ID`)) left join (`site_link_tube` `tl` join `site_tube` `t` on(`tl`.`mediaID` = `t`.`ID`)) on(`tl`.`oefeningenID` = `o`.`ID`)) GROUP BY `o`.`ID` ORDER BY `o`.`ID` ASC  ;
+CREATE OR REPLACE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `site_oefening_media`  AS  select `o`.`ID` AS `ID`,`o`.`name` AS `name`,`o`.`description` AS `description`,`o`.`type` AS `type`,`o`.`spiergroepen` AS `spiergroepen`,`o`.`duration` AS `duration`,`o`.`calorien` AS `calorien`,group_concat(distinct `m`.`link` order by `m`.`ID` ASC separator '\n') AS `images`,group_concat(distinct `t`.`link` order by `t`.`ID` ASC separator '\n') AS `videos` from ((`site_oefeningen` `o` left join (`site_link_media` `ml` join `site_media` `m` on(`ml`.`mediaID` = `m`.`ID`)) on(`ml`.`oefeningenID` = `o`.`ID`)) left join (`site_link_tube` `tl` join `site_tube` `t` on(`tl`.`mediaID` = `t`.`ID`)) on(`tl`.`oefeningenID` = `o`.`ID`)) group by `o`.`ID` order by `o`.`ID` ;
 
 --
 -- Constraints for dumped tables
@@ -298,6 +388,13 @@ ALTER TABLE `site_link_tube`
   ADD CONSTRAINT `tube_link` FOREIGN KEY (`mediaID`) REFERENCES `site_tube` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `site_link_workout`
+--
+ALTER TABLE `site_link_workout`
+  ADD CONSTRAINT `Oefening ID` FOREIGN KEY (`oefeningID`) REFERENCES `site_oefeningen` (`ID`),
+  ADD CONSTRAINT `Workout ID` FOREIGN KEY (`workoutID`) REFERENCES `site_workout` (`workoutID`);
+
+--
 -- Constraints for table `site_schema`
 --
 ALTER TABLE `site_schema`
@@ -309,49 +406,6 @@ ALTER TABLE `site_schema`
 ALTER TABLE `site_schemacontent`
   ADD CONSTRAINT `schema_id` FOREIGN KEY (`ID_schema`) REFERENCES `site_schema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schema_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
---
--- Metadata
---
-USE `phpmyadmin`;
-
---
--- Metadata for table site_media
---
-
---
--- Dumping data for table `pma__column_info`
---
-
-REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_media', 'link', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
-
---
--- Metadata for table site_tube
---
-
---
--- Dumping data for table `pma__column_info`
---
-
-REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_tube', 'link', '', 'text_plain', 'text_plain_link.php', '\'https://youtu.be/\'', '', '');
-
---
--- Metadata for table site_users
---
-
---
--- Dumping data for table `pma__column_info`
---
-
-REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
-('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
-('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
-
-
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

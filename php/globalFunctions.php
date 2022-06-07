@@ -47,6 +47,8 @@ function returnPage(): string {
 			return 'login.html';
 		case  'contact':
 			return 'contact.php';
+		case  'user':
+			return 'profilePage.php';
 		default:
 			return 'homepage.php';
 	}
