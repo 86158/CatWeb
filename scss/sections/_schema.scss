@@ -1,13 +1,36 @@
+@use '../custom' as *;
+
 .schema-section {
-    .col-custom {
-        height: 630px;
-
-        .row-oefening {
-            height: 160px;
+    .row {
+        .col-custom {
+            height: 630px;
+    
+            .row-oefening {
+                height: 160px;
+            }
         }
-    }
+    
+        img {
+            width: 215px;
+        }
 
-    img {
-        width: 215px;
+        .col-test {
+            position: relative;
+
+            .row-save {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            }
+
+            .btn {
+                color: $black !important;
+    
+                &:hover {
+                    background-color: $primary-dark !important;
+                    color: $white !important;
+                }
+            }
+        }       
     }
 }

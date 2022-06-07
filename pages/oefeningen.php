@@ -42,7 +42,6 @@
 	</form>
 </section>
 <div class="js-local" hidden>
-	<script src="js/requestData.js" defer></script>
+	<script src="js/ajax_communication.js" defer></script>
 	<script src="js/tableFunctions.js" defer></script>
-	<?php if(isset($_SESSION['ID'])) echo '<script src="js/setFavorite.js" defer></script>';?>
 </div>

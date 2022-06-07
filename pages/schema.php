@@ -1,9 +1,9 @@
 <section id="js-oefeningen" class="schema-section">
 	<div class="container">
 		<div class="row">
-			<div class="col-7">
-				<!-- Filter and search option -->
+			<div class="col-lg-7 col-12">
 				<div class="row">
+					<!-- Filter and search option -->
 					<div class="col-6">
 						<!-- Filter -->
 						<select class="form-select" aria-label="Default select example">
@@ -19,9 +19,12 @@
       					<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 					</div>
 				</div>
-
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-7 col-custom overflow-auto mt-3">
 				<!-- Oefeningen -->
-				<div class="oefeningen-schema col-custom overflow-auto">
+				<div class="oefeningen-schema">
 					<div class="row row-oefening border border-dark rounded my-3 py-2 me-1">
 						<div class="col-8">
 							<div class="row">
@@ -82,35 +85,20 @@
 							<img src="img/logo-CatWeb.png" alt="">
 						</div>
 					</div>
-					<div class="row border border-dark rounded my-3 py-2">
-						<div class="col-8">
-							<div class="row">
-								<div class="col-12">
-									<h3>Oefening</h3>
-								</div>
-								<div class="col-12">
-									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
-								</div>
-							</div>
-						</div>
-						<div class="col-4">
-							<img src="img/logo-CatWeb.png" alt="">
-						</div>
-					</div>
 				</div>
 			</div>
 
 			<!-- Vertical line in between two columns -->
-			<div class="col-1 text-center">
+			<!-- <div class="col-1 text-center">
                 <div class="vr h-100 mt-3"></div>
-            </div>
+            </div> -->
 
-			<div class="col-4 col-custom">
+			<div class="col-lg-4 col-12 col-custom col-test">
 				<div class="header text-center">
 					<h1>Schema</h1>
 					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est, laboriosam?</p>
 				</div>
-				<div class="row">
+				<div class="row row-save">
 					<div class="col-6">
 					<p>Calorieen:</p>
 					</div>
