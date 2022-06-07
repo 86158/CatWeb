@@ -1,10 +1,11 @@
+@use '../custom' as *;
+
 .footer-section {    
     width: 100%;
     position: fixed;
     bottom: 0;
 
     .bg-customfooter {
-        background-color: #EBEBEB;
+        background-color: $grey;
     }
-
 }
