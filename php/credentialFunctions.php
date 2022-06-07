@@ -26,28 +26,28 @@ function DatbQuery(string $query, string $types = '', ...$vars) {
 	// Get the statement object and check for errors.
 	$m_prep = $m_conn->prepare($query);
 	if($m_prep == false) {
-		$error = $m_conn->error_list;
+		$error = $m_conn->error;
 		$m_conn->close();
-		return var_export($error, true);
+		return $error;
 	}
 	// Attempt to bind parameters to their relative placeholders.
 	if($types != '') {
 		if(!($m_prep->bind_param($types, ...$vars))) {
-			$error = $m_prep->error_list;
+			$error = $m_prep->error;
 			$m_prep->close(); $m_conn->close();
-			return var_export($error, true);
+			return $error;
 		}
 	}
 	// Execute the querry.
 	if(!$m_prep->execute()) {
-		$error = $m_prep->error_list;
+		$error = $m_prep->error;
 		$m_prep->close(); $m_conn->close();
-		return var_export($error, true);
+		return $error;
 	}
 	// Get the results.
 	$m_result = $m_prep->get_result();
 	if($m_result == false)
-		$m_result = ($m_prep->errno == 0)? $m_prep->affected_rows : var_export($m_prep->error_list, true);
+		$m_result = ($m_prep->errno == 0)? $m_prep->affected_rows : $m_prep->error;
 	// close connection
 	$m_prep->close();
 	$m_conn->close();
@@ -77,30 +77,29 @@ function DatbQuery_3(mysqli &$conn = null, string $query, string $types = '', ..
 	// Get the statement object and check for errors.
 	$m_prep = $conn->prepare($query);
 	if($m_prep == false) {
-		$error = $conn->error_list;
+		$error = $conn->error;
 		if($m_close) $conn->close();
-		return var_export($error, true);
+		return $error;
 	}
 	// Attempt to bind parameters to their relative placeholders.
 	if($types != '') {
 		if(!($m_prep->bind_param($types, ...$vars))) {
-			$error = $m_prep->error_list;
+			$error = $m_prep->error;
 			$m_prep->close(); if($m_close) $conn->close();
-			return var_export($error, true);
+			return $error;
 		}
 	}
 	// Execute the querry.
 	if(!$m_prep->execute()) {
-		$error = $m_prep->error_list;
+		$error = $m_prep->error;
 		$m_prep->close(); if($m_close) $conn->close();
-		return var_export($error, true);
+		return $error;
 	}
 	// Get the results.
 	$m_result = $m_prep->get_result();
 	if($m_result == false)
 		$m_result = ($m_prep->errno == 0)?
-			$m_prep->affected_rows :
-			var_export($m_prep->error_list, true);
+			$m_prep->affected_rows : $m_prep->error;
 	// close connection
 	$m_prep->close();
 	if($m_close) $conn->close();
