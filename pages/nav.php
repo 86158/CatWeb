@@ -23,7 +23,7 @@
 							<button class="dropbtn">User Name</button>
 							<div class="dropdown-content">
 								<a href="?page=user" class="btn me-5 text-primary">Juriën Braat</a>
-								<a href="?logout=logout" class="btn me-5 text-primary">Logout</a>
+								<button role="submit" formmethod="POST" name="logout" value="logout" class="btn me-5 text-primary">Logout</button>
 							</div>
 						</div>':
 						'<button type="button" class="btn me-5 text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>';
