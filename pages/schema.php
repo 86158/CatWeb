@@ -89,9 +89,9 @@
 			</div>
 
 			<!-- Vertical line in between two columns -->
-			<!-- <div class="col-1 text-center">
+			<div class="col-1 text-center">
                 <div class="vr h-100 mt-3"></div>
-            </div> -->
+            </div>
 
 			<div class="col-lg-4 col-12 col-custom col-test">
 				<div class="header text-center">
