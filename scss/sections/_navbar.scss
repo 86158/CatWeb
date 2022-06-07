@@ -49,6 +49,16 @@
                 }
               }
         }
+
+        .btn {
+            background-color: $white;
+            color: $primary;
+
+            &:hover {
+                background-color: $primary-dark !important;
+                color: $white !important;
+            }
+        }
     }
 
     .modal-content {
