@@ -1,17 +1,24 @@
 <?php
 // Updates favorites
+/*
+interface responce { 
+	code: number;
+	error?: string;
+	trace?: string;
+}
+*/
 if(
 	(isset($_SERVER['HTTP_ACCEPT']) && !preg_match('/(application\/(json|\*))|\*\/\*/', $_SERVER['HTTP_ACCEPT'])) ||
 	(isset($_SERVER['HTTP_ACCEPT_CHARSET']) && !preg_match('/utf-8/i', $_SERVER['HTTP_ACCEPT_CHARSET']))
 ) {
 	header($_SERVER["SERVER_PROTOCOL"]." 406 Not Acceptable", true, 406);
-	echo '{"error":"Can only provide \'application/json; charset=UTF-8\'"}';
+	echo '{"code":406,"error":"Can only provide \'application/json; charset=UTF-8\'"}';
 	exit();
 }
 header("Content-Type: application/json");
 if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
-	echo '{"error":"Missing file"}';
+	echo '{"code":500,"error":"Missing file"}';
 	exit();
 }
 require_once __DIR__ .'/credentialFunctions.php';
@@ -39,27 +46,27 @@ if(!is_int($perm)) {
 	header('WWW-Authenticate: Basic realm="CatWeb", charset="UTF-8"');
 	header($_SERVER["SERVER_PROTOCOL"] .' 401 Unauthorized', true, 401);
 	echo ($perm)?
-		'{"responce":'. $perm .'}':
-		'{"responce":"Missing credentials"}';
+		'{"code":401,"error":"Missing credentials","trace":'. $perm .'}':
+		'{"code":401,"error":"Missing credentials"}';
 	exit;
 }
 $input = file_get_contents('php://input');
 if($input == false) {
 	header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
-	echo '{"error":"file_get_contents(\'php://input\') returned false"}';
+	echo '{"code":400,"error":"file_get_contents(\'php://input\') returned false"}';
 	exit();
 }
 $value = json_decode($input, true);
 if($value == null) {
 	header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
-	echo '{"error":"json_decode($input, true) returned null"}';
+	echo '{"code":400,"error":"json_decode($input, true) returned null"}';
 	exit();
 }
 try {
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 } catch (mysqli_sql_exception $th) {
 	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
-	echo '{"error": "failed to get database connection", "trace": "'. $th->getTraceAsString() .'"}';
+	echo '{"code":500,"error":"failed to get database connection","trace":"'. $th->getTraceAsString() .'"}';
 	exit();
 }
 $error = null;
@@ -73,11 +80,11 @@ foreach($value as $instance) {
 	if(is_string($error)) {
 		$m_conn->close();
 		header($_SERVER["SERVER_PROTOCOL"]." 400 Bad Request", true, 400);
-		echo '{"error":"JSON was not of the expected schema", "trace": "'. var_export($error, true) .'"}';
+		echo '{"code":400,"error":"JSON was not of the expected schema","trace": "'. var_export($error, true) .'"}';
 		exit();
 	}
 }
 $m_conn->close();
 header($_SERVER["SERVER_PROTOCOL"]." 200 OK", true, 200);
-echo '{}';
+echo '{"code":200}';
 exit();
