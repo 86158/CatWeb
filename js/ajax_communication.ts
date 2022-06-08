@@ -62,7 +62,7 @@ function ajax_error(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|
  */
 function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR) {
 	if(!('code' in data))
-		return errorHandling(jqXHR, "parsererror");
+		return ajax_error(jqXHR, "parsererror");
 	if(data.code != 200 || data.output == undefined)
 		return console.error(data);
 	//get parameter from the URL of the page
@@ -217,7 +217,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		cache: true,
 		dataType: "json",
 		method: "GET",
-		url: "./php/getOefeningen2.php",
+		url: "./php/getOefeningen.php",
 		success: ajax_oefeningen,
 		error: ajax_error
 	};
@@ -233,7 +233,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		async: true,
 		dataType: "json",
 		method: "POST",
-		url: "./php/setFavorites2.php",
+		url: "./php/setFavorites.php",
 		data: JSON.stringify(favorites),
 		error: ajax_error,
 		/**
@@ -244,7 +244,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		 ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.*/
 		success: function(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR) {
 			if(!('code' in data))
-				return errorHandling(jqXHR, "parsererror");
+				return ajax_error(jqXHR, "parsererror");
 			if(data.code != 200)
 				return console.error(data);
 		}
