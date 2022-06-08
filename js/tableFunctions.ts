@@ -11,7 +11,7 @@ function articleFilter(container: HTMLElement, searchQuery?: string|RegExp|undef
 	for(let index = 0; index < articles.length; index++) {
 		const article = articles[index] as HTMLElement;
 		article.hidden = false;
-		const header = article.querySelector('h2');
+		const header = article.querySelector('h4');
 		const tagParaf = article.querySelector('p.tags');
 		if(searchQuery instanceof RegExp && header != null && !searchQuery.test(header.innerText)) {
 			article.hidden = true;
