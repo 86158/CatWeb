@@ -41,6 +41,7 @@
                     </label>
                 </div>
             </div>
+            <img src="img/BYW3.png" alt="Muscles">
         </div>
         <?php
     }
@@ -98,6 +99,7 @@
                     </label>
                 </div>
             </div>
+            <img src="img/BYW1.jpg" alt="Gender">
         </div>
         <?php
     }
@@ -129,6 +131,7 @@
                     </label>
                 </div>
             </div>
+            <img src="img/BYW2.jpg" alt="Goal">
         </div>
         <?php
     }
@@ -160,6 +163,7 @@
                     </label>
                 </div>
             </div>
+            <img src="img/BYW4.png" alt="Excercises">
         </div>
         <?php
     }
