@@ -40,6 +40,7 @@
                         Biceps
                     </label>
                 </div>
+                <?php SubmitButton();?>
             </div>
             <img src="img/BYW3.png" alt="Muscles">
         </div>
@@ -51,7 +52,7 @@
         ?>
         <section class="buildYourWorkout-Section">
             <div class="container">
-                <h1 class="text-center">Build your workout</h1>
+                <h1 class="text-center mb-3">Build your workout</h1>
                 <form action="" method="post">
                     <input type=hidden name="page" value="build">
                     <div class="row">
@@ -59,47 +60,45 @@
     }
 
     function EndForm(){
-        echo '</div>';
-        if($_SESSION['workoutStart'] == false){
-            echo '<button type="submit" class="btn btn-primary">Start</button>';
-        }    
-        else if(empty($_SESSION['workoutSpier'])){
-            echo '<button type="submit" class="btn btn-primary">Volgende</button>';
-        }
-        else if($_SESSION['workoutAantal'] == ''){
-            echo '<button type="submit" class="btn btn-primary">Finish</button>';
-        }    
-        echo '</form></div></section>';
+        echo '</div></form></div></section>';
     }
 
     function QuestionGeslacht(){
         ?>
-        <div class="col-6">
-            <div class="mb-3">
-                <h4> Wat is uw geslacht?</h4>
+        <div class="section-gender row justify-content-center">
+            <div class="col-3">
+                <br>
+                <br>
+                <br>
+                <h3> Wat is uw geslacht?</h3>
                 <!-- Vrouw -->
-                <div class="form-check">
+                <div class="form-check fs-5">
                     <input class="form-check-input" type="radio" name="geslacht" id="inputVrouw" value="vrouw">
                     <label class="form-check-label" for="inputVrouw">
                         Vrouw
                     </label>
                 </div>
                 <!-- Man -->
-                <div class="form-check">
+                <div class="form-check fs-5">
                     <input class="form-check-input" type="radio" name="geslacht" id="inputMan" value="man">
                     <label class="form-check-label" for="inputMan">
                         Man
                     </label>
                 </div>
                 <!-- Neutraal -->
-                <div class="form-check">
+                <div class="form-check fs-5">
                     <input class="form-check-input" type="radio" name="geslacht" id="inputNeutraal" value="neutraal">
                     <label class="form-check-label" for="inputNeutraal">
                         Neutraal
                     </label>
                 </div>
+                <div class="btn btn-primary submit-button mt-4">
+                    <?php SubmitButton();?>
+                </div>
             </div>
-            <img src="img/BYW1.jpg" alt="Gender">
+            <div class="col-3">
+                <img src="img/BYW1.jpg" alt="Gender">
+            </div>
         </div>
         <?php
     }
@@ -130,6 +129,7 @@
                         Conditie
                     </label>
                 </div>
+                <?php SubmitButton();?>
             </div>
             <img src="img/BYW2.jpg" alt="Goal">
         </div>
@@ -162,6 +162,7 @@
                         5 oefeningen
                     </label>
                 </div>
+                <?php SubmitButton();?>
             </div>
             <img src="img/BYW4.png" alt="Excercises">
         </div>
@@ -227,5 +228,17 @@
     function ParagraphBYW(){
         echo '<p>Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
         echo '<input type="hidden" name="start" value="true">';
+    }
+
+    function SubmitButton(){
+        if($_SESSION['workoutStart'] == false){
+            echo '<button type="submit" class="btn btn-primary">Start</button>';
+        }    
+        else if(empty($_SESSION['workoutSpier'])){
+            echo '<button type="submit" class="btn btn-primary align-self-center">Volgende</button>';
+        }
+        else if($_SESSION['workoutAantal'] == ''){
+            echo '<button type="submit" class="btn btn-primary">Finish</button>';
+        }   
     }
 ?>
