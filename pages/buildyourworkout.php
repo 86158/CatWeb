@@ -22,4 +22,5 @@ else{
     echo 'Succes';
 }
 EndForm();
+AddJS();
 ?>

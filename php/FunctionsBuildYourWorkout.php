@@ -228,4 +228,8 @@
         echo '<p>Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
         echo '<input type="hidden" name="start" value="true">';
     }
+
+    function AddJS(){
+        echo '<div class="js-local" hidden><script src="js/ajax_communication.js" defer></script><script src="js/tableFunctions.js" defer></script></div>';
+    }
 ?>
