@@ -51,7 +51,7 @@
         ?>
         <section class="buildYourWorkout-Section">
             <div class="container">
-                <h1 class="text-center">Build Your Workout</h1>
+                <h1 class="text-center">Build your workout</h1>
                 <form action="" method="post">
                     <input type=hidden name="page" value="build">
                     <div class="row">
