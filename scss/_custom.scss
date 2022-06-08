@@ -1,6 +1,10 @@
+// @use "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/scss/bootstrap.scss";
 $primary: #5eb4a8;
 $primary-light: #8ed3c8;
 $primary-dark: #50948a;
 $black: #000000;
 $white: #ffffff;
 $grey: #EBEBEB;
+
+// @import "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/scss/bootstrap.scss";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
