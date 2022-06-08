@@ -143,6 +143,8 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
+		img.loading = "lazy";
+		img.referrerPolicy = "no-referrer";
 		if(value.images && value.images[0])
 			img.src = value.images[0];
 		// An empty string into the alt attribute to mark it as decorative.
