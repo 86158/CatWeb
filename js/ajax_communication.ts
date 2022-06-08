@@ -62,28 +62,39 @@ function ajax_error(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|
  */
 function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR) {
 	if(!('code' in data))
-		return errorHandling(jqXHR, "parsererror");
+		return ajax_error(jqXHR, "parsererror");
 	if(data.code != 200 || data.output == undefined)
 		return console.error(data);
 	//get parameter from the URL of the page
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const page = urlParams.get('page');
-	console.log(page); // DEBUG
-	const container = document.getElementById("js-oefeningen");
-	if(container == null) return;
-	// Clear placeholders
-	container.innerHTML = "";
+	let container: HTMLElement | null | Array<HTMLElement|null>;
+	if(page != 'work') {
+		container = document.getElementById("js-oefeningen");
+		if(container == null) return console.error("Missing element");
+		// Clear placeholders
+		container.innerHTML = "";
+	} else {
+		container = [
+			document.getElementById("js-cardio"),
+			document.getElementById("js-kracht"),
+			document.getElementById("js-rug")
+		];
+		if(container[0] == null || container[1] == null || container[2] == null) {
+			return console.error("Missing element");
+		}
+	}
 	// For each row we add a article to the container.
 	// The element is created filled with data and then added to its container.
-	data.output.forEach(element => {
-		const div = document.createElement('div');
-		div.classList.add('col');
-		div.classList.add('oefeningen');
+	data.output.forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
+		if(page == 'work' && (value.workout == null || value.workout.length < 1)) return;
 		const article = document.createElement('article');
+		article.classList.add('col');
+		article.classList.add('oefeningen');
 		// The header element
 		const header = document.createElement('h2');
-		header.innerText = element.name;
+		header.innerText = value.name;
 		article.appendChild(header);
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
@@ -91,29 +102,29 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		// //A span for the estimated duration.
 		// const duration = document.createElement('p');
 		// duration.innerText = 
-		// 	(element.duration)?
-		// 		element.duration.toString()
+		// 	(value.duration)?
+		// 		value.duration.toString()
 		// 		: "-";
 		// atribs.appendChild(duration);
 		// // A span for the estimated callories.
 		// const call = document.createElement('p');
 		// call.innerText =
-		// 	(element.calorien)?
-		// 		element.calorien.toString()
+		// 	(value.calorien)?
+		// 		value.calorien.toString()
 		// 		: "-";
 		// atribs.appendChild(call);
 		//A span for the type of exercise.
 		const oType = document.createElement('p');
 		oType.classList.add('difficulty');
 		oType.innerText =
-			(element.type)?
-				element.type
+			(value.type)?
+				value.type
 				: "-";
 		atribs.appendChild(oType);
 		// The musslegroups a exercise uses as tags under the description.
-		if(element.spiergroepen) {
+		if(value.spiergroepen) {
 			// Converting the comma seperated list into an array and iterating over it.
-			element.spiergroepen.split(',').forEach(element => {
+			value.spiergroepen.split(',').forEach(element => {
 				// Each musslegroup has it's own span.
 				const attrib = document.createElement('p');
 				attrib.classList.add('musclegroup');
@@ -125,15 +136,15 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
-		desc.innerText = element.description;
+		desc.innerText = value.description;
 		article.appendChild(desc);
 		const groups = document.createElement('span');
 		groups.classList.add('tags');
 		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
-		if(element.images && element.images[0])
-			img.src = element.images[0];
+		if(value.images && value.images[0])
+			img.src = value.images[0];
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
@@ -143,14 +154,14 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 			btn.textContent = 'Voeg toe aan schema';
 			article.appendChild(btn);
 		}
-		if(element.favorite != undefined) {
+		if(value.favorite != undefined) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
 			checkboxLabel.innerHTML = `<svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox"/>`;
 			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
-			checkboxLabel.style.fill = (element.favorite)? "yellow" : "none";
+			checkboxLabel.style.fill = (value.favorite)? "yellow" : "none";
 			checkboxLabel.style.cursor = "pointer";
-			checkboxInput.checked = element.favorite;
+			checkboxInput.checked = value.favorite;
 			// checkboxInput.id = element.ID.toString();
 			checkboxInput.hidden = true;
 			checkboxInput.addEventListener('input',
@@ -159,7 +170,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 					this.disabled = true;
 					const checked = (checkboxLabel.style.fill == "yellow");
 					var waiter = setFavorites([{
-						oefening: element.ID,
+						oefening: value.ID,
 						remove: checked
 					}]);
 					waiter.done(() => {
@@ -175,8 +186,25 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 			);
 			article.appendChild(checkboxLabel);
 		}
-		div.appendChild(article);
-		container.appendChild(div);
+		if(page != 'work') {
+			(container as HTMLElement).appendChild(article);
+		} else {
+			// Because there's potentually mulitple or no categories the article belongs to we add a copy to each and delete the original.
+			(value.workout as string[]).forEach((value: string, _index?: number, _obj?: string[]): void => {
+				switch(value) {
+					case "Cardio":
+						((container as HTMLElement[])[0] as HTMLElement).appendChild(article.cloneNode(true));
+						break;
+					case "Kracht":
+						((container as HTMLElement[])[1] as HTMLElement).appendChild(article.cloneNode(true));
+						break;
+					case "Rug":
+						((container as HTMLElement[])[2] as HTMLElement).appendChild(article.cloneNode(true));
+						break;
+				}
+			});
+			article.remove();
+		}
 	});
 }
 /**
@@ -189,7 +217,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		cache: true,
 		dataType: "json",
 		method: "GET",
-		url: "./php/getOefeningen2.php",
+		url: "./php/getOefeningen.php",
 		success: ajax_oefeningen,
 		error: ajax_error
 	};
@@ -205,7 +233,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		async: true,
 		dataType: "json",
 		method: "POST",
-		url: "./php/setFavorites2.php",
+		url: "./php/setFavorites.php",
 		data: JSON.stringify(favorites),
 		error: ajax_error,
 		/**
@@ -216,7 +244,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		 ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.*/
 		success: function(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR) {
 			if(!('code' in data))
-				return errorHandling(jqXHR, "parsererror");
+				return ajax_error(jqXHR, "parsererror");
 			if(data.code != 200)
 				return console.error(data);
 		}

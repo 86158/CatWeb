@@ -8,7 +8,7 @@ function returnPage(): string {
 	// perms is used to track the permissionlevel of the user.
 	$m_perms = -1;
 	// Logout
-	if(isset($_POST['logout']) || isset($_GET['logout'])) {
+	if(isset($_POST['logout'])) {
 		session_unset();
 	// Create new user.
 	} elseif(isset($_POST['formID']) && $_POST['formID'] === 'newUser') {
@@ -25,6 +25,8 @@ function returnPage(): string {
 		if(is_string($m_perms)) {
 			echo '<p class=error role=alert>'. $m_perms .'</p>';
 			$m_perms = -1;
+			unset($_SESSION['ID']);
+			unset($_SESSION['loginToken']);
 		}
 	}
 	// Return the default page if `page` is not defined.
