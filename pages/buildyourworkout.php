@@ -3,7 +3,10 @@ CheckIfPageReloaded();
 SessionAdd();
 SessionChange();
 BeginForm();
-if($_SESSION['workoutGeslacht'] == ''){
+if($_SESSION['workoutStart'] == false){
+    ParagraphBYW();
+}
+else if($_SESSION['workoutGeslacht'] == ''){
     QuestionGeslacht();
 }
 else if(empty($_SESSION['workoutDoel'])){
@@ -19,4 +22,5 @@ else{
     echo 'Succes';
 }
 EndForm();
+var_dump($_SESSION);
 ?>

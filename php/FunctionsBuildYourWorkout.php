@@ -7,35 +7,35 @@
                 <h4>Welke spiergroep(en) wilt u trainen?</h4>
                 <!-- Triceps -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="triceps" id="inputTriceps" value="inputTriceps">
+                    <input class="form-check-input" type="checkbox" name="triceps" id="inputTriceps" value="triceps">
                     <label class="form-check-label" for="inputTriceps">
                         Triceps
                     </label>
                 </div>
                 <!-- Rug -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="rug" id="inputRug" value="inputRug">
+                    <input class="form-check-input" type="checkbox" name="rug" id="inputRug" value="rug">
                     <label class="form-check-label" for="inputRug">
                         Rug
                     </label>
                 </div>
                 <!-- Buik -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="buik" id="inputBuik" value="inputBuik">
+                    <input class="form-check-input" type="checkbox" name="buik" id="inputBuik" value="buik">
                     <label class="form-check-label" for="inputBuik">
                         Buik
                     </label>
                 </div>
                 <!-- Hamstring -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="inputHamstring">
+                    <input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="hamstring">
                     <label class="form-check-label" for="inputHamstring">
                         Hamstring
                     </label>
                 </div>
                 <!-- Biceps -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="inputBiceps">
+                    <input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="biceps">
                     <label class="form-check-label" for="inputBiceps">
                         Biceps
                     </label>
@@ -58,13 +58,17 @@
     }
 
     function EndForm(){
-        ?>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        </div>
-        </section>
-        <?php
+        echo '</div>';
+        if($_SESSION['workoutStart'] == false){
+            echo '<button type="submit" class="btn btn-primary">Start</button>';
+        }    
+        else if(empty($_SESSION['workoutSpier'])){
+            echo '<button type="submit" class="btn btn-primary">Volgende</button>';
+        }
+        else if($_SESSION['workoutAantal'] == ''){
+            echo '<button type="submit" class="btn btn-primary">Finish</button>';
+        }    
+        echo '</form></div></section>';
     }
 
     function QuestionGeslacht(){
@@ -74,21 +78,21 @@
                 <h4> Wat is uw geslacht?</h4>
                 <!-- Vrouw -->
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="geslacht" id="inputVrouw" value="inputVrouw">
+                    <input class="form-check-input" type="radio" name="geslacht" id="inputVrouw" value="vrouw">
                     <label class="form-check-label" for="inputVrouw">
                         Vrouw
                     </label>
                 </div>
                 <!-- Man -->
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="geslacht" id="inputMan" value="inputMan">
+                    <input class="form-check-input" type="radio" name="geslacht" id="inputMan" value="man">
                     <label class="form-check-label" for="inputMan">
                         Man
                     </label>
                 </div>
                 <!-- Neutraal -->
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="geslacht" id="inputNeutraal" value="inputNeutraal">
+                    <input class="form-check-input" type="radio" name="geslacht" id="inputNeutraal" value="neutraal">
                     <label class="form-check-label" for="inputNeutraal">
                         Neutraal
                     </label>
@@ -105,21 +109,21 @@
                 <h4>Wat is uw doel?</h4>
                 <!-- Afslanken -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="afslanken" id="inputAfslanken" value="inputAfslanken">
+                    <input class="form-check-input" type="checkbox" name="afslanken" id="inputAfslanken" value="afslanken">
                     <label class="form-check-label" for="inputAfslanken">
                         Afslanken
                     </label>
                 </div>
                 <!-- Spier Opbouw -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="spier" id="inputSpier" value="inputSpier">
+                    <input class="form-check-input" type="checkbox" name="spier" id="inputSpier" value="spier">
                     <label class="form-check-label" for="inputSpier">
                         Spier Opbouw
                     </label>
                 </div>
                 <!-- Conditie -->
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="conditie" id="inputCondite" value="inputConditie">
+                    <input class="form-check-input" type="checkbox" name="conditie" id="inputConditie" value="conditie">
                     <label class="form-check-label" for="inputConditie">
                         Conditie
                     </label>
@@ -136,21 +140,21 @@
                 <h4>Wat is het aantal oefeningen dat u wilt doen?</h4>
                 <!-- 3 oefeningen -->
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="oefeningen" id="inputDrieOefeningen" value="inputDrieOefeningen">
+                    <input class="form-check-input" type="radio" name="oefeningen" id="inputDrieOefeningen" value="drie">
                     <label class="form-check-label" for="inputDrieOefeningen">
                         3 oefeningen
                     </label>
                 </div>
                 <!-- 4 oefeningen -->
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="oefeningen" id="inputVierOefeningen" value="inputVierOefeningen">
+                    <input class="form-check-input" type="radio" name="oefeningen" id="inputVierOefeningen" value="vier">
                     <label class="form-check-label" for="inputVierOefeningen">
                         4 oefeningen
                     </label>
                 </div>
                 <!-- 5 oefeningen -->
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="oefeningen" id="inputVijfOefeningen" value="inputVijfOefeningen">
+                    <input class="form-check-input" type="radio" name="oefeningen" id="inputVijfOefeningen" value="vijf">
                     <label class="form-check-label" for="inputVijfOefeningen">
                         5 oefeningen
                     </label>
@@ -161,6 +165,10 @@
     }
 
     function SessionAdd(){
+        if(!isset($_SESSION['workoutStart']))
+        {
+            $_SESSION['workoutStart'] = '';
+        }
         if(!isset($_SESSION['workoutGeslacht']))
         {
             $_SESSION['workoutGeslacht'] = '';
@@ -180,6 +188,9 @@
     }
 
     function SessionChange(){
+        if(isset($_POST['start'])){
+            $_SESSION['workoutStart'] = $_POST['start'];
+        }
         if(isset($_POST['geslacht'])){
             $_SESSION['workoutGeslacht'] = $_POST['geslacht'];
         }
@@ -201,10 +212,16 @@
     }
     function CheckIfPageReloaded(){
         if($_SERVER['REQUEST_METHOD'] != 'POST'){
+            unset($_SESSION['workoutStart']);
             unset($_SESSION['workoutGeslacht']);
             unset($_SESSION['workoutDoel']);
             unset($_SESSION['workoutSpier']);
             unset($_SESSION['workoutAantal']);
         }
+    }
+
+    function ParagraphBYW(){
+        echo '<p>Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
+        echo '<input type="hidden" name="start" value="true">';
     }
 ?>
