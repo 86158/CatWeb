@@ -1,5 +1,5 @@
 *.js
 node_modules/
 .vscode/
-assets/css/*
+assets/css/
 php/report-*.json
