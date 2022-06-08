@@ -22,5 +22,4 @@ else{
     echo 'Succes';
 }
 EndForm();
-var_dump($_SESSION);
 ?>
