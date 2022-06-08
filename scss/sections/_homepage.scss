@@ -1,57 +1,56 @@
 @use '../custom' as *;
 
 .homepage-section {
-    padding-bottom: 56px;
+	padding-bottom: 56px;
 
-    .container-fluid {
-        padding: 0;
+	.container-fluid {
+		padding: 0;
 
-        .carousel-inner {
-            .carousel-item {
-                height: 757px;
+		.carousel-inner {
+			.carousel-item {
+				height: 757px;
 
-                img {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    min-height: 755px;
-                    background-color: 0.5 $black !important;
-                }
+				img {
+					position: absolute;
+					top: 0;
+					left: 0;
+					min-height: 755px;
+				}
 
-                .carousel-caption {
-                    height: 60%;
-                    animation: fadeIn 5s;
+				.carousel-caption {
+					height: 60%;
+					animation: fadeIn 5s;
 
-                    button {
-                        width: 200px;
-                        height: 50px;
-                        color: $white;
-                    }
-                }
+					button {
+						width: 200px;
+						height: 50px;
+						color: $white;
+					}
+				}
 
-                // The animation of the text in the slideshow making it looking fading in.
-                @keyframes fadeIn {
-                    0% {
-                        opacity: 0;
-                        transform: translateY(-30%);
-                    }
+				// The animation of the text in the slideshow making it looking fading in.
+				@keyframes fadeIn {
+					0% {
+						opacity: 0;
+						transform: translateY(-30%);
+					}
 
-                    20% {
-                        opacity: 0.5;
-                        transform: translateY(0%);
-                    }
+					20% {
+						opacity: 0.5;
+						transform: translateY(0%);
+					}
 
-                    50% {
-                        opacity: 1;
-                        transform: translateY(0%);
-                    }
+					50% {
+						opacity: 1;
+						transform: translateY(0%);
+					}
 
-                    100% {
-                        opacity: 1;
-                        transform: translateY(0%);
-                    }
-                }
-            }
-        }
-    }
+					100% {
+						opacity: 1;
+						transform: translateY(0%);
+					}
+				}
+			}
+		}
+	}
 }
