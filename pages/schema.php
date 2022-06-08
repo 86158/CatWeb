@@ -16,7 +16,7 @@
 					<div class="col-6 d-flex">
 						<!-- Search -->
 						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      					<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+							<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
 					</div>
 				</div>
 			</div>
@@ -90,8 +90,8 @@
 
 			<!-- Vertical line in between two columns -->
 			<div class="col-1 text-center">
-                <div class="vr h-100 mt-3"></div>
-            </div>
+				<div class="vr h-100 mt-3"></div>
+			</div>
 
 			<div class="col-lg-4 col-12 col-custom col-test">
 				<div class="header text-center">
