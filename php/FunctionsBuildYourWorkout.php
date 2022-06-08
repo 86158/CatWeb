@@ -60,7 +60,11 @@
     }
 
     function EndForm(){
-        echo '</div></form></div></section>';
+        echo '</div>';
+        if ($_SESSION['workoutStart'] == false){
+            SubmitButton();
+        }
+        echo '</form></div></section>';
     }
 
     function QuestionGeslacht(){
