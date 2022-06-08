@@ -230,6 +230,10 @@
         echo '<input type="hidden" name="start" value="true">';
     }
 
+    function AddJS(){
+        echo '<div class="js-local" hidden><script src="js/ajax_communication.js" defer></script><script src="js/tableFunctions.js" defer></script></div>';
+    }
+
     function SubmitButton(){
         if($_SESSION['workoutStart'] == false){
             echo '<button type="submit" class="btn btn-primary">Start</button>';

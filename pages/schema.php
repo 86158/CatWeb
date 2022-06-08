@@ -1,4 +1,4 @@
-<section id="js-oefeningen" class="schema-section">
+<section class="schema-section">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-7 col-12">
@@ -22,8 +22,9 @@
 			</div>
 		</div>
 		<div class="row">
+			<!-- Oefeningen -->
+			<section id="js-oefeningen" class="col-7 col-custom overflow-auto mt-3"></section>
 			<div class="col-7 col-custom overflow-auto mt-3">
-				<!-- Oefeningen -->
 				<div class="oefeningen-schema">
 					<div class="row row-oefening border border-dark rounded my-3 py-2 me-1">
 						<div class="col-8">
@@ -113,7 +114,6 @@
 		</div>
 	</div>
 </section>
-<!-- <div class="js-local" hidden>
+<div class="js-local" hidden>
 	<script src="js/ajax_communication.js" defer></script>
-	<script src="js/tableFunctions.js" defer></script>
-</div> -->
+</div>

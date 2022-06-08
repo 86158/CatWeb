@@ -90,10 +90,9 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 	data.output.forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
 		if(page == 'work' && (value.workout == null || value.workout.length < 1)) return;
 		const article = document.createElement('article');
-		article.classList.add('col');
-		article.classList.add('oefeningen');
+		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1");
 		// The header element
-		const header = document.createElement('h2');
+		const header = document.createElement('h4');
 		header.innerText = value.name;
 		article.appendChild(header);
 		// The atributes under the header but above the description. Each atribute has its own span.
@@ -114,7 +113,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		// 		: "-";
 		// atribs.appendChild(call);
 		//A span for the type of exercise.
-		const oType = document.createElement('p');
+		const oType = document.createElement('span');
 		oType.classList.add('difficulty');
 		oType.innerText =
 			(value.type)?
@@ -126,7 +125,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 			// Converting the comma seperated list into an array and iterating over it.
 			value.spiergroepen.split(',').forEach(element => {
 				// Each musslegroup has it's own span.
-				const attrib = document.createElement('p');
+				const attrib = document.createElement('span');
 				attrib.classList.add('musclegroup');
 				attrib.innerText = element;
 				atribs.appendChild(attrib);
@@ -138,7 +137,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
 		article.appendChild(desc);
-		const groups = document.createElement('span');
+		const groups = document.createElement('p');
 		groups.classList.add('tags');
 		article.appendChild(groups);
 		// Lastly the image if one exists.

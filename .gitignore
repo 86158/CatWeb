@@ -2,3 +2,4 @@
 node_modules/
 .vscode/
 assets/css/*
+php/report-*.json
