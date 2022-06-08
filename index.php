@@ -1,4 +1,7 @@
 <?php
+// Headers
+header("Access-Control-Allow-Methods: GET, POST");
+header("Content-Security-Policy-Report-Only: report-uri php/report.php; default-src 'none'; connect-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/ https://code.jquery.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/; font-src 'self' https://cdn.jsdelivr.net/npm/; img-src 'self' https://*; media-src https://youtu.be/;"); // frame-src 'none'; manifest-src 'none'; object-src 'none'
 // The session_start() function must be the very first thing in your document. Before any HTML tags.
 // If we need sessions to exist:
 /*if(session_status() == PHP_SESSION_DISABLED) {
