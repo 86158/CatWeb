@@ -8,3 +8,54 @@ article.oefeningen-schema>p.explanation {
 article.oefeningen-schema span {
 	margin-right: 1em;
 }
+/* Cropping the images with css */
+img[src="https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg"] {
+	/* Positioning it based on it's used size */
+	margin: -29% -24% -29% -20%;
+	padding: 5vw;
+	/* Hidding the unused parts of the image */
+	clip-path: inset(30% 25% 30% 22%);
+	/* In case clip-path is not supported */
+	z-index: -1;
+	position: relative;
+}
+img[src="https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg"] {
+	/* Positioning it based on it's used size */
+	margin: -15% -15% -20% -10%;
+	padding: 5vw;
+	/* Hidding the unused parts of the image */
+	clip-path: inset(23% 15% 30% 12%);
+	/* In case clip-path is not supported */
+	z-index: -1;
+	position: relative;
+}
+img[src="https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg"] {
+	/* Positioning it based on it's used size */
+	margin: -19.5% -7% -15% -4%;
+	padding: 5vw;
+	/* Hidding the unused parts of the image */
+	clip-path: inset(27% 7% 21% 5%);
+	/* In case clip-path is not supported */
+	z-index: -1;
+	position: relative;
+}
+img[src="https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg"] {
+	/* Positioning it based on it's used size */
+	margin: -35% -6% -5.5% -5%;
+	padding: 5vw;
+	/* Hidding the unused parts of the image */
+	clip-path: inset(50% 6% 8% 6%);
+	/* In case clip-path is not supported */
+	z-index: -1;
+	position: relative;
+}
+img[src="https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg"] {
+	/* Positioning it based on it's used size */
+	margin: -15% -20% -19% -19%;
+	padding: 5vw;
+	/* Hidding the unused parts of the image */
+	clip-path: inset(20% 20% 25% 20%);
+	/* In case clip-path is not supported */
+	z-index: -1;
+	position: relative;
+}
