@@ -13,10 +13,9 @@
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"strict": true,
-		"target": "ES2015",
-		"checkJs": true
+		"target": "ES2015" //, "outDir": "js"
 	},
 	"include": [
-		"js/**/*.ts"
+		"js", "ts"
 	]
 }

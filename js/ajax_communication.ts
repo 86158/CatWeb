@@ -137,9 +137,6 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
 		article.appendChild(desc);
-		const groups = document.createElement('p');
-		groups.classList.add('tags');
-		article.appendChild(groups);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
 		img.loading = "lazy";

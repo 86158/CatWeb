@@ -36,7 +36,7 @@ function returnPage(): string {
 		case 'build':
 			return 'buildyourworkout.php';
 		case 'prac':
-			return 'oefeningen.php';
+			return 'oefeningen.html';
 		case 'schema':
 			//if($m_perms < 0) return 'login.html';
 			return 'schema.php';
