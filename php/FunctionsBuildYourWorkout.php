@@ -70,7 +70,7 @@
     function QuestionGeslacht(){
         ?>
         <div class="section-gender row justify-content-center">
-            <div class="col-3">
+            <div class="col-3 first">
                 <br>
                 <br>
                 <br>
@@ -96,9 +96,7 @@
                         Neutraal
                     </label>
                 </div>
-                <div class="btn btn-primary submit-button mt-4">
-                    <?php SubmitButton();?>
-                </div>
+                 <?php SubmitButton();?>
             </div>
             <div class="col-3">
                 <img src="img/BYW1.jpg" alt="Gender">
@@ -243,7 +241,7 @@
             echo '<button type="submit" class="btn btn-primary">Start</button>';
         }    
         else if(empty($_SESSION['workoutSpier'])){
-            echo '<button type="submit" class="btn btn-primary align-self-center">Volgende</button>';
+            echo '<button type="submit" class="btn btn-primary align-self-center mt-4" style="color: white;">Volgende</button>';
         }
         else if($_SESSION['workoutAantal'] == ''){
             echo '<button type="submit" class="btn btn-primary">Finish</button>';
