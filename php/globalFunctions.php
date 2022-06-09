@@ -39,7 +39,7 @@ function returnPage(): string {
 			return 'oefeningen.html';
 		case 'schema':
 			//if($m_perms < 0) return 'login.html';
-			return 'schema.php';
+			return 'schema.html';
 		case 'work':
 			//if($m_perms < 0) return 'login.html';
 			return 'workout.php';
