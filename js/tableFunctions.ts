@@ -12,18 +12,16 @@ function articleFilter(container: HTMLElement, searchQuery?: string|RegExp|undef
 		const article = articles[index] as HTMLElement;
 		article.hidden = false;
 		const header = article.querySelector('h4');
-		const tagParaf = article.querySelector('p.tags');
+		const tagParaf = article.querySelectorAll<HTMLSpanElement>('p.atributes>span.musclegroup');
 		if(searchQuery instanceof RegExp && header != null && !searchQuery.test(header.innerText)) {
 			article.hidden = true;
 			continue;
 		}
 		if(tags != undefined && tagParaf != null && tags.length > 0) {
 			var noMatch = true;
-			const children = tagParaf.children as HTMLCollectionOf<HTMLSpanElement>;
-			for(let index = 0; index < children.length; index++) {
-				const span = children[index] as HTMLSpanElement;
-				const test = span.innerText.replace('#', '');
-				if(tags.findIndex((value) => { return value == test}) != -1) {
+			for(let index = 0; index < tagParaf.length; index++) {
+				const spanText = (tagParaf[index] as HTMLSpanElement).innerText.toLowerCase();
+				if(tags.findIndex((value: string, _index: number, _obj: string[]) => {return value.toLowerCase() == spanText;}) != -1) {
 					noMatch = false;
 					break;
 				}
@@ -48,11 +46,9 @@ function handleFilter(event: MouseEvent): void {
 					if(query == '') query = undefined;
 					break;
 				case 'tags':
-					if(pair[1].toString() == '') {
-						tags = undefined;
-					} else {
-						tags = pair[1].toString().split(',');
-					}
+					tags = (pair[1].toString() == '')?
+						undefined :
+						pair[1].toString().split(',');
 					break;
 			}
 		}
