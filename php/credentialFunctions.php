@@ -33,7 +33,7 @@ function strpositions(string $haystack, string $needle, int $offset = 0): array 
  * * 'b' for BLOBs
  * 
  * A BLOB is a string that exceeds the max_allowed_packet size of the server. It's send in a diffrent way.
- * @param string|int|float ...$vars
+ * @param string|int|float|null ...$vars
  * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
  * @throws InvalidArgumentException If $types does not match the constrants.
  * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
@@ -77,24 +77,29 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 			}
 			/** @var (string|int|float|null)[] $blobless A copy of $vars that had it's blob values replaced with null values.*/
 			$blobless = $vars;
+			/** @var int[] $long_data */
 			$long_data = [];
-			foreach(strpositions($types, "b") as $value) {
-				$blobless[$value] = null;
-				$long_data[] = $value;
+			foreach(strpositions($types, "b") as $index) {
+				$blobless[$index] = null;
+				$long_data[] = $index;
 			}
+			// Bind the data but use null for blobs.
 			if(!($m_prep->bind_param($types, ...$blobless))) {
 				$error = $m_prep->error;
 				$m_prep->close(); if($m_close) $conn->close();
 				return $error;
 			}
-			foreach ($long_data as $value) {
-				$split = str_split($vars[$value], $maxp);
+			foreach($long_data as $param_num) {
+				// Split each blob into the maxiumum allowed size to send.
+				/** @var string[]|false $split */
+				$split = str_split($vars[$param_num], $maxp);
 				if($split === false) {
 					$m_prep->close(); if($m_close) $conn->close();
 					return '"SELECT @@global.max_allowed_packet" returned a value less than 1';
 				}
-				foreach($split as $value) {
-					if(!(mysqli_stmt_send_long_data($m_prep, $value, $value))) {
+				// Send each part seperately.
+				foreach($split as $blob_part) {
+					if(!(mysqli_stmt_send_long_data($m_prep, $param_num, $blob_part))) {
 						$error = $m_prep->error;
 						$m_prep->close(); if($m_close) $conn->close();
 						return $error;
