@@ -4,6 +4,7 @@
 mysqli_report(MYSQLI_REPORT_OFF);
 /**
  * Wrapper for class mysqli.
+ * @param mysqli|null $conn The connection you want to use. Pass null to use a default mysqli() instance.
  * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
  * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type. 's' for string, 'd' for float, 'i' for int, 'b' for BLOB
  * @param string|int|float|BLOB ...$vars
@@ -11,7 +12,7 @@ mysqli_report(MYSQLI_REPORT_OFF);
  * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
  * @throws InvalidArgumentException If $types does not match the constrants.
  */
-function DatbQuery(mysqli &$conn = null, string $query, string $types = '', ...$vars) {
+function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$vars) {
 	// Ensure types doesn't contain obvious errors.
 	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
 	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
