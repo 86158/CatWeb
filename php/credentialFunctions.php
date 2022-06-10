@@ -3,14 +3,40 @@
 // Reporting throws an error while I want to handle said errors in the code.
 mysqli_report(MYSQLI_REPORT_OFF);
 /**
+ * Find the positions of the occurrences of a substring in a string
+ * @param string $haystack The string to search in
+ * @param string $needle  If needle is not a string, it is converted to an integer and applied as the ordinal value of a character.
+ * @param int $offset If specified, search will start this number of characters counted from the beginning of the string. Unlike {@see strrpos()} and {@see strripos()}, the offset cannot be negative.
+ * @return int[] Returns the positions where the needle exists relative to the beginnning of the haystack string (independent of search direction or offset). Also note that string positions start at 0, and not 1.
+ * @see https://stackoverflow.com/a/15737449
+ */
+function strpositions(string $haystack, string $needle, int $offset = 0): array {
+	/** @var int[] $positions */
+	$positions = [];
+	while(($offset = strpos($haystack, $needle, $offset)) !== false) {
+		/** @var int $offset */
+		$positions[] = $offset;
+		$offset += strlen($needle);
+	}
+	return $positions;
+}
+/**
  * Wrapper for class mysqli.
  * @param mysqli|null $conn The connection you want to use. Pass null to use a default mysqli() instance.
  * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
- * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type. 's' for string, 'd' for float, 'i' for int, 'b' for BLOB
- * @param string|int|float|BLOB ...$vars
+ * 
+ * The lenght may not be larger than the max_allowed_packet size of the server.
+ * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type.
+ * * 's' for strings
+ * * 'd' for floats
+ * * 'i' for integers
+ * * 'b' for BLOBs
+ * 
+ * A BLOB is a string that exceeds the max_allowed_packet size of the server. It's send in a diffrent way.
+ * @param string|int|float ...$vars
  * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
- * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
  * @throws InvalidArgumentException If $types does not match the constrants.
+ * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
  */
 function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$vars) {
 	// Ensure types doesn't contain obvious errors.
@@ -33,10 +59,48 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 	}
 	// Attempt to bind parameters to their relative placeholders.
 	if($types != '') {
-		if(!($m_prep->bind_param($types, ...$vars))) {
-			$error = $m_prep->error;
-			$m_prep->close(); if($m_close) $conn->close();
-			return $error;
+		// Check if there are any blob values.
+		if(strpos($types, 'b') === false) {
+			if(!($m_prep->bind_param($types, ...$vars))) {
+				$error = $m_prep->error;
+				$m_prep->close(); if($m_close) $conn->close();
+				return $error;
+			}
+		// Handle blob values.
+		} else {
+			// Check the max lenght we may send at a time.
+			$maxp = $conn->query('SELECT @@global.max_allowed_packet')->fetch_array(MYSQLI_NUM)[0];
+			if(!is_int($maxp)) {
+				$error = $conn->error;
+				if($m_close) $conn->close();
+				return $error;
+			}
+			/** @var (string|int|float|null)[] $blobless A copy of $vars that had it's blob values replaced with null values.*/
+			$blobless = $vars;
+			$long_data = [];
+			foreach(strpositions($types, "b") as $value) {
+				$blobless[$value] = null;
+				$long_data[] = $value;
+			}
+			if(!($m_prep->bind_param($types, ...$blobless))) {
+				$error = $m_prep->error;
+				$m_prep->close(); if($m_close) $conn->close();
+				return $error;
+			}
+			foreach ($long_data as $value) {
+				$split = str_split($vars[$value], $maxp);
+				if($split === false) {
+					$m_prep->close(); if($m_close) $conn->close();
+					return '"SELECT @@global.max_allowed_packet" returned a value less than 1';
+				}
+				foreach($split as $value) {
+					if(!(mysqli_stmt_send_long_data($m_prep, $value, $value))) {
+						$error = $m_prep->error;
+						$m_prep->close(); if($m_close) $conn->close();
+						return $error;
+					}
+				}
+			}
 		}
 	}
 	// Execute the querry.
