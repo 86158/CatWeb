@@ -89,8 +89,8 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 				$m_prep->close(); if($m_close) $conn->close();
 				return $error;
 			}
+			// Split each blob into the maxiumum allowed size to send.
 			foreach($long_data as $param_num) {
-				// Split each blob into the maxiumum allowed size to send.
 				/** @var string[]|false $split */
 				$split = str_split($vars[$param_num], $maxp);
 				if($split === false) {
@@ -225,23 +225,6 @@ function getInfo() {
  * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
  */
 function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
-	$m_iv = "0000000000000069";
-	$m_result = DatbQuery(null, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_object($m_result))
-		return 'Database request mislukt at SELECT `email`';
-	$m_result = $m_result->fetch_assoc();
-	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
-	// We basically go over all given arguments and change those that are set.
-	if(isset($username))
-		DatbQuery(null, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($perms))
-		DatbQuery(null, 'UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
-	return null;
-}
-/** Update/change user info
- * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
- */
-function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
 	$m_iv = "0000000000000069";
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 	// Check if the connection succeeded.
