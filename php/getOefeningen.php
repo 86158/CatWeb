@@ -39,7 +39,7 @@ function getOefeninging(): array {
 		$perm = getPerms($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
 	}
 	if(!is_int($perm)) {
-		$result = DatbQuery(
+		$result = DatbQuery(null,
 			"SELECT
 				o.*,
 				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
@@ -59,7 +59,7 @@ function getOefeninging(): array {
 			ORDER BY o.ID ASC;"
 		);
 	} else {
-		$result = DatbQuery(
+		$result = DatbQuery(null,
 			"SELECT
 				o.*,
 				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
