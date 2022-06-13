@@ -225,7 +225,7 @@
     }
 
     function ParagraphBYW(){
-        echo '<p class="beginning-text fs-5 text-center">Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
+        echo '<p class="beginning-text fs-5 text-center width="60%"">Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
         echo '<input type="hidden" name="start" value="true">';
     }
     
@@ -234,9 +234,9 @@
         SubmitButton();
         ?>
         <div class="images d-flex justify-content-around mt-5">
-            <img class="" src="img/water.jpg" alt="water" style="width: 15%">;
-            <img class="" src="img/graph.jpg" alt="graph" style="width: 15%">;
-            <img class="" src="img/weight.jpg" alt="weight" style="width: 15%">;
+            <img class="" src="img/water.jpg" alt="water" style="width: 15%">
+            <img class="" src="img/graph.jpg" alt="graph" style="width: 15%">
+            <img class="" src="img/weight.jpg" alt="weight" style="width: 15%">
         </div>
         <?php
     }
