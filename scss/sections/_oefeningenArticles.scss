@@ -16,7 +16,7 @@ article.oefeningen-schema>p.atributes>span.difficulty {
 article.oefeningen-schema>p.atributes>span.musclegroup {
 	font-style: italic;
 }
-article.oefeningen-schema>p.explanation {
+article.oefeningen-schema>p.explanation, article.oefeningen-schema>p.explanation>ul, article.oefeningen-schema>p.explanation>ol {
 	margin-bottom: 0;
 }
 article.oefeningen-schema>img {

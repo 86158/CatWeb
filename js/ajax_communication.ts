@@ -34,6 +34,48 @@ interface setFavorite {
 	/** Set to true to remove it instead of add a favorite.*/
 	remove: boolean;
 }
+function listParser(element: HTMLElement): void {
+	// Match unordered lists
+	var matchAll = element.innerHTML.match(/(?:<br> ?• [^<]+)+(?:<br>)?/g);
+	if(matchAll != null) {
+		matchAll.forEach(value => {
+			const result = value.match(/(?<= ?• )[^<]+/g);
+			if(result == null) return;
+			var modify = '<ul>';
+			result.forEach(subvalue => {
+				modify += '<li>'+ subvalue +'</li>';
+			});
+			modify += '</ul>';
+			element.innerHTML = element.innerHTML.replace(value, modify);
+		});
+	}
+	// Match ordered lists and ensure they get the correct number.
+	matchAll = element.innerHTML.match(/(?:<br>\d+\.[^<]+)+(?:<br>)?/g);
+	if(matchAll != null) {
+		matchAll.forEach(value => {
+			var index: number = 0;
+			var maxValue: number = 0;
+			const lines: string[] = [];
+			while(index <= value.length) {
+				const result = / ?(\d+)\. ([^<]+)/.exec(value.substring(index));
+				if(result == null) break;
+				index += (result[0] as string).length;
+				const resultIndex = Number(result[1]) - 1;
+				if(resultIndex > maxValue) maxValue =resultIndex;
+				lines[resultIndex] = result[2] as string;
+			}
+			var modify = '<ol>';
+			for(let index = 0; index <= maxValue; index++) {
+				const result = lines[index];
+				modify += '<li>';
+				if(result != undefined) modify += result;
+				modify += '</li>';
+			}
+			modify += '</ol>';
+			element.innerHTML = element.innerHTML.replace(value, modify);
+		});
+	}
+}
 /**
  * A function to be called if the request fails.
  * The function receives three arguments:
@@ -136,6 +178,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
+		listParser(desc);
 		article.appendChild(desc);
 		// Lastly the image if one exists.
 		const img = document.createElement('img');
