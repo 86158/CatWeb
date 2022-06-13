@@ -38,11 +38,11 @@ function listParser(element: HTMLElement): void {
 	// Match unordered lists
 	var matchAll = element.innerHTML.match(/(?:<br> ?• [^<]+)+(?:<br>)?/g);
 	if(matchAll != null) {
-		matchAll.forEach(value => {
+		matchAll.forEach(function(this: any, value: string, _index: number, _array: string[]): void {
 			const result = value.match(/(?<= ?• )[^<]+/g);
 			if(result == null) return;
 			var modify = '<ul>';
-			result.forEach(subvalue => {
+			result.forEach(function(this: any, subvalue: string, _index: number, _array: string[]): void {
 				modify += '<li>'+ subvalue +'</li>';
 			});
 			modify += '</ul>';
@@ -52,7 +52,7 @@ function listParser(element: HTMLElement): void {
 	// Match ordered lists and ensure they get the correct number.
 	matchAll = element.innerHTML.match(/(?:<br>\d+\.[^<]+)+(?:<br>)?/g);
 	if(matchAll != null) {
-		matchAll.forEach(value => {
+		matchAll.forEach(function(this: any, value: string, _index: number, _array: string[]): void {
 			var index: number = 0;
 			var maxValue: number = 0;
 			const lines: string[] = [];
@@ -61,7 +61,7 @@ function listParser(element: HTMLElement): void {
 				if(result == null) break;
 				index += (result[0] as string).length;
 				const resultIndex = Number(result[1]) - 1;
-				if(resultIndex > maxValue) maxValue =resultIndex;
+				if(resultIndex > maxValue) maxValue = resultIndex;
 				lines[resultIndex] = result[2] as string;
 			}
 			var modify = '<ol>';
@@ -90,7 +90,7 @@ function listParser(element: HTMLElement): void {
  * Note: This handler is not called for cross-domain script and cross-domain JSONP requests.
  * This is an Ajax Event.
  */
-function ajax_error(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|"parsererror"|null, errorThrown?: string) {
+function ajax_error(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|"parsererror"|null, errorThrown?: string): void {
 	console.error(textStatus);
 	if(errorThrown)
 		console.error(errorThrown);
@@ -102,7 +102,7 @@ function ajax_error(_jqXHR: JQuery.jqXHR, textStatus: "timeout"|"error"|"abort"|
  ** if specified; a string describing the status;
  ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.
  */
-function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR) {
+function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
 	if(!('code' in data))
 		return ajax_error(jqXHR, "parsererror");
 	if(data.code != 200 || data.output == undefined)
@@ -129,7 +129,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 	}
 	// For each row we add a article to the container.
 	// The element is created filled with data and then added to its container.
-	data.output.forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
+	data.output.forEach(function(this: any, value: site_oefeningen, _index: number, _array: site_oefeningen[]): void {
 		if(page == 'work' && (value.workout == null || value.workout.length < 1)) return;
 		const article = document.createElement('article');
 		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1");
@@ -165,11 +165,11 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		// The musslegroups a exercise uses as tags under the description.
 		if(value.spiergroepen) {
 			// Converting the comma seperated list into an array and iterating over it.
-			value.spiergroepen.split(',').forEach(element => {
+			value.spiergroepen.split(',').forEach(function(this: any, value: string, _index: number, _array: string[]): void {
 				// Each musslegroup has it's own span.
 				const attrib = document.createElement('span');
 				attrib.classList.add('musclegroup');
-				attrib.innerText = element;
+				attrib.innerText = value;
 				atribs.appendChild(attrib);
 			});
 		}
@@ -231,7 +231,7 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 			(container as HTMLElement).appendChild(article);
 		} else {
 			// Because there's potentually mulitple or no categories the article belongs to we add a copy to each and delete the original.
-			(value.workout as string[]).forEach((value: string, _index?: number, _obj?: string[]): void => {
+			(value.workout as string[]).forEach(function(this: any, value: string, _index: number, _obj: string[]): void {
 				switch(value) {
 					case "Cardio":
 						((container as HTMLElement[])[0] as HTMLElement).appendChild(article.cloneNode(true));
@@ -283,7 +283,7 @@ function getOefeningen(): JQuery.jqXHR<any> {
 		 ** The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function,
 		 ** if specified; a string describing the status;
 		 ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.*/
-		success: function(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR) {
+		success: function(this: JQuery.Ajax.AjaxSettingsBase<any>, data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
 			if(!('code' in data))
 				return ajax_error(jqXHR, "parsererror");
 			if(data.code != 200)
