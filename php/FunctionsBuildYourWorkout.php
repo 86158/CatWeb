@@ -61,9 +61,6 @@
 
     function EndForm(){
         echo '</div>';
-        if ($_SESSION['workoutStart'] == false){
-            SubmitButton();
-        }
         echo '</form></div></section>';
     }
 
@@ -228,8 +225,20 @@
     }
 
     function ParagraphBYW(){
-        echo '<p class="beginning-text fs-5 text-center">Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
+        echo '<p class="beginning-text fs-5 text-center width="60%"">Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
         echo '<input type="hidden" name="start" value="true">';
+    }
+    
+    function ImagesBYW(){
+
+        SubmitButton();
+        ?>
+        <div class="images d-flex justify-content-around mt-5">
+            <img class="" src="img/water.jpg" alt="water" style="width: 15%">
+            <img class="" src="img/graph.jpg" alt="graph" style="width: 15%">
+            <img class="" src="img/weight.jpg" alt="weight" style="width: 15%">
+        </div>
+        <?php
     }
 
     function AddJS(){
@@ -238,7 +247,7 @@
 
     function SubmitButton(){
         if($_SESSION['workoutStart'] == false){
-            echo '<div class="button-start d-flex justify-content-center mt-2"><button type="submit" class="btn btn-primary" style="color: white;">Start</button></div>';
+            echo '<div class="button-start d-flex justify-content-center mt-4"><button type="submit" class="btn btn-primary" style="color: white;">Start</button></div>';
         }    
         else if(empty($_SESSION['workoutSpier'])){
             echo '<button type="submit" class="btn btn-primary align-self-center mt-4" style="color: white;">Volgende</button>';

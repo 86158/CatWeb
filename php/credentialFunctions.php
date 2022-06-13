@@ -3,66 +3,42 @@
 // Reporting throws an error while I want to handle said errors in the code.
 mysqli_report(MYSQLI_REPORT_OFF);
 /**
- * Wrapper for class mysqli.
- * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
- * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type. 's' for string, 'd' for float, 'i' for int, 'b' for BLOB
- * @param string|int|float|BLOB ...$vars
- * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
- * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
- * @throws InvalidArgumentException If $types does not match the constrants.
+ * Find the positions of the occurrences of a substring in a string
+ * @param string $haystack The string to search in
+ * @param string $needle  If needle is not a string, it is converted to an integer and applied as the ordinal value of a character.
+ * @param int $offset If specified, search will start this number of characters counted from the beginning of the string. Unlike {@see strrpos()} and {@see strripos()}, the offset cannot be negative.
+ * @return int[] Returns the positions where the needle exists relative to the beginnning of the haystack string (independent of search direction or offset). Also note that string positions start at 0, and not 1.
+ * @see https://stackoverflow.com/a/15737449
  */
-function DatbQuery(string $query, string $types = '', ...$vars) {
-	// Ensure types doesn't contain obvious errors.
-	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
-	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
-	// Create connection based on hardcoded values.
-	try {
-		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
-	} catch (mysqli_sql_exception $th) {
-		return $th->getTraceAsString();
+function strpositions(string $haystack, string $needle, int $offset = 0): array {
+	/** @var int[] $positions */
+	$positions = [];
+	while(($offset = strpos($haystack, $needle, $offset)) !== false) {
+		/** @var int $offset */
+		$positions[] = $offset;
+		$offset += strlen($needle);
 	}
-	// Check if the connection succeeded.
-	if($m_conn->connect_error) return $m_conn->connect_error;
-	// Get the statement object and check for errors.
-	$m_prep = $m_conn->prepare($query);
-	if($m_prep == false) {
-		$error = $m_conn->error;
-		$m_conn->close();
-		return $error;
-	}
-	// Attempt to bind parameters to their relative placeholders.
-	if($types != '') {
-		if(!($m_prep->bind_param($types, ...$vars))) {
-			$error = $m_prep->error;
-			$m_prep->close(); $m_conn->close();
-			return $error;
-		}
-	}
-	// Execute the querry.
-	if(!$m_prep->execute()) {
-		$error = $m_prep->error;
-		$m_prep->close(); $m_conn->close();
-		return $error;
-	}
-	// Get the results.
-	$m_result = $m_prep->get_result();
-	if($m_result == false)
-		$m_result = ($m_prep->errno == 0)? $m_prep->affected_rows : $m_prep->error;
-	// close connection
-	$m_prep->close();
-	$m_conn->close();
-	return $m_result;
+	return $positions;
 }
 /**
  * Wrapper for class mysqli.
+ * @param mysqli|null $conn The connection you want to use. Pass null to use a default mysqli() instance.
  * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
- * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type. 's' for string, 'd' for float, 'i' for int, 'b' for BLOB
- * @param string|int|float|BLOB ...$vars
+ * 
+ * The lenght may not be larger than the max_allowed_packet size of the server.
+ * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type.
+ * * 's' for strings
+ * * 'd' for floats
+ * * 'i' for integers
+ * * 'b' for BLOBs
+ * 
+ * A BLOB is a string that exceeds the max_allowed_packet size of the server. It's send in a diffrent way.
+ * @param string|int|float|null ...$vars
  * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
- * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
  * @throws InvalidArgumentException If $types does not match the constrants.
+ * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
  */
-function DatbQuery_3(mysqli &$conn = null, string $query, string $types = '', ...$vars) {
+function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$vars) {
 	// Ensure types doesn't contain obvious errors.
 	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
 	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
@@ -83,10 +59,53 @@ function DatbQuery_3(mysqli &$conn = null, string $query, string $types = '', ..
 	}
 	// Attempt to bind parameters to their relative placeholders.
 	if($types != '') {
-		if(!($m_prep->bind_param($types, ...$vars))) {
-			$error = $m_prep->error;
-			$m_prep->close(); if($m_close) $conn->close();
-			return $error;
+		// Check if there are any blob values.
+		if(strpos($types, 'b') === false) {
+			if(!($m_prep->bind_param($types, ...$vars))) {
+				$error = $m_prep->error;
+				$m_prep->close(); if($m_close) $conn->close();
+				return $error;
+			}
+		// Handle blob values.
+		} else {
+			// Check the max lenght we may send at a time.
+			$maxp = $conn->query('SELECT @@global.max_allowed_packet')->fetch_array(MYSQLI_NUM)[0];
+			if(!is_int($maxp)) {
+				$error = $conn->error;
+				if($m_close) $conn->close();
+				return $error;
+			}
+			/** @var (string|int|float|null)[] $blobless A copy of $vars that had it's blob values replaced with null values.*/
+			$blobless = $vars;
+			/** @var int[] $long_data */
+			$long_data = [];
+			foreach(strpositions($types, "b") as $index) {
+				$blobless[$index] = null;
+				$long_data[] = $index;
+			}
+			// Bind the data but use null for blobs.
+			if(!($m_prep->bind_param($types, ...$blobless))) {
+				$error = $m_prep->error;
+				$m_prep->close(); if($m_close) $conn->close();
+				return $error;
+			}
+			// Split each blob into the maxiumum allowed size to send.
+			foreach($long_data as $param_num) {
+				/** @var string[]|false $split */
+				$split = str_split($vars[$param_num], $maxp);
+				if($split === false) {
+					$m_prep->close(); if($m_close) $conn->close();
+					return '"SELECT @@global.max_allowed_packet" returned a value less than 1';
+				}
+				// Send each part seperately.
+				foreach($split as $blob_part) {
+					if(!(mysqli_stmt_send_long_data($m_prep, $param_num, $blob_part))) {
+						$error = $m_prep->error;
+						$m_prep->close(); if($m_close) $conn->close();
+						return $error;
+					}
+				}
+			}
 		}
 	}
 	// Execute the querry.
@@ -119,9 +138,9 @@ function getPerms($username, string $pwd) {
 		$isMail = strpos($username, "@") != FALSE;
 		// Get `pwd` to verify the given password with. `ID` so we know what user we have and `perms` for their permission level.
 		if($isMail) {
-			$m_result = DatbQuery('SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `email`=?', 's', $username);
+			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `email`=?', 's', $username);
 		} else {
-			$m_result = DatbQuery('SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `username`=?', 's', $username);
+			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `username`=?', 's', $username);
 		}
 		if(!is_object($m_result))
 			return 'Database request failed at SELECT `pwd`';
@@ -132,7 +151,7 @@ function getPerms($username, string $pwd) {
 		// Create a login token as we should not store the password in the session.
 		$m_ID = intval($m_result['ID']);
 		$m_token = random_int(0, 16777215);
-		$m_result = DatbQuery("UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
+		$m_result = DatbQuery(null, "UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
 		if($m_result !== 1)
 			return 'Database request failed at UPDATE `users` SET `token`';
 		// Store `ID` of the user and their token.
@@ -143,7 +162,7 @@ function getPerms($username, string $pwd) {
 		// Autentication with token
 	} else {
 		// Get the token.
-		$m_result = DatbQuery('SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
+		$m_result = DatbQuery(null, 'SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
 		if(!is_object($m_result))
 			return 'Database request failed at SELECT `token`';
 		$m_result = $m_result->fetch_assoc();
@@ -154,7 +173,7 @@ function getPerms($username, string $pwd) {
 		}
 		// Ensure the token is the same as the one given and ensure it has not expired.
 		if($m_result['token'] != $pwd || $m_result['timeDif'] > 15) {
-			DatbQuery('UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $username);
+			DatbQuery(null, 'UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $username);
 			unset($_SESSION['loginToken']);
 			return 'Invallid/expired loginToken.';
 		}
@@ -189,7 +208,7 @@ function getInfo() {
 	$id = $_SESSION['ID'];
 	$pwdKey = $_SESSION['pwdKey'];
 	$m_iv = "0000000000000069";
-	$m_result = DatbQuery('SELECT `encryptedkey`, `username` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	$m_result = DatbQuery(null, 'SELECT `encryptedkey`, `username` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
 		return 'Database request mislukt at SELECT `encryptedkey`';
 	$m_result = $m_result->fetch_assoc();
@@ -207,27 +226,10 @@ function getInfo() {
  */
 function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
 	$m_iv = "0000000000000069";
-	$m_result = DatbQuery('SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_object($m_result))
-		return 'Database request mislukt at SELECT `email`';
-	$m_result = $m_result->fetch_assoc();
-	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
-	// We basically go over all given arguments and change those that are set.
-	if(isset($username))
-		DatbQuery('UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($perms))
-		DatbQuery('UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
-	return null;
-}
-/** Update/change user info
- * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
- */
-function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
-	$m_iv = "0000000000000069";
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
-	$m_result = DatbQuery_3($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	$m_result = DatbQuery($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
 		return 'Database request mislukt at SELECT `email`';
 	$m_result = $m_result->fetch_assoc();
@@ -236,9 +238,9 @@ function setInfo2(int $id, string $pwdKey, ?string $username = null, ?int $perms
 	$m_results = [];
 	// We basically go over all given arguments and change those that are set.
 	if(isset($username))
-		$m_results[] = DatbQuery_3($m_conn, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
 	if(isset($perms))
-		$m_results[] = DatbQuery_3($m_conn, 'UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
+		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
 	$m_conn->close();
 	return null;
 }
@@ -264,7 +266,7 @@ function createAccount(string $email, string $pwd, ?string $username = null, int
 	];
 	if($m_vars[1] === false) return 'Encryptie mislukt; Failed to create password hash';
 	if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
-	$m_return = DatbQuery('INSERT INTO `site_users` (`email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?)', 'ssssi', ...$m_vars);
+	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?)', 'ssssi', ...$m_vars);
 	if(is_string($m_return)) return $m_return;
 	return null;
 }

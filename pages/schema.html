@@ -4,20 +4,24 @@
 			<div class="col-lg-7 col-12">
 				<div class="row">
 					<!-- Filter and search option -->
-					<div class="col-6">
-						<!-- Filter -->
-						<select class="form-select" aria-label="Default select example">
-							<option selected>Open this select menu</option>
-							<option value="1">One</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
-						</select>
-					</div>
-					<div class="col-6 d-flex">
-						<!-- Search -->
-						<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-					</div>
+					<form id="js-filters" aria-label="Filters">
+						<div class="col-6">
+							<!-- Filter -->
+							<select id=tags name=tags class="form-select" aria-label="Spiergroepen">
+								<option value="" selected>Select</option>
+								<option value="Triceps">Triceps</option>
+								<option value="Buik">Buik</option>
+								<option value="Borst">Borst</option>
+								<option value="Hamstrings">Hamstrings</option>
+							</select>
+						</div>
+						<div class="col-6 d-flex">
+							<!-- Search -->
+							<input id=search class="form-control mr-sm-2" type=search name=search placeholder="Search" aria-label="Search">
+							<input type=reset value=Resetten onclick=handleFilter(event);>
+							<button class="btn btn-outline-primary my-2 my-sm-0" type=button onclick=handleFilter(event);>Search</button>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -70,5 +74,7 @@
 	</div>
 </section>
 <div class="js-local" hidden>
+	<script src="js/ajax_communication.js" defer></script>
+	<script src="js/tableFunctions.js" defer></script>
 	<script src="js/schema.js" defer></script>
 </div>

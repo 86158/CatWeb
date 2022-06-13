@@ -5,6 +5,7 @@ SessionChange();
 BeginForm();
 if($_SESSION['workoutStart'] == false){
     ParagraphBYW();
+    ImagesBYW();
 }
 else if($_SESSION['workoutGeslacht'] == ''){
     QuestionGeslacht();
