@@ -2,47 +2,51 @@
     function QuestionSpier()
     {
         ?>
-        <div class="col-6">
-            <div class="mb-3">
-                <h4>Welke spiergroep(en) wilt u trainen?</h4>
-                <!-- Triceps -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="triceps" id="inputTriceps" value="triceps">
-                    <label class="form-check-label" for="inputTriceps">
-                        Triceps
-                    </label>
+        <div class="section-muscle row justify-content-center mt-5">
+            <div class="col-3">
+                <div class="mb-3">
+                    <h4>Welke spiergroep(en) wilt u trainen?</h4>
+                    <!-- Triceps -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="triceps" id="inputTriceps" value="triceps">
+                        <label class="form-check-label" for="inputTriceps">
+                            Triceps
+                        </label>
+                    </div>
+                    <!-- Rug -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="rug" id="inputRug" value="rug">
+                        <label class="form-check-label" for="inputRug">
+                            Rug
+                        </label>
+                    </div>
+                    <!-- Buik -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="buik" id="inputBuik" value="buik">
+                        <label class="form-check-label" for="inputBuik">
+                            Buik
+                        </label>
+                    </div>
+                    <!-- Hamstring -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="hamstring">
+                        <label class="form-check-label" for="inputHamstring">
+                            Hamstring
+                        </label>
+                    </div>
+                    <!-- Biceps -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="biceps">
+                        <label class="form-check-label" for="inputBiceps">
+                            Biceps
+                        </label>
+                    </div>
+                    <?php SubmitButton();?>
                 </div>
-                <!-- Rug -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="rug" id="inputRug" value="rug">
-                    <label class="form-check-label" for="inputRug">
-                        Rug
-                    </label>
-                </div>
-                <!-- Buik -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="buik" id="inputBuik" value="buik">
-                    <label class="form-check-label" for="inputBuik">
-                        Buik
-                    </label>
-                </div>
-                <!-- Hamstring -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="hamstring">
-                    <label class="form-check-label" for="inputHamstring">
-                        Hamstring
-                    </label>
-                </div>
-                <!-- Biceps -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="biceps">
-                    <label class="form-check-label" for="inputBiceps">
-                        Biceps
-                    </label>
-                </div>
-                <?php SubmitButton();?>
             </div>
-            <img src="img/BYW3.png" alt="Muscles">
+            <div class="col-3">
+                <img src="img/BYW3.png" alt="Muscles">
+            </div>
         </div>
         <?php
     }
@@ -104,66 +108,74 @@
 
     function QuestionDoel(){
         ?>
-        <div class="col-6">
-            <div class="mb-3">
-                <h4>Wat is uw doel?</h4>
-                <!-- Afslanken -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="afslanken" id="inputAfslanken" value="afslanken">
-                    <label class="form-check-label" for="inputAfslanken">
-                        Afslanken
-                    </label>
+        <div class="section-goal row justify-content-center mt-5">
+            <div class="col-3 mt-5">
+                <div class="mb-3">
+                    <h4>Wat is uw doel?</h4>
+                    <!-- Afslanken -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="afslanken" id="inputAfslanken" value="afslanken">
+                        <label class="form-check-label" for="inputAfslanken">
+                            Afslanken
+                        </label>
+                    </div>
+                    <!-- Spier Opbouw -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="spier" id="inputSpier" value="spier">
+                        <label class="form-check-label" for="inputSpier">
+                            Spier Opbouw
+                        </label>
+                    </div>
+                    <!-- Conditie -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="checkbox" name="conditie" id="inputConditie" value="conditie">
+                        <label class="form-check-label" for="inputConditie">
+                            Conditie
+                        </label>
+                    </div>
+                    <?php SubmitButton();?>
                 </div>
-                <!-- Spier Opbouw -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="spier" id="inputSpier" value="spier">
-                    <label class="form-check-label" for="inputSpier">
-                        Spier Opbouw
-                    </label>
-                </div>
-                <!-- Conditie -->
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="conditie" id="inputConditie" value="conditie">
-                    <label class="form-check-label" for="inputConditie">
-                        Conditie
-                    </label>
-                </div>
-                <?php SubmitButton();?>
             </div>
-            <img src="img/BYW2.jpg" alt="Goal">
+            <div class="col-3">
+                <img src="img/BYW2.jpg" alt="Goal">
+            </div>
         </div>
         <?php
     }
 
     function QuestionAantal(){
         ?>
-        <div class="col-6">
-            <div class="mb-3">
-                <h4>Wat is het aantal oefeningen dat u wilt doen?</h4>
-                <!-- 3 oefeningen -->
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="oefeningen" id="inputDrieOefeningen" value="drie">
-                    <label class="form-check-label" for="inputDrieOefeningen">
-                        3 oefeningen
-                    </label>
+        <div class="section-exercises row justify-content-center mt-5">
+            <div class="col-3">
+                <div class="mb-3">
+                    <h4>Wat is het aantal oefeningen dat u wilt doen?</h4>
+                    <!-- 3 oefeningen -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="radio" name="oefeningen" id="inputDrieOefeningen" value="drie">
+                        <label class="form-check-label" for="inputDrieOefeningen">
+                            3 oefeningen
+                        </label>
+                    </div>
+                    <!-- 4 oefeningen -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="radio" name="oefeningen" id="inputVierOefeningen" value="vier">
+                        <label class="form-check-label" for="inputVierOefeningen">
+                            4 oefeningen
+                        </label>
+                    </div>
+                    <!-- 5 oefeningen -->
+                    <div class="form-check fs-5">
+                        <input class="form-check-input" type="radio" name="oefeningen" id="inputVijfOefeningen" value="vijf">
+                        <label class="form-check-label" for="inputVijfOefeningen">
+                            5 oefeningen
+                        </label>
+                    </div>
+                    <?php SubmitButton();?>
                 </div>
-                <!-- 4 oefeningen -->
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="oefeningen" id="inputVierOefeningen" value="vier">
-                    <label class="form-check-label" for="inputVierOefeningen">
-                        4 oefeningen
-                    </label>
-                </div>
-                <!-- 5 oefeningen -->
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="oefeningen" id="inputVijfOefeningen" value="vijf">
-                    <label class="form-check-label" for="inputVijfOefeningen">
-                        5 oefeningen
-                    </label>
-                </div>
-                <?php SubmitButton();?>
             </div>
-            <img src="img/BYW4.png" alt="Excercises">
+            <div class="col-3">
+                <img src="img/BYW4.png" alt="Excercises">
+            </div>
         </div>
         <?php
     }
@@ -253,7 +265,7 @@
             echo '<button type="submit" class="btn btn-primary align-self-center mt-4" style="color: white;">Volgende</button>';
         }
         else if($_SESSION['workoutAantal'] == ''){
-            echo '<button type="submit" class="btn btn-primary">Finish</button>';
+            echo '<button type="submit" class="btn btn-primary mt-4" style="color: white;">Finish</button>';
         }   
     }
 ?>
