@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2022 at 09:50 AM
+-- Generation Time: Jun 13, 2022 at 12:00 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -38,7 +38,14 @@ CREATE TABLE IF NOT EXISTS `site_favorites` (
   PRIMARY KEY (`ID`),
   KEY `fav_oefening` (`ID_oefeningen`),
   KEY `fav_user` (`ID_users`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `site_favorites`
+--
+
+REPLACE INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -386,7 +393,7 @@ USE `phpmyadmin`;
 --
 
 REPLACE INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'catweb', 'site_favorites', '{\"sorted_col\":\"`site_favorites`.`ID` ASC\"}', '2022-06-07 11:20:52');
+('root', 'catweb', 'site_favorites', '{\"sorted_col\":\"`site_favorites`.`ID` ASC\"}', '2022-06-13 09:57:22');
 
 --
 -- Metadata for table site_link_media
@@ -467,14 +474,14 @@ REPLACE INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`,
 --
 
 REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_tube', 'link', '', 'text_plain', 'text_plain_link.php', "'https://youtu.be/'", '', '');
+('catweb', 'site_tube', 'link', '', 'text_plain', 'text_plain_link.php', '\'https://youtu.be/\'', '', '');
 
 --
 -- Dumping data for table `pma__table_uiprefs`
 --
 
 REPLACE INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'catweb', 'site_tube', '{\"sorted_col\":\"`site_tube`.`ID` ASC\"}', '2022-06-08 08:47:42');
+('root', 'catweb', 'site_tube', '{\"sorted_col\":\"`site_tube`.`ID` ASC\"}', '2022-06-13 07:52:15');
 
 --
 -- Metadata for table site_users
@@ -485,7 +492,7 @@ REPLACE INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`,
 --
 
 REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', "\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z"),
+('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
 ('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
 ('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
 
