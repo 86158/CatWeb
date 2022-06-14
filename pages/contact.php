@@ -57,7 +57,7 @@
                         <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body">
                                 Build Your Workout is een nieuwe functie doormiddel van een paar vragen te beantwoorden, krijgt u een gecaluleerde workout die speciaal voor u is gemaakt.
-                                <button class="btn btn-primary mt-2"><a class="text-white text-decoration-none" href="?page=build">Ga naar Build Your Workout</a></button>
+                                <button class="btn btn-primary ms-3"><a class="text-white text-decoration-none" href="?page=build">Ga naar Build Your Workout</a></button>
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                         <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body">
                                 Schema is een van de nieuwere functie op CatWeb, met deze functie kunt u een eigen schema maken (alleen als u ingelogd bent). Door middel van bereik tot alle oefeningen kan jij bepalen wat voor routine jij wilt doen.
-                                <button class="btn btn-primary mt-2"><a class="text-white text-decoration-none" href="?page=schema">Ga naar Schema</a></button>
+                                <button class="btn btn-primary ms-3"><a class="text-white text-decoration-none" href="?page=schema">Ga naar Schema</a></button>
                             </div>
                         </div>
                     </div>
