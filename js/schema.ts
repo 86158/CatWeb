@@ -135,7 +135,7 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
         div3.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
 		const btn = document.createElement('button');
-		btn.classList.add('btn', 'btn-primary');
+		btn.classList.add('btn', 'btn-primary', 'w-100', 'mt-3');
 		btn.textContent = 'Voeg toe aan schema';
 		div3.appendChild(btn);
 		article.appendChild(div3);

@@ -8,6 +8,8 @@
     
         img {
             width: 215px;
+            height: 160px;
+            object-fit: cover;
         }
 
         .col-test {
@@ -28,5 +30,10 @@
                 }
             }
         }       
+    }
+    .row {
+        .oefeningen-schema {
+            height: 233px;
+        }
     }
 }
