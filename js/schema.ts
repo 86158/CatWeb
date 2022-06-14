@@ -80,15 +80,15 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 	// The element is created filled with data and then added to its container.
 	data.output.forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
 		const article = document.createElement('article');
-		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row-oefeningen", "row");
+		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row-oefeningen", "row", "static-height");
 		// The header element
-        const div = document.createElement('div');
-        div.classList.add('col-8');
-        const div2 = document.createElement('div');
-        div2.classList.add("row");
+		const div = document.createElement('div');
+		div.classList.add('col-8');
+		const div2 = document.createElement('div');
+		div2.classList.add("row");
 		const header = document.createElement('h4');
 		header.innerText = value.name;
-        header.classList.add('col-12');
+		header.classList.add('col-12');
 		div2.appendChild(header);
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
@@ -133,11 +133,25 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		img.setAttribute("alt", "");
         img.classList.add("col-4");
         div3.appendChild(img);
-		article.appendChild(div3);
 		// adds a button to allow oefening to be added to schema.
-        const btn = document.createElement('button');
-        btn.textContent = 'Voeg toe aan schema';
-        article.appendChild(btn);
+		const btn = document.createElement('button');
+		btn.classList.add('btn', 'btn-primary', 'w-100', 'mt-3');
+		btn.textContent = 'Voeg toe aan schema';
+		div3.appendChild(btn);
+		article.appendChild(div3);
+		const overflowShowHide = document.createElement('button');
+		overflowShowHide.type = "button";
+		overflowShowHide.innerText = 'Expand';
+		overflowShowHide.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {
+			if(article.classList.contains('static-height')) {
+				article.classList.remove('static-height');
+				this.innerText = 'Collapse';
+			} else {
+				article.classList.add('static-height');
+				this.innerText = 'Expand';
+			}
+		});
+		div.appendChild(overflowShowHide);
 		(container as HTMLElement).appendChild(article);
 	});
 }

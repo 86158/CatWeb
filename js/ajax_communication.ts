@@ -189,12 +189,6 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);
-		// adds a button to allow oefening to be added to schema.
-		if(page == 'schema') {
-			const btn = document.createElement('button');
-			btn.textContent = 'Voeg toe aan schema';
-			article.appendChild(btn);
-		}
 		if(value.favorite != undefined) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
