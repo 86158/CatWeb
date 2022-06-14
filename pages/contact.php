@@ -24,7 +24,7 @@
                         <label for="formBeschrijving" class="form-label">Beschrijving</label>
                         <textarea type="beschrijving" class="form-control" rows="5" id="formBeschrijving" name="text"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary w-75">Submit</button>
+                    <button type="submit" class="btn btn-primary text-white w-75">Submit</button>
                 </form>
             </div>
             <!-- Vertical line in between two columns -->
@@ -38,32 +38,40 @@
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                            Accordion Item #1
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Hoe kan ik mijn workouts opslaan?
                         </button>
                         </h2>
                         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                            <div class="accordion-body">
+                                Om je workouts op te slaan moet u eerst een account aanmaken voordat u het kan opslaan.
+                            </div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            Accordion Item #2
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Wat houdt Build Your Workout in?
                         </button>
                         </h2>
                         <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                            <div class="accordion-body">
+                                Build Your Workout is een nieuwe functie doormiddel van een paar vragen te beantwoorden, krijgt u een gecaluleerde workout die speciaal voor u is gemaakt.
+                                <button class="btn btn-primary ms-3"><a class="text-white text-decoration-none" href="?page=build">Ga naar Build Your Workout</a></button>
+                            </div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                            Accordion Item #3
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                            Hoe gebruik ik Schema?
                         </button>
                         </h2>
                         <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                            <div class="accordion-body">
+                                Schema is een van de nieuwere functie op CatWeb, met deze functie kunt u een eigen schema maken (alleen als u ingelogd bent). Door middel van bereik tot alle oefeningen kan jij bepalen wat voor routine jij wilt doen.
+                                <button class="btn btn-primary ms-3"><a class="text-white text-decoration-none" href="?page=schema">Ga naar Schema</a></button>
+                            </div>
                         </div>
                     </div>
                 </div>
