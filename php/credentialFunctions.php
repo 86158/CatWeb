@@ -248,7 +248,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
  * Create a new account with encrypted personal details.
  * @return null|string null on success. Error message on failure.
 */
-function createAccount(string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
+function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
@@ -256,6 +256,8 @@ function createAccount(string $email, string $pwd, ?string $username = null, int
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_vars = [
+		$FirstName,
+		$LastName,
 		$email,
 		password_hash($pwd . $email, '2y'),	// Hash to verify if the password is correct.
 		$m_pass[0],	// encrypted_userKey
@@ -266,7 +268,7 @@ function createAccount(string $email, string $pwd, ?string $username = null, int
 	];
 	if($m_vars[1] === false) return 'Encryptie mislukt; Failed to create password hash';
 	if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
-	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?)', 'ssssi', ...$m_vars);
+	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`FirstName`, `LastName`, `email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssssi', ...$m_vars);
 	if(is_string($m_return)) return $m_return;
 	return null;
 }

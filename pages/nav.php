@@ -47,6 +47,8 @@
 								<input type=hidden name=formID value=login>
 								<br><br>
 								<fieldset class="fieldset-signup p-0" hidden>
+									<label class="fw-bold fs-5">Voornaam<input type="text" name=FirstName></label>
+									<label class="fw-bold fs-5">Achternaam<input type="text" name=LastName></label>
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle" style=grid-row:1>
