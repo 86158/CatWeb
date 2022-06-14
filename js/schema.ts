@@ -133,11 +133,13 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		img.setAttribute("alt", "");
         img.classList.add("col-4");
         div3.appendChild(img);
-		article.appendChild(div3);
 		// adds a button to allow oefening to be added to schema.
-        const btn = document.createElement('button');
-        btn.textContent = 'Voeg toe aan schema';
-        article.appendChild(btn);
+		const btn = document.createElement('button');
+		btn.classList.add('btn', 'btn-primary');
+		btn.textContent = 'Voeg toe aan schema';
+		div3.appendChild(btn);
+		article.appendChild(div3);
+
 		(container as HTMLElement).appendChild(article);
 	});
 }
