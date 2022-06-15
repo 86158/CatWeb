@@ -92,8 +92,25 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		div_row.classList.add("row");
 		const header = document.createElement('h4');
 		header.innerText = value.name;
-		header.classList.add('col-12');
+		header.classList.add('col-6');
 		div_row.appendChild(header);
+		const div2 = document.createElement('div');
+		div2.classList.add('col-6');
+		const overflowShowHide = document.createElement('button');
+		overflowShowHide.type = "button";
+		overflowShowHide.innerText = 'Meer tekst';
+		overflowShowHide.classList.add('btn', 'btn-outline-primary', 'float-end');
+		overflowShowHide.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {
+			if(article.classList.contains('static-height')) {
+				article.classList.remove('static-height');
+				this.innerText = 'Minder tekst';
+			} else {
+				article.classList.add('static-height');
+				this.innerText = 'Meer tekst';
+			}
+		});
+		div2.appendChild(overflowShowHide);
+		div_row.appendChild(div2);
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
@@ -146,21 +163,10 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		const btn = document.createElement('button');
 		btn.classList.add('btn', 'btn-primary', 'w-100', 'mt-3');
 		btn.textContent = 'Voeg toe aan schema';
+		btn.type = 'button';
+		btn.value = value.ID.toString();
 		div3.appendChild(btn);
 		article.appendChild(div3);
-		const overflowShowHide = document.createElement('button');
-		overflowShowHide.type = "button";
-		overflowShowHide.innerText = 'Expand';
-		overflowShowHide.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {
-			if(article.classList.contains('static-height')) {
-				article.classList.remove('static-height');
-				this.innerText = 'Collapse';
-			} else {
-				article.classList.add('static-height');
-				this.innerText = 'Expand';
-			}
-		});
-		div_row8.appendChild(overflowShowHide);
 		(container as HTMLElement).appendChild(article);
 	});
 }

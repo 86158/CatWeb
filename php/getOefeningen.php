@@ -100,16 +100,16 @@ function getOefeninging(): array {
 	$output = $result->fetch_all(MYSQLI_ASSOC);
 	$result->close();
 	$responce['code'] = 200;
-	/** @var array<int,array<string,string|int|string[]|null|bool>> $output */
 	for($i=0; $i < count($output); $i++) {
 		if($output[$i]['images'] != null) {
-			$responce['output'] = $output[$i]['images'];
-			$output[$i]['images'] = json_decode($output[$i]['images'], true);
+			$decodedJson = json_decode($output[$i]['images'], true);
 			if($output[$i]['images'] === false) {
 				header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
 				$responce['error'] = "Failed to decode JSON";
 				$responce['trace'] = json_last_error_msg();
 				$responce['code'] = 500;
+			} else {
+				$output[$i]['images'] = $decodedJson;
 			}
 		}
 		if($output[$i]['videos'] != null)
@@ -119,6 +119,7 @@ function getOefeninging(): array {
 		if(isset($output[$i]['favorite']))
 			$output[$i]['favorite'] = boolval($output[$i]['favorite']);
 	}
+	/** @var array<int,array<string,string|int|string[]|null|bool>> $output */
 	$responce['output'] = $output;
 	return $responce;
 }

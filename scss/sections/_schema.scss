@@ -34,21 +34,17 @@
     .row {
         .oefeningen-schema {
             overflow: hidden;
+
             .col-8 {
                 position: relative;
+
                 button {
-                    position: absolute;
-                    left: 80%;
-                    bottom: 0;
+                    width: 115px;
                 }
             }
         }
         article.static-height {
-            height: 233px;
-            .col-8>button {
-                top: 190px;
-                bottom: unset;
-            }
+            height: 237px;
         }
     }
 }
