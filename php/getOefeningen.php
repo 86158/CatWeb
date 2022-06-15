@@ -42,7 +42,11 @@ function getOefeninging(): array {
 		$result = DatbQuery(null,
 			"SELECT
 				o.*,
-				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
+				IFNULL(CONCAT(
+					'[',
+					GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','),
+					']'
+				), 'null') AS images,
 				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
 				GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout
 			FROM site_oefeningen o
@@ -62,10 +66,14 @@ function getOefeninging(): array {
 		$result = DatbQuery(null,
 			"SELECT
 				o.*,
-				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
+				IFNULL(CONCAT(
+					'[',
+					GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','),
+					']'
+				), 'null') AS images,
 				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
 				GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout,
-			IF(f.ID_oefeningen IS NULL,0,1) AS favorite
+				IF(f.ID_oefeningen IS NULL,0,1) AS favorite
 			FROM site_oefeningen o
 			LEFT JOIN (
 				site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
@@ -73,10 +81,10 @@ function getOefeninging(): array {
 			LEFT JOIN (
 				site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
 			) ON tl.oefeningenID = o.ID
-			LEFT JOIN (SELECT ID_oefeningen FROM site_favorites WHERE ID_users=?) f ON o.ID = f.ID_oefeningen
 			LEFT JOIN (
 				site_workout w JOIN site_link_workout wl ON wl.workoutID = w.workoutID 
 			) ON wl.oefeningID = o.ID
+			LEFT JOIN (SELECT ID_oefeningen FROM site_favorites WHERE ID_users=?) f ON o.ID = f.ID_oefeningen
 			GROUP BY o.ID
 			ORDER BY o.ID ASC;",
 			'i', $user
@@ -91,10 +99,19 @@ function getOefeninging(): array {
 	/** @var array<int,array<string,string|int|null>> $output */
 	$output = $result->fetch_all(MYSQLI_ASSOC);
 	$result->close();
+	$responce['code'] = 200;
 	/** @var array<int,array<string,string|int|string[]|null|bool>> $output */
 	for($i=0; $i < count($output); $i++) {
-		if($output[$i]['images'] != null)
-			$output[$i]['images'] = explode("\n", $output[$i]['images']);
+		if($output[$i]['images'] != null) {
+			$responce['output'] = $output[$i]['images'];
+			$output[$i]['images'] = json_decode($output[$i]['images'], true);
+			if($output[$i]['images'] === false) {
+				header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+				$responce['error'] = "Failed to decode JSON";
+				$responce['trace'] = json_last_error_msg();
+				$responce['code'] = 500;
+			}
+		}
 		if($output[$i]['videos'] != null)
 			$output[$i]['videos'] = explode("\n", $output[$i]['videos']);
 		if($output[$i]['workout'] != null)
@@ -103,7 +120,6 @@ function getOefeninging(): array {
 			$output[$i]['favorite'] = boolval($output[$i]['favorite']);
 	}
 	$responce['output'] = $output;
-	$responce['code'] = 200;
 	return $responce;
 }
 $output = json_encode(getOefeninging());

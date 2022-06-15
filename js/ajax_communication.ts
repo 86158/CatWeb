@@ -15,7 +15,11 @@ interface site_oefeningen {
 	/** Estimated callori usage.*/
 	calorien: number|null;
 	/** Images */
-	images: Array<string>|null;
+	images: Array<{
+		src: string;
+		width: number|null;
+		height: number|null;
+	}>|null;
 	/** Videos */
 	videos: Array<string>|null;
 	workout: Array<string>|null;
@@ -184,8 +188,11 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		const img = document.createElement('img');
 		img.loading = "lazy";
 		img.referrerPolicy = "no-referrer";
-		if(value.images && value.images[0])
-			img.src = value.images[0];
+		if(value.images && value.images[0]) {
+			img.src = value.images[0].src;
+			if(value.images[0].height) img.height = value.images[0].height;
+			if(value.images[0].width) img.width = value.images[0].width;
+		}
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
 		article.appendChild(img);

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 14, 2022 at 01:43 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.9
+-- Generation Time: Jun 15, 2022 at 08:51 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -155,6 +155,8 @@ DROP TABLE IF EXISTS `site_media`;
 CREATE TABLE IF NOT EXISTS `site_media` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(145) NOT NULL,
+  `width` smallint(4) DEFAULT NULL,
+  `height` smallint(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `image_links` (`link`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
@@ -163,22 +165,22 @@ CREATE TABLE IF NOT EXISTS `site_media` (
 -- Dumping data for table `site_media`
 --
 
-REPLACE INTO `site_media` (`ID`, `link`) VALUES
-(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg'),
-(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg'),
-(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg'),
-(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg'),
-(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg'),
-(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg'),
-(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg'),
-(1, 'https://i.stack.imgur.com/g8eij.jpg'),
-(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg'),
-(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg'),
-(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png'),
-(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg'),
-(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg'),
-(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg'),
-(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg');
+REPLACE INTO `site_media` (`ID`, `link`, `width`, `height`) VALUES
+(1, 'https://i.stack.imgur.com/g8eij.jpg', NULL, NULL),
+(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg', NULL, NULL),
+(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg', NULL, NULL),
+(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg', NULL, NULL),
+(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg', NULL, NULL),
+(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg', NULL, NULL),
+(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg', NULL, NULL),
+(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg', NULL, NULL),
+(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg', NULL, NULL),
+(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg', NULL, NULL),
+(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg', NULL, NULL),
+(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', NULL, NULL),
+(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', NULL, NULL),
+(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', NULL, NULL),
+(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -224,25 +226,6 @@ REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroep
 (18, 'Squads', 'Een squat oefening is een kniebuiging, optioneel met een gewicht op je schouders of in je handen om de oefening extra zwaar te maken. De beweging is vergelijkbaar met gaan zitten en direct weer omhoog komen. De oefening is eenvoudig en zeer geschikt voor beginnende sporters, maar moet wel op de juiste manier uitgevoerd worden. Je traint tijdens de squat met name je bovenbeenspieren en bilspieren, oftewel je hamstrings en quadriceps. Ook je kuitspieren en core spieren (= spieren rondom je romp) worden geactiveerd tijdens het uitvoeren van een squat. ‘Squat’ is een Engelstalige term die wereldwijd binnen de krachtsport wordt gebruikt om de ‘kniebuiging’ fitnessoefening aan te duiden. De betekenis van squat is letterlijk hurken.', 'Kracht', NULL, NULL, NULL, NULL),
 (19, 'Lunges', 'Lunges of de lunge betekent letterlijk ‘uitvallen’. Daarmee doelt het woord op de positie van het lichaam waarbij één been naar voren is geplaatst met de knie gebogen en de voet plat op de grond, terwijl het andere been erachter wordt geplaatst.', 'Kracht', NULL, NULL, NULL, NULL),
 (20, 'Plank', 'Planken is misschien één van de minst indrukwekkend uitziende oefeningen die je ooit zult tegenkomen.\r\n\r\nAls je niet zou weten wat het is, zou je denken dat iemand aan het uitrusten is of op een zeer onhandige manier zijn contactlenzen op de grond zoekt.\r\n\r\nPlanken is op verschillende manieren uit te voeren. Maar de bekendste uitvoering is langgerekt steunen op je ellebogen en tenen.\r\nHierbij is het de bedoeling dat jij je stevig aanspant om te voorkomen dat je lichaam in elkaar zakt.\r\n\r\nSommige mensen zullen vanaf de eerst seconden moeite hebben met deze houding houden en anderen zullen pas tientallen tellen moeten doorstaan voordat ze iets voelen branden. Het verschil tussen individuen is vooral te verklaren door verschil in gewicht en kracht van de core (romp spieren).', 'Kracht', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Stand-in structure for view `site_oefening_media`
--- (See below for the actual view)
---
-DROP VIEW IF EXISTS `site_oefening_media`;
-CREATE TABLE IF NOT EXISTS `site_oefening_media` (
-`ID` int(10) unsigned
-,`name` varchar(45)
-,`description` text
-,`type` enum('Kracht','Cardio')
-,`spiergroepen` set('Triceps','Buik','Borst','Hamstrings','Rug','Schouders')
-,`duration` int(10) unsigned
-,`calorien` mediumint(10) unsigned
-,`images` mediumtext
-,`videos` mediumtext
-);
 
 -- --------------------------------------------------------
 
@@ -325,19 +308,17 @@ CREATE TABLE IF NOT EXISTS `site_users` (
   `token` mediumint(8) UNSIGNED DEFAULT NULL,
   `tokenTime` datetime DEFAULT NULL,
   `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `FirstName` varchar(30) NOT NULL,
-  `LastName` varchar(30) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `usernames` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_users`
 --
 
-REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`, `FirstName`, `LastName`) VALUES
-(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', NULL, NULL, 1, 'Lars', 'Weijenborg'),
-(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', NULL, NULL, 0, 'Juriën', 'Braat');
+REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`) VALUES
+(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', NULL, NULL, 1),
+(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -360,24 +341,6 @@ CREATE TABLE IF NOT EXISTS `site_workout` (
 REPLACE INTO `site_workout` (`workoutID`, `workTitle`, `Beschrijving`) VALUES
 (1, 'Cardio', 'Hier is een tekst om in te vullen waarbij cardio als deze workout hoofddoel wordt gebruikt'),
 (2, 'Kracht', 'Hier is een tekst om in te vullen waarbij kracht als deze workout hoofddoel wordt gebruikt');
-
--- --------------------------------------------------------
-
---
--- Structure for view `site_oefening_media` exported as a table
---
-DROP TABLE IF EXISTS `site_oefening_media`;
-CREATE TABLE IF NOT EXISTS `site_oefening_media`(
-    `ID` int(10) unsigned NOT NULL DEFAULT '0',
-    `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-    `description` text COLLATE utf8mb4_general_ci NOT NULL,
-    `type` enum('Kracht','Cardio') COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `spiergroepen` set('Triceps','Buik','Borst','Hamstrings','Rug','Schouders') COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `duration` int(10) unsigned DEFAULT NULL COMMENT 'In seconden',
-    `calorien` mediumint(10) unsigned DEFAULT NULL,
-    `images` mediumtext COLLATE utf8mb4_general_ci DEFAULT NULL,
-    `videos` mediumtext COLLATE utf8mb4_general_ci DEFAULT NULL
-);
 
 --
 -- Constraints for dumped tables
@@ -408,8 +371,8 @@ ALTER TABLE `site_link_tube`
 -- Constraints for table `site_link_workout`
 --
 ALTER TABLE `site_link_workout`
-  ADD CONSTRAINT `Oefening ID` FOREIGN KEY (`oefeningID`) REFERENCES `site_oefeningen` (`ID`),
-  ADD CONSTRAINT `Workout ID` FOREIGN KEY (`workoutID`) REFERENCES `site_workout` (`workoutID`);
+  ADD CONSTRAINT `Oefening ID` FOREIGN KEY (`oefeningID`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `Workout ID` FOREIGN KEY (`workoutID`) REFERENCES `site_workout` (`workoutID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `site_schema`
@@ -423,6 +386,55 @@ ALTER TABLE `site_schema`
 ALTER TABLE `site_schemacontent`
   ADD CONSTRAINT `schema_id` FOREIGN KEY (`ID_schema`) REFERENCES `site_schema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schema_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Metadata
+--
+USE `phpmyadmin`;
+
+--
+-- Metadata for table site_media
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_media', 'link', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
+
+--
+-- Metadata for table site_tube
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_tube', 'link', '', 'text_plain', 'text_plain_link.php', '\'https://youtu.be/\'', '', '');
+
+--
+-- Metadata for table site_users
+--
+
+--
+-- Dumping data for table `pma__column_info`
+--
+
+REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
+('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\\A[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+(?:\\.[\\w!#$%&\'*+\\-\\/=?\\^_`{|}~]+)*@(?:(?:(?:[\\-\\w]+\\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}))\\z'),
+('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
+('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
+
+--
+-- Metadata for table site_workout
+--
+
+--
+-- Metadata for database catweb
+--
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
