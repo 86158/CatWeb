@@ -268,4 +268,8 @@
             echo '<button type="submit" class="btn btn-primary mt-4" style="color: white;">Finish</button>';
         }   
     }
+
+    function CompleteForm(){
+        DatbQuery(null, "");
+    }
 ?>

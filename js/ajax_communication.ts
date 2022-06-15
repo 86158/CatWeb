@@ -144,20 +144,6 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
-		// //A span for the estimated duration.
-		// const duration = document.createElement('p');
-		// duration.innerText = 
-		// 	(value.duration)?
-		// 		value.duration.toString()
-		// 		: "-";
-		// atribs.appendChild(duration);
-		// // A span for the estimated callories.
-		// const call = document.createElement('p');
-		// call.innerText =
-		// 	(value.calorien)?
-		// 		value.calorien.toString()
-		// 		: "-";
-		// atribs.appendChild(call);
 		//A span for the type of exercise.
 		const oType = document.createElement('span');
 		oType.classList.add('difficulty');
