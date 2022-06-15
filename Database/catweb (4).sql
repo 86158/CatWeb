@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2022 at 09:49 AM
+-- Generation Time: Jun 15, 2022 at 09:55 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -31,11 +31,14 @@ USE `catweb`;
 --
 
 DROP TABLE IF EXISTS `site_favorites`;
-CREATE TABLE `site_favorites` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_favorites` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_users` int(10) UNSIGNED NOT NULL,
-  `ID_oefeningen` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `ID_oefeningen` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fav_oefening` (`ID_oefeningen`),
+  KEY `fav_user` (`ID_users`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_favorites`
@@ -51,11 +54,14 @@ REPLACE INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_media`;
-CREATE TABLE `site_link_media` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_link_media` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `oefeningenID` int(10) UNSIGNED NOT NULL,
-  `mediaID` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `mediaID` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `oefening_media_link` (`oefeningenID`),
+  KEY `media_link` (`mediaID`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_link_media`
@@ -85,11 +91,14 @@ REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_tube`;
-CREATE TABLE `site_link_tube` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_link_tube` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `oefeningenID` int(10) UNSIGNED NOT NULL,
-  `mediaID` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `mediaID` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `oefening_tube_link` (`oefeningenID`),
+  KEY `tube_link` (`mediaID`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_link_tube`
@@ -119,11 +128,14 @@ REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_link_workout`;
-CREATE TABLE `site_link_workout` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_link_workout` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `workoutID` int(10) UNSIGNED NOT NULL,
-  `oefeningID` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `oefeningID` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `Oefening ID` (`oefeningID`),
+  KEY `Workout ID` (`workoutID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_link_workout`
@@ -140,33 +152,35 @@ REPLACE INTO `site_link_workout` (`ID`, `workoutID`, `oefeningID`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_media`;
-CREATE TABLE `site_media` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_media` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(145) NOT NULL,
   `width` smallint(4) DEFAULT NULL,
-  `height` smallint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `height` smallint(4) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `image_links` (`link`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_media`
 --
 
 REPLACE INTO `site_media` (`ID`, `link`, `width`, `height`) VALUES
-(1, 'https://i.stack.imgur.com/g8eij.jpg', NULL, NULL),
-(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg', NULL, NULL),
-(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg', NULL, NULL),
-(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg', NULL, NULL),
-(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg', NULL, NULL),
-(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg', NULL, NULL),
-(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg', NULL, NULL),
-(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg', NULL, NULL),
-(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg', NULL, NULL),
-(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg', NULL, NULL),
-(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg', NULL, NULL),
-(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', NULL, NULL),
-(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', NULL, NULL),
-(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', NULL, NULL),
-(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', NULL, NULL);
+(1, 'https://i.stack.imgur.com/g8eij.jpg', 350, 263),
+(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg', 1500, 1500),
+(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg', 770, 583),
+(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg', 736, 779),
+(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg', 4256, 2832),
+(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg', 550, 555),
+(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg', 1280, 720),
+(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg', 1000, 607),
+(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg', 800, 394),
+(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg', 800, 800),
+(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg', 980, 677),
+(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', 6000, 4000),
+(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', 1280, 960),
+(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', 600, 600),
+(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', 4800, 2700);
 
 -- --------------------------------------------------------
 
@@ -175,16 +189,17 @@ REPLACE INTO `site_media` (`ID`, `link`, `width`, `height`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_oefeningen`;
-CREATE TABLE `site_oefeningen` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_oefeningen` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `description` text NOT NULL,
   `type` enum('Kracht','Cardio') DEFAULT NULL,
   `spiergroepen` set('Triceps','Buik','Borst','Hamstrings','Rug','Schouders') DEFAULT NULL,
   `duration` int(10) UNSIGNED DEFAULT NULL COMMENT 'In seconden',
   `calorien` mediumint(10) UNSIGNED DEFAULT NULL,
-  `loseWeight` tinyint(1) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `loseWeight` tinyint(1) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_oefeningen`
@@ -219,7 +234,7 @@ REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroep
 -- (See below for the actual view)
 --
 DROP VIEW IF EXISTS `site_oefening_media`;
-CREATE TABLE `site_oefening_media` (
+CREATE TABLE IF NOT EXISTS `site_oefening_media` (
 `ID` int(10) unsigned
 ,`name` varchar(45)
 ,`description` text
@@ -238,9 +253,11 @@ CREATE TABLE `site_oefening_media` (
 --
 
 DROP TABLE IF EXISTS `site_schema`;
-CREATE TABLE `site_schema` (
-  `ID` int(10) UNSIGNED NOT NULL,
-  `ID_users` int(10) UNSIGNED NOT NULL
+CREATE TABLE IF NOT EXISTS `site_schema` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ID_users` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `schema_users` (`ID_users`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -250,10 +267,13 @@ CREATE TABLE `site_schema` (
 --
 
 DROP TABLE IF EXISTS `site_schemacontent`;
-CREATE TABLE `site_schemacontent` (
+CREATE TABLE IF NOT EXISTS `site_schemacontent` (
   `ID` int(10) UNSIGNED NOT NULL,
   `ID_schema` int(10) UNSIGNED NOT NULL,
-  `ID_oefeningen` int(10) UNSIGNED NOT NULL
+  `ID_oefeningen` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `schema_id` (`ID_schema`),
+  KEY `schema_oefening` (`ID_oefeningen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -263,10 +283,12 @@ CREATE TABLE `site_schemacontent` (
 --
 
 DROP TABLE IF EXISTS `site_tube`;
-CREATE TABLE `site_tube` (
-  `ID` int(10) UNSIGNED NOT NULL,
-  `link` varchar(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS `site_tube` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `link` varchar(15) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `tube_links` (`link`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_tube`
@@ -296,8 +318,8 @@ REPLACE INTO `site_tube` (`ID`, `link`) VALUES
 --
 
 DROP TABLE IF EXISTS `site_users`;
-CREATE TABLE `site_users` (
-  `ID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_users` (
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(25) NOT NULL COMMENT 'Regex validation from: https://www.rhyous.com/2010/06/15/csharp-email-regular-expression',
   `username` varchar(100) DEFAULT NULL,
   `pwd` char(60) NOT NULL,
@@ -306,8 +328,10 @@ CREATE TABLE `site_users` (
   `tokenTime` datetime DEFAULT NULL,
   `perms` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `FirstName` varchar(30) NOT NULL,
-  `LastName` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `LastName` varchar(30) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `usernames` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_users`
@@ -315,7 +339,8 @@ CREATE TABLE `site_users` (
 
 REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`, `FirstName`, `LastName`) VALUES
 (1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', NULL, NULL, 1, '', ''),
-(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', NULL, NULL, 0, '', '');
+(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', NULL, NULL, 0, '', ''),
+(3, 'MelanieHoogenboom44@gmail', 'MelanieTheSquad', '$2y$10$Fwnlsalij.MoCbNapgNr5edNt0ftmjCLNaHUvLxAQ5u6G3ZHXv61m', 'EoQlge5znGe+EW4oVNGKr13QIjmWK2lZcp6BF9WTxCVXCMeEA1vfULfKifHIp4pJfqZG9ss1ksYRoiTat1KnVA==', NULL, NULL, 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -324,11 +349,12 @@ REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `to
 --
 
 DROP TABLE IF EXISTS `site_workout`;
-CREATE TABLE `site_workout` (
-  `workoutID` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `site_workout` (
+  `workoutID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `workTitle` varchar(30) NOT NULL,
-  `Beschrijving` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `Beschrijving` text NOT NULL,
+  PRIMARY KEY (`workoutID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `site_workout`
@@ -344,7 +370,7 @@ REPLACE INTO `site_workout` (`workoutID`, `workTitle`, `Beschrijving`) VALUES
 -- Structure for view `site_oefening_media` exported as a table
 --
 DROP TABLE IF EXISTS `site_oefening_media`;
-CREATE TABLE`site_oefening_media`(
+CREATE TABLE IF NOT EXISTS `site_oefening_media`(
     `ID` int(10) unsigned NOT NULL DEFAULT '0',
     `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
     `description` text COLLATE utf8mb4_general_ci NOT NULL,
@@ -355,154 +381,6 @@ CREATE TABLE`site_oefening_media`(
     `images` mediumtext COLLATE utf8mb4_general_ci DEFAULT NULL,
     `videos` mediumtext COLLATE utf8mb4_general_ci DEFAULT NULL
 );
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `site_favorites`
---
-ALTER TABLE `site_favorites`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `fav_oefening` (`ID_oefeningen`),
-  ADD KEY `fav_user` (`ID_users`);
-
---
--- Indexes for table `site_link_media`
---
-ALTER TABLE `site_link_media`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `oefening_media_link` (`oefeningenID`),
-  ADD KEY `media_link` (`mediaID`);
-
---
--- Indexes for table `site_link_tube`
---
-ALTER TABLE `site_link_tube`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `oefening_tube_link` (`oefeningenID`),
-  ADD KEY `tube_link` (`mediaID`);
-
---
--- Indexes for table `site_link_workout`
---
-ALTER TABLE `site_link_workout`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `Oefening ID` (`oefeningID`),
-  ADD KEY `Workout ID` (`workoutID`);
-
---
--- Indexes for table `site_media`
---
-ALTER TABLE `site_media`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `image_links` (`link`);
-
---
--- Indexes for table `site_oefeningen`
---
-ALTER TABLE `site_oefeningen`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Indexes for table `site_schema`
---
-ALTER TABLE `site_schema`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `schema_users` (`ID_users`);
-
---
--- Indexes for table `site_schemacontent`
---
-ALTER TABLE `site_schemacontent`
-  ADD PRIMARY KEY (`ID`),
-  ADD KEY `schema_id` (`ID_schema`),
-  ADD KEY `schema_oefening` (`ID_oefeningen`);
-
---
--- Indexes for table `site_tube`
---
-ALTER TABLE `site_tube`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `tube_links` (`link`);
-
---
--- Indexes for table `site_users`
---
-ALTER TABLE `site_users`
-  ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `usernames` (`username`);
-
---
--- Indexes for table `site_workout`
---
-ALTER TABLE `site_workout`
-  ADD PRIMARY KEY (`workoutID`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `site_favorites`
---
-ALTER TABLE `site_favorites`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `site_link_media`
---
-ALTER TABLE `site_link_media`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `site_link_tube`
---
-ALTER TABLE `site_link_tube`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `site_link_workout`
---
-ALTER TABLE `site_link_workout`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `site_media`
---
-ALTER TABLE `site_media`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `site_oefeningen`
---
-ALTER TABLE `site_oefeningen`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
-
---
--- AUTO_INCREMENT for table `site_schema`
---
-ALTER TABLE `site_schema`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `site_tube`
---
-ALTER TABLE `site_tube`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT for table `site_users`
---
-ALTER TABLE `site_users`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `site_workout`
---
-ALTER TABLE `site_workout`
-  MODIFY `workoutID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
