@@ -20,8 +20,12 @@ else if($_SESSION['workoutAantal' ]== ''){
     QuestionAantal();
 }
 else{
-    echo 'Succes';
+    CompleteForm();
 }
 EndForm();
+foreach($_SESSION['workoutSpier'] as $test){
+    echo $test;
+}
+CompleteForm();
 AddJS();
 ?>

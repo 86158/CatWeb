@@ -8,35 +8,35 @@
                     <h4>Welke spiergroep(en) wilt u trainen?</h4>
                     <!-- Triceps -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="triceps" id="inputTriceps" value="triceps">
+                        <input class="form-check-input" type="checkbox" name="triceps" id="inputTriceps" value="Triceps">
                         <label class="form-check-label" for="inputTriceps">
                             Triceps
                         </label>
                     </div>
                     <!-- Rug -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="rug" id="inputRug" value="rug">
+                        <input class="form-check-input" type="checkbox" name="rug" id="inputRug" value="Rug">
                         <label class="form-check-label" for="inputRug">
                             Rug
                         </label>
                     </div>
                     <!-- Buik -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="buik" id="inputBuik" value="buik">
+                        <input class="form-check-input" type="checkbox" name="buik" id="inputBuik" value="Buik">
                         <label class="form-check-label" for="inputBuik">
                             Buik
                         </label>
                     </div>
                     <!-- Hamstring -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="hamstring">
+                        <input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="Hamstring">
                         <label class="form-check-label" for="inputHamstring">
                             Hamstring
                         </label>
                     </div>
                     <!-- Biceps -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="biceps">
+                        <input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="Biceps">
                         <label class="form-check-label" for="inputBiceps">
                             Biceps
                         </label>
@@ -121,14 +121,14 @@
                     </div>
                     <!-- Spier Opbouw -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="spier" id="inputSpier" value="spier">
+                        <input class="form-check-input" type="checkbox" name="spier" id="inputSpier" value="Kracht">
                         <label class="form-check-label" for="inputSpier">
                             Spier Opbouw
                         </label>
                     </div>
                     <!-- Conditie -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="checkbox" name="conditie" id="inputConditie" value="conditie">
+                        <input class="form-check-input" type="checkbox" name="conditie" id="inputConditie" value="Cardio">
                         <label class="form-check-label" for="inputConditie">
                             Conditie
                         </label>
@@ -151,21 +151,21 @@
                     <h4>Wat is het aantal oefeningen dat u wilt doen?</h4>
                     <!-- 3 oefeningen -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="radio" name="oefeningen" id="inputDrieOefeningen" value="drie">
+                        <input class="form-check-input" type="radio" name="oefeningen" id="inputDrieOefeningen" value="3">
                         <label class="form-check-label" for="inputDrieOefeningen">
                             3 oefeningen
                         </label>
                     </div>
                     <!-- 4 oefeningen -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="radio" name="oefeningen" id="inputVierOefeningen" value="vier">
+                        <input class="form-check-input" type="radio" name="oefeningen" id="inputVierOefeningen" value="4">
                         <label class="form-check-label" for="inputVierOefeningen">
                             4 oefeningen
                         </label>
                     </div>
                     <!-- 5 oefeningen -->
                     <div class="form-check fs-5">
-                        <input class="form-check-input" type="radio" name="oefeningen" id="inputVijfOefeningen" value="vijf">
+                        <input class="form-check-input" type="radio" name="oefeningen" id="inputVijfOefeningen" value="5">
                         <label class="form-check-label" for="inputVijfOefeningen">
                             5 oefeningen
                         </label>
@@ -269,7 +269,43 @@
         }   
     }
 
-    function CompleteForm(){
-        DatbQuery(null, "");
+    function CompleteForm()
+    {
+        $string = "SELECT o.*,IFNULL(CONCAT('[',GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','),
+            ']'), 'null') AS images, GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos, GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout
+            FROM site_oefeningen o
+            LEFT JOIN (
+            site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
+            ) ON ml.oefeningenID = o.ID
+            LEFT JOIN (
+                site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
+            ) ON tl.oefeningenID = o.ID
+            LEFT JOIN (
+                site_workout w JOIN site_link_workout wl ON wl.workoutID = w.workoutID 
+            ) ON wl.oefeningID = o.ID WHERE (
+            ";
+        foreach($_SESSION['workoutSpier'] as $value){
+            $string .= "`spiergroepen` LIKE '" .  $value . "'";
+            if ($value != end($_SESSION['workoutSpier'])){
+                $string .= " OR "; 
+            }
+        }
+        $string .= ") AND (";
+        foreach($_SESSION['workoutDoel'] as $value){
+            if($value = 'afslanken'){
+                $string .= "`loseWeight` = 1";
+            }
+            else{
+                $string .= "`type` LIKE '" . $value ."'";
+            }
+            if($value != end($_SESSION['workoutDoel'])){
+                $string .= " OR ";
+        }
+        $string .= ")
+            GROUP BY o.ID
+            ORDER BY o.ID ASC;";
+        //DatbQuery(null, $string);
+        echo $string;
+        }
     }
 ?>
