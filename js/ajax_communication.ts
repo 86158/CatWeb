@@ -185,19 +185,19 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 		listParser(desc);
 		article.appendChild(desc);
 		// Lastly the image if one exists.
-		const img = document.createElement('img');
-		img.loading = "lazy";
-		img.referrerPolicy = "no-referrer";
 		if(value.images && value.images[0]) {
+			const img = document.createElement('img');
+			img.loading = "lazy";
+			img.referrerPolicy = "no-referrer";
 			img.src = value.images[0].src;
 			if(value.images[0].height && value.images[0].width) {
 				img.height = value.images[0].height;
 				img.width = value.images[0].width;
 			}
+			// An empty string into the alt attribute to mark it as decorative.
+			img.setAttribute("alt", "");
+			article.appendChild(img);
 		}
-		// An empty string into the alt attribute to mark it as decorative.
-		img.setAttribute("alt", "");
-		article.appendChild(img);
 		if(value.favorite != undefined) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');

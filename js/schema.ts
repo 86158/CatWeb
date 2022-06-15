@@ -125,23 +125,23 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		div_row.appendChild(desc);
 		div_row8.appendChild(div_row);
 		article.appendChild(div_row8);
-		// Lastly the image if one exists.
 		const div3 = document.createElement('div');
 		div3.classList.add("col-4");
-		const img = document.createElement('img');
-		img.loading = "lazy";
-		img.referrerPolicy = "no-referrer";
+		// Lastly the image if one exists.
 		if(value.images && value.images[0]) {
+			const img = document.createElement('img');
+			img.loading = "lazy";
+			img.referrerPolicy = "no-referrer";
 			img.src = value.images[0].src;
 			if(value.images[0].height && value.images[0].width) {
 				img.height = value.images[0].height;
 				img.width = value.images[0].width;
 			}
+			// An empty string into the alt attribute to mark it as decorative.
+			img.setAttribute("alt", "");
+			img.classList.add("col-4");
+			div3.appendChild(img);
 		}
-		// An empty string into the alt attribute to mark it as decorative.
-		img.setAttribute("alt", "");
-		img.classList.add("col-4");
-		div3.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
 		const btn = document.createElement('button');
 		btn.classList.add('btn', 'btn-primary', 'w-100', 'mt-3');
