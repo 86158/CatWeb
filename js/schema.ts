@@ -164,6 +164,7 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		btn.classList.add('btn', 'btn-primary', 'w-100', 'mt-3');
 		btn.textContent = 'Voeg toe aan schema';
 		btn.type = 'button';
+		btn.name = value.name;
 		btn.value = value.ID.toString();
 		div3.appendChild(btn);
 		article.appendChild(div3);
