@@ -8,17 +8,15 @@
 						<div class="col-6 pe-3" style="float: left;">
 							<!-- Filter -->
 							<select id=tags name=tags class="form-select" aria-label="Spiergroepen">
-								<option value="" selected>Select</option>
+								<option value="" selected>Spiergroepen</option>
 								<option value="Triceps">Triceps</option>
 								<option value="Buik">Buik</option>
 								<option value="Borst">Borst</option>
 								<option value="Hamstrings">Hamstrings</option>
 							</select>
 						</div>
-						<div class="col-6 d-flex">
-							<!-- Search -->
-							<input id=search class="form-control mr-sm-2" type=search name=search placeholder="Search" aria-label="Search">
-							<button class="btn btn-outline-primary my-2 my-sm-0" type=button onclick=handleFilter(event);>Search</button>
+						<div class="d-flex float-end">
+							<button class="btn btn-outline-primary my-2 my-sm-0" type=button onclick=handleFilter(event);>Zoeken</button>
 							<input class="btn btn-primary my-2 my-sm-0 ms-3" type=reset value=Resetten onclick=handleFilter(event);>
 						</div>
 					</form>
@@ -28,25 +26,6 @@
 		<div class="row">
 			<!-- Oefeningen -->
 			<section id="js-oefeningen"></section>
-			<div class="col-7 col-custom overflow-auto mt-3" hidden>
-				<div class="oefeningen-schema">
-					<div class="row border border-dark rounded my-3 py-2 me-1">
-						<div class="col-8">
-							<div class="row">
-								<div class="col-12">
-									<h3>Oefening</h3>
-								</div>
-								<div class="col-12">
-									Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta laudantium illo magni minus eaque nihil architecto perferendis minima ea voluptatem.
-								</div>
-							</div>
-						</div>
-						<div class="col-4">
-							<img src="img/logo-CatWeb.png" alt="">
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Vertical line in between two columns -->
 			<div class="col-1 text-center">

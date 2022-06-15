@@ -16,7 +16,11 @@ interface site_oefeningen {
 	/** Estimated callori usage.*/
 	calorien: number|null;
 	/** Images */
-	images: Array<string>|null;
+	images: Array<{
+		src: string;
+		width: number|null;
+		height: number|null;
+	}>|null;
 	/** Videos */
 	videos: Array<string>|null;
 	workout: Array<string>|null;
@@ -82,14 +86,14 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		const article = document.createElement('article');
 		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row-oefeningen", "row", "static-height");
 		// The header element
-		const div = document.createElement('div');
-		div.classList.add('col-8');
-		const div2 = document.createElement('div');
-		div2.classList.add("row");
+		const div_row8 = document.createElement('div');
+		div_row8.classList.add('col-8');
+		const div_row = document.createElement('div');
+		div_row.classList.add("row");
 		const header = document.createElement('h4');
 		header.innerText = value.name;
 		header.classList.add('col-12');
-		div2.appendChild(header);
+		div_row.appendChild(header);
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
@@ -112,27 +116,30 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 				atribs.appendChild(attrib);
 			});
 		}
-		div2.appendChild(atribs);
+		div_row.appendChild(atribs);
 		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
-        desc.classList.add("col-12");
-		div2.appendChild(desc);
-        div.appendChild(div2);
-        article.appendChild(div);
+		desc.classList.add("col-12");
+		div_row.appendChild(desc);
+		div_row8.appendChild(div_row);
+		article.appendChild(div_row8);
 		// Lastly the image if one exists.
-        const div3 = document.createElement('div');
-        div3.classList.add("col-4");
+		const div3 = document.createElement('div');
+		div3.classList.add("col-4");
 		const img = document.createElement('img');
 		img.loading = "lazy";
 		img.referrerPolicy = "no-referrer";
-		if(value.images && value.images[0])
-			img.src = value.images[0];
+		if(value.images && value.images[0]) {
+			img.src = value.images[0].src;
+			if(value.images[0].height) img.height = value.images[0].height;
+			if(value.images[0].width) img.width = value.images[0].width;
+		}
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
-        img.classList.add("col-4");
-        div3.appendChild(img);
+		img.classList.add("col-4");
+		div3.appendChild(img);
 		// adds a button to allow oefening to be added to schema.
 		const btn = document.createElement('button');
 		btn.classList.add('btn', 'btn-primary', 'w-100', 'mt-3');
@@ -151,7 +158,7 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 				this.innerText = 'Expand';
 			}
 		});
-		div.appendChild(overflowShowHide);
+		div_row8.appendChild(overflowShowHide);
 		(container as HTMLElement).appendChild(article);
 	});
 }
