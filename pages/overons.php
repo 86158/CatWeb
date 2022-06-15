@@ -43,19 +43,19 @@
 					<p class="voordelen-text ">
 						<ul class="list-group">
 							<li class="d-flex flex-row">
-								<i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i>
+								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png" style="color: #5eb4a8; width: 2%; height: 2%;"></img>
 								<p>
 									Het recht op toegang op het opslaan van je eigen gemaakte schema's
 								</p>
 							</li>
 							<li class="d-flex flex-row">
-							<i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i>
+								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png" style="color: #5eb4a8; width: 2%; height: 2%;"></img>
 								<p>
 									Je favoriete workouts toevoegen op je account
 								</p>
 							</li>
 							<li class="d-flex flex-row">
-								<i class="fa fa-light fa-check me-3 pt-1" style="color: #5eb4a8;"></i>
+								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png" style="color: #5eb4a8; width: 2%; height: 2%;"></img>
 								<p>
 									Een weekoverzicht met het aantal calorieën en kilo's
 								</p>
