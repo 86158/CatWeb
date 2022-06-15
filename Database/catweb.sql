@@ -166,21 +166,21 @@ CREATE TABLE IF NOT EXISTS `site_media` (
 --
 
 REPLACE INTO `site_media` (`ID`, `link`, `width`, `height`) VALUES
-(1, 'https://i.stack.imgur.com/g8eij.jpg', NULL, NULL),
-(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg', NULL, NULL),
-(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg', NULL, NULL),
-(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg', NULL, NULL),
-(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg', NULL, NULL),
-(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg', NULL, NULL),
-(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg', NULL, NULL),
-(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg', NULL, NULL),
-(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg', NULL, NULL),
-(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg', NULL, NULL),
-(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg', NULL, NULL),
-(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', NULL, NULL),
-(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', NULL, NULL),
-(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', NULL, NULL),
-(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', NULL, NULL);
+(1, 'https://i.stack.imgur.com/g8eij.jpg', 350, 263),
+(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg', 1500, 1500),
+(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg', 770, 583),
+(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg', 736, 779),
+(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg', 4256, 2832),
+(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg', 550, 555),
+(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg', 1280, 720),
+(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg', 1000, 607),
+(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg', 800, 394),
+(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg', 800, 800),
+(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg', 980, 677),
+(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', 6000, 4000),
+(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', 1280, 960),
+(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', 600, 600),
+(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', 4800, 2700);
 
 -- --------------------------------------------------------
 

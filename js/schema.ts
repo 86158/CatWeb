@@ -133,8 +133,10 @@ function ajax_oefeningen_schema(data: JSON|responce, _textStatus: string|null, j
 		img.referrerPolicy = "no-referrer";
 		if(value.images && value.images[0]) {
 			img.src = value.images[0].src;
-			if(value.images[0].height) img.height = value.images[0].height;
-			if(value.images[0].width) img.width = value.images[0].width;
+			if(value.images[0].height && value.images[0].width) {
+				img.height = value.images[0].height;
+				img.width = value.images[0].width;
+			}
 		}
 		// An empty string into the alt attribute to mark it as decorative.
 		img.setAttribute("alt", "");
