@@ -50,7 +50,7 @@ function returnPage(): string {
 		case  'contact':
 			return 'contact.php';
 		case  'user':
-			if($m_perms < 0) return 'login.html';
+			// if($m_perms < 0) return 'login.html';
 			return 'profilePage.php';
 		default:
 			return 'homepage.php';

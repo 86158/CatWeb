@@ -19,11 +19,10 @@
 				<form class="d-flex">
 					<!-- Change the content based on whether the user is logged in or not. -->
 					<?php echo (isset($_SESSION['ID']))?
-						'<div class="dropdown text-primary btn">
-							<button class="dropbtn">User Name</button>
+						'<div class="dropdown show">
+							<a href="?page=user" class="btn btn-primary p-2 me-5" style="width: 80%;">User Name</a>
 							<div class="dropdown-content">
-								<a href="?page=user" class="btn me-5 text-primary">Juriën Braat</a>
-								<button role="submit" formmethod="POST" name="logout" value="logout" class="btn me-5 text-primary">Logout</button>
+								<button role="submit" formmethod="POST" name="logout" value="logout" class="btn btn-primary dropdown-item">Logout</button>
 							</div>
 						</div>':
 						'<button type="button" class="btn me-5 text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>';

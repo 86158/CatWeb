@@ -9,33 +9,54 @@
             <div class="profileInformation" style="width: 20%;">
                 <div class="title">
                     <h2 class="fw-bold text-center">Profile information</h2>
-                    <hr>
+                    <hr class="mt-3">
                 </div>
-                <div class="cresedentials">
-                    <div class="item-1" style="display: flex; justify-content: space-around; align-items: center;">
-                        <p class="fw-bold fs-5">Full Name</p>
-                        <p>Full Name</p>
+                <div class="cresedentials fs-5">
+                    <div class="row item-1 justify-content-between">
+                        <div class="col-6 text-center">
+                            <p class="fw-bold">Voornaam</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <p>Voornaam</p>
+                        </div>
                     </div>
-                    <hr class="text-center m-auto" style="width: 80%;">
-                    <div class="item-2" style="display: flex; justify-content: space-around; align-items: center;">
-                        <p class="fw-bold fs-5">Last Name</p>
-                        <p>Last Name</p>
+                    <hr class="text-center m-auto mb-3" style="width: 90%">
+                    <div class="row item-1 justify-content-between">
+                        <div class="col-6 text-center">
+                            <p class="fw-bold">Achternaam</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <p>Achternaam</p>
+                        </div>
                     </div>
-                    <hr class="text-center m-auto" style="width: 80%;">
-                    <div class="item-3" style="display: flex; justify-content: space-around; align-items: center;">
-                        <p class="fw-bold fs-5">Email Address</p>
-                        <p>thisisanemail@email.com</p>
+                    <hr class="text-center m-auto mb-3" style="width: 90%">
+                    <div class="row item-1 justify-content-between">
+                        <div class="col-6 text-center">
+                            <p class="fw-bold">Email</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <p>Email@email.com</p>
+                        </div>
                     </div>
-                    <hr class="text-center m-auto" style="width: 80%;">
-                    <div class="item-4" style="display: flex; justify-content: space-around; align-items: center;">
-                        <p class="fw-bold fs-5">Password</p>
-                        <p>******</p>
+                    <hr class="text-center m-auto mb-3" style="width: 90%">
+                    <div class="row item-1 justify-content-between">
+                        <div class="col-6 text-center">
+                            <p class="fw-bold">Wachtwoord</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <p>********</p>
+                        </div>
                     </div>
+                    <button class="btn btn-primary d-flex m-auto mt-3" style="color: white;">Verander uw gegevens</button>
                 </div>
             </div>
             <div class="profileFavourites">
                 <div class="title">
-                    <h3>Favourite Exercises</h3>
+                    <h2 class="text-center fw-bold">Favourite Exercises</h2>
+                    <hr class="mt-3" style="width: 120%">
+                </div>
+                <div class="content">
+
                 </div>
             </div>
         </div>
