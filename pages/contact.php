@@ -1,8 +1,12 @@
+<!-- The seciton of the Contact page -->
 <section class="contact-section">
     <div class="container">
+        <!-- Title -->
         <h1 class="text-center">Contact</h1>
-        <p class="text-center pb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, quasi!</p>
+        <!-- Subtitle -->
+        <p class="text-center pb-4">Hier kunt u informatie vinden over vragen die u heeft en gerelateerde vragen en antwoorden staan klaar voor u!</p>
         <div class="row justify-content-between">
+            <!-- Left side of the page -->
             <div class="col-6">
                 <h5>Formulier</h5>
                 <hr class="w-25">
@@ -31,6 +35,7 @@
             <div class="col-1 text-center">
                 <div class="vr h-100 mt-3"></div>
             </div>
+            <!-- Right side of the page -->
             <div class="col-5">
                 <h5>Veelgestelde vragen</h5>
                 <hr class="w-75">

@@ -1,7 +1,10 @@
+<!-- This page contains all the sections of the page Build Your Workout -->
 <?php
+    
     function QuestionSpier()
     {
         ?>
+        <!-- The section of the question about which part of the muscle you want to work on -->
         <div class="section-muscle row justify-content-center mt-5">
             <div class="col-3">
                 <div class="mb-3">
@@ -41,9 +44,11 @@
                             Biceps
                         </label>
                     </div>
+                    <!-- The submit button -->
                     <?php SubmitButton();?>
                 </div>
             </div>
+            <!-- Image of the page -->
             <div class="col-3">
                 <img src="img/BYW3.png" alt="Muscles">
             </div>
@@ -51,6 +56,7 @@
         <?php
     }
 
+    // The section where Build Your Workout begins on
     function BeginForm()
     {
         ?>
@@ -63,11 +69,13 @@
         <?php
     }
 
+    // The end of the page where we conclude every section of each function
     function EndForm(){
         echo '</div>';
         echo '</form></div></section>';
     }
 
+    // The section of the qeustion about the gender
     function QuestionGeslacht(){
         ?>
         <div class="section-gender row justify-content-center">
@@ -97,8 +105,10 @@
                         Neutraal
                     </label>
                 </div>
+                <!-- The submit button -->
                  <?php SubmitButton();?>
             </div>
+            <!-- The Image of the page -->
             <div class="col-3">
                 <img src="img/BYW1.jpg" alt="Gender">
             </div>
@@ -106,6 +116,8 @@
         <?php
     }
 
+
+    // The section of the question about which goal you wanna achieve
     function QuestionDoel(){
         ?>
         <div class="section-goal row justify-content-center mt-5">
@@ -133,9 +145,11 @@
                             Conditie
                         </label>
                     </div>
+                    <!-- The submit button -->
                     <?php SubmitButton();?>
                 </div>
             </div>
+            <!-- Image of the page -->
             <div class="col-3">
                 <img src="img/BYW2.jpg" alt="Goal">
             </div>
@@ -143,6 +157,7 @@
         <?php
     }
 
+    // The section of the question about how much exercises you wanna do
     function QuestionAantal(){
         ?>
         <div class="section-exercises row justify-content-center mt-5">
@@ -170,9 +185,11 @@
                             5 oefeningen
                         </label>
                     </div>
+                    <!-- The submit button -->
                     <?php SubmitButton();?>
                 </div>
             </div>
+            <!-- Image of the page -->
             <div class="col-3">
                 <img src="img/BYW4.png" alt="Excercises">
             </div>
@@ -180,6 +197,7 @@
         <?php
     }
 
+    // Every session is added by making it in order
     function SessionAdd(){
         if(!isset($_SESSION['workoutStart']))
         {
@@ -203,6 +221,7 @@
         }
     }
 
+    // Making a function where we can change the session if the button is pressed
     function SessionChange(){
         if(isset($_POST['start'])){
             $_SESSION['workoutStart'] = $_POST['start'];
@@ -226,6 +245,8 @@
             $_SESSION['workoutAantal'] = $_POST['oefeningen'];
         }
     }
+
+    // Checking if the page is reloading
     function CheckIfPageReloaded(){
         if($_SERVER['REQUEST_METHOD'] != 'POST'){
             unset($_SESSION['workoutStart']);
@@ -236,13 +257,14 @@
         }
     }
 
+    // The beginning page of Build Your Workout
     function ParagraphBYW(){
         echo '<p class="beginning-text fs-5 text-center width="60%"">Welkom bij Build your workout. Op deze pagina kunt u uw eigen workout samen stellen met het maken door een paar simpele vragen te beantwoorden.</p>';
         echo '<input type="hidden" name="start" value="true">';
     }
     
+    // The images of the beginning session
     function ImagesBYW(){
-
         SubmitButton();
         ?>
         <div class="images d-flex justify-content-around mt-5">
@@ -257,6 +279,7 @@
         echo '<div class="js-local" hidden><script src="js/ajax_communication.js" defer></script><script src="js/tableFunctions.js" defer></script></div>';
     }
 
+    // Function of the submit button
     function SubmitButton(){
         if($_SESSION['workoutStart'] == false){
             echo '<div class="button-start d-flex justify-content-center mt-4"><button type="submit" class="btn btn-primary" style="color: white;">Start</button></div>';
