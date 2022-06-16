@@ -76,27 +76,30 @@ function setFavorites(): array {
 		return $responce;
 	}
 	// Create a new schema and then get the ID.
-	$responce = DatbQuery($m_conn, 'INSERT INTO `site_schema` (`ID`, `ID_users`) VALUES (NULL, ?)', 'i', $user);
-	if($responce != 1) {
+	$query = DatbQuery($m_conn, 'INSERT INTO `site_schema` (`ID`, `ID_users`) VALUES (NULL, ?)', 'i', $user);
+	if($query != 1) {
 		header($_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error', true, 500);
 		$responce['error'] = 'Failed to create new schema';
-		$responce['trace'] = $th->getTraceAsString();
+		$responce['trace'] = $m_conn->error;
 		$m_conn->close();
 		return $responce;
 	}
-	$responce = DatbQuery($m_conn, 'SELECT LAST_INSERT_ID()');
-	if(!($responce instanceof mysqli_result)) {
+	if($query instanceof mysqli_result)
+		$query->close();
+	$query = DatbQuery($m_conn, 'SELECT LAST_INSERT_ID()');
+	if(!($query instanceof mysqli_result)) {
 		header($_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error', true, 500);
 		$responce['error'] = 'Failed get LAST_INSERT_ID from new schema';
-		$responce['trace'] = $th->getTraceAsString();
+		$responce['trace'] = $m_conn->error;
 		$m_conn->close();
 		return $responce;
 	}
-	$last_id = $responce->fetch_row();
+	$last_id = $query->fetch_row();
+	$query->close();
 	if(!is_array($last_id) || !is_int($last_id[0])) {
 		header($_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error', true, 500);
 		$responce['error'] = 'Failed get LAST_INSERT_ID from new schema';
-		$responce['trace'] = $th->getTraceAsString();
+		$responce['trace'] = $m_conn->error;
 		$m_conn->close();
 		return $responce;
 	}
@@ -106,7 +109,6 @@ function setFavorites(): array {
 	/** @var int[] $value */
 	foreach($value as $instance) {
 		if(!is_int($instance)) {
-			$m_conn->close();
 			header($_SERVER['SERVER_PROTOCOL'] .' 400 Bad Request', true, 400);
 			$responce['code'] = 400;
 			$responce['error'] = 'JSON was not of the expected schema';
@@ -118,7 +120,7 @@ function setFavorites(): array {
 		if(is_string($error)) {
 			header($_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error', true, 500);
 			$responce['error'] = 'Failed to add item to schema';
-			$responce['trace'] = $th->getTraceAsString();
+			$responce['trace'] = $error;
 			DatbQuery($m_conn, 'DELETE FROM site_schema WHERE `site_schema`.`ID` = ?', 'i', $last_id);
 			$m_conn->close();
 			return $responce;

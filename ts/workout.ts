@@ -1,4 +1,4 @@
-import {listParser, site_oefeningen} from './global';
+import {listParser, site_oefeningen} from './global.js';
 function FillWorkout(): void {
 	const container = [
 		document.getElementById("js-cardio"),
@@ -12,7 +12,7 @@ function FillWorkout(): void {
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	if(oefeningen == null) return console.error('Missing session item');
 	const data = JSON.parse(oefeningen);
-	if(!(data instanceof Array<site_oefeningen>)) return console.error('Failed to parse JSON from sessionStorage');
+	if(!(data instanceof Array)) return console.error('Failed to parse JSON from sessionStorage');
 	// The element is created filled with data and then added to its container.
 	(data as site_oefeningen[]).forEach(function(this: any, value: site_oefeningen, _index: number, _array: site_oefeningen[]): void {
 		if(value.workout == null || value.workout.length < 1) return;
