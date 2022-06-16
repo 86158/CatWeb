@@ -253,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `site_schema` (
 
 DROP TABLE IF EXISTS `site_schemacontent`;
 CREATE TABLE IF NOT EXISTS `site_schemacontent` (
-  `ID` int(10) UNSIGNED NOT NULL,
+  `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ID_schema` int(10) UNSIGNED NOT NULL,
   `ID_oefeningen` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`ID`),
