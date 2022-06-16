@@ -62,7 +62,7 @@
         ?>
         <section class="buildYourWorkout-Section">
             <div class="container">
-                <h1 class="text-center mb-3">Build your workout</h1>
+                <h1 class="text-center">Build your workout</h1>
                 <form action="" method="post">
                     <input type=hidden name="page" value="build">
                     <div class="row">
@@ -294,41 +294,16 @@
 
     function CompleteForm()
     {
-        $string = "SELECT o.*,IFNULL(CONCAT('[',GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','),
-            ']'), 'null') AS images, GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos, GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout
-            FROM site_oefeningen o
-            LEFT JOIN (
-            site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
-            ) ON ml.oefeningenID = o.ID
-            LEFT JOIN (
-                site_link_tube tl JOIN site_tube t ON tl.mediaID = t.ID
-            ) ON tl.oefeningenID = o.ID
-            LEFT JOIN (
-                site_workout w JOIN site_link_workout wl ON wl.workoutID = w.workoutID 
-            ) ON wl.oefeningID = o.ID WHERE (
-            ";
-        foreach($_SESSION['workoutSpier'] as $value){
-            $string .= "`spiergroepen` LIKE '" .  $value . "'";
-            if ($value != end($_SESSION['workoutSpier'])){
-                $string .= " OR "; 
-            }
-        }
-        $string .= ") AND (";
-        foreach($_SESSION['workoutDoel'] as $value){
-            if($value = 'afslanken'){
-                $string .= "`loseWeight` = 1";
-            }
-            else{
-                $string .= "`type` LIKE '" . $value ."'";
-            }
-            if($value != end($_SESSION['workoutDoel'])){
-                $string .= " OR ";
-        }
-        $string .= ")
-            GROUP BY o.ID
-            ORDER BY o.ID ASC;";
-        //DatbQuery(null, $string);
-        echo $string;
-        }
+        
+    }
+
+    function ConnectionPHP(){
+        $conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+        if ($conn->connect_error)
+            return $conn->connect_error;
+    }
+
+    function ShowInfo(){
+
     }
 ?>

@@ -23,9 +23,5 @@ else{
     CompleteForm();
 }
 EndForm();
-foreach($_SESSION['workoutSpier'] as $test){
-    echo $test;
-}
-CompleteForm();
 AddJS();
 ?>
