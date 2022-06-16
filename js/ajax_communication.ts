@@ -176,10 +176,6 @@ function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: J
 			img.loading = "lazy";
 			img.referrerPolicy = "no-referrer";
 			img.src = value.images[0].src;
-			if(value.images[0].height && value.images[0].width) {
-				img.height = value.images[0].height;
-				img.width = value.images[0].width;
-			}
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
 			article.appendChild(img);
