@@ -1,4 +1,4 @@
-import {responce, setFavorite} from './global';
+import {responce, setFavorite} from './global.js';
 /**
  * A function to be called if the request fails.
  * The function receives three arguments:
