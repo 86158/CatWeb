@@ -1,12 +1,12 @@
-import {listParser, site_oefeningen} from './global';
-import {setFavorites} from './ajax';
+import {listParser, site_oefeningen} from './global.js';
+import {setFavorites} from './ajax.js';
 function FillOefeningen(): void {
 	const container = document.getElementById("js-oefeningen");
 	if(container == null) return console.error("Missing element");
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	if(oefeningen == null) return console.error('Missing session item');
 	const data = JSON.parse(oefeningen);
-	if(!(data instanceof Array<site_oefeningen>)) return console.error('Failed to parse JSON from sessionStorage');
+	if(!(data instanceof Array)) return console.error('Failed to parse JSON from sessionStorage');
 	// Clear placeholders
 	container.innerHTML = "";
 	// The element is created filled with data and then added to its container.

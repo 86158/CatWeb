@@ -1,6 +1,6 @@
 // Special ts file for the Schema page
-import {listParser, site_oefeningen} from './global';
-import {createSchema} from './ajax';
+import {listParser, site_oefeningen} from './global.js';
+import {createSchema} from './ajax.js';
 /**
  * A function to be called if the request succeeds.
  * The function gets passed three arguments:
@@ -14,7 +14,7 @@ function FillSchema() {
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	if(oefeningen == null) return console.error('Missing session item');
 	const data = JSON.parse(oefeningen);
-	if(!(data instanceof Array<site_oefeningen>)) return console.error('Failed to parse JSON from sessionStorage');
+	if(!(data instanceof Array)) return console.error('Failed to parse JSON from sessionStorage');
 	// Clear placeholders
 	container.innerHTML = "";
 	// Add classes
