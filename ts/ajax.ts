@@ -14,9 +14,8 @@ import {responce, setFavorite} from './global.js';
  * This is an Ajax Event.
  */
 function ajax_error(_jqXHR: JQuery.jqXHR|null = null, textStatus: "timeout"|"error"|"abort"|"parsererror"|null = null, errorThrown?: string): void {
-	console.error(textStatus);
-	if(errorThrown)
-		console.error(errorThrown);
+	// Send the error messages to the console.
+	console.error(textStatus, errorThrown);
 }
 /**
  * A function to be called if the request succeeds.
@@ -24,27 +23,43 @@ function ajax_error(_jqXHR: JQuery.jqXHR|null = null, textStatus: "timeout"|"err
  ** The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function,
  ** if specified; a string describing the status;
  ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.
- */
-function ajax_oefeningen(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
+*/
+function ajax_success(this: JQuery.Ajax.AjaxSettingsBase<any>, data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
+	// Check if the request was a success
 	if(!('code' in data))
 		return ajax_error(jqXHR, "parsererror");
-	if(data.code != 200 || data.output == undefined)
+	if(data.code != 200)
 		return console.error(data);
-	// Store output in sessionstorage.
-	sessionStorage.setItem('oefeningen', JSON.stringify(data.output));
 }
+
 /**
  * Request the article to be added with data.
  */
 function requestOefeningen(): JQuery.jqXHR<any> {
-	var settings: JQuery.AjaxSettings<any> = {
+	// Settings object for calling getOefeningen.php
+	const settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		async: true,
 		cache: true,
 		dataType: "json",
 		method: "GET",
 		url: "./php/getOefeningen.php",
-		success: ajax_oefeningen,
+		/**
+		 * A function to be called if the request succeeds.
+		 * The function gets passed three arguments:
+		 ** The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function,
+		 ** if specified; a string describing the status;
+		 ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.*/
+		success: function ajax_success_oefening(data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
+			// Check if data is of the expected type.
+			if(!('code' in data))
+				return ajax_error(jqXHR, "parsererror");
+			// Check if the request was a success.
+			if(data.code != 200 || data.output == undefined)
+				return console.error("Response with error code: ", data);
+			// Store output in sessionstorage. This is to prevent the data being requested every time a page is loaded.
+			sessionStorage.setItem('oefeningen', JSON.stringify(data.output));
+		},
 		error: ajax_error
 	};
 	return $.ajax(settings);
@@ -53,6 +68,7 @@ function requestOefeningen(): JQuery.jqXHR<any> {
  * Set favorites to be modified
 */
 function setFavorites(favorites: setFavorite[]): JQuery.jqXHR<any> {
+	// Settings object for calling setFavorites.php
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		contentType: 'application/json; charset=UTF-8',
@@ -62,22 +78,12 @@ function setFavorites(favorites: setFavorite[]): JQuery.jqXHR<any> {
 		url: "./php/setFavorites.php",
 		data: JSON.stringify(favorites),
 		error: ajax_error,
-		/**
-		 * A function to be called if the request succeeds.
-		 * The function gets passed three arguments:
-		 ** The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function,
-		 ** if specified; a string describing the status;
-		 ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.*/
-		success: function(this: JQuery.Ajax.AjaxSettingsBase<any>, data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
-			if(!('code' in data))
-				return ajax_error(jqXHR, "parsererror");
-			if(data.code != 200)
-				return console.error(data);
-		}
+		success: ajax_success
 	};
 	return $.ajax(settings);
 }
 function createSchema(ids: number[]): JQuery.jqXHR<any> {
+	// Settings object for calling createSchema.php
 	var settings: JQuery.AjaxSettings<any> = {
 		accepts: {json:"application/json"},
 		contentType: 'application/json; charset=UTF-8',
@@ -87,18 +93,7 @@ function createSchema(ids: number[]): JQuery.jqXHR<any> {
 		url: "./php/createSchema.php",
 		data: JSON.stringify(ids),
 		error: ajax_error,
-		/**
-		 * A function to be called if the request succeeds.
-		 * The function gets passed three arguments:
-		 ** The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function,
-		 ** if specified; a string describing the status;
-		 ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.*/
-		success: function(this: JQuery.Ajax.AjaxSettingsBase<any>, data: JSON|responce, _textStatus: string|null, jqXHR: JQuery.jqXHR): void {
-			if(!('code' in data))
-				return ajax_error(jqXHR, "parsererror");
-			if(data.code != 200)
-				return console.error(data);
-		}
+		success: ajax_success
 	};
 	return $.ajax(settings);
 }
