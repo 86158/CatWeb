@@ -1,11 +1,13 @@
+/** Page specific functions for oefeningen page.*/
 import {listParser, site_oefeningen} from './global.js';
 import {setFavorites} from './ajax.js';
-function FillOefeningen(): void {
-	const container = document.getElementById("js-oefeningen");
-	if(container == null) return console.error("Missing element");
+/** Page specific filling of oefening data.*/
+function fillOefeningen(container: HTMLElement): void {
+	// Get the data to add to the page and check it.
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	if(oefeningen == null) return console.error('Missing session item');
 	const data = JSON.parse(oefeningen);
+	// More in dept type checking is too much work.
 	if(!(data instanceof Array)) return console.error('Failed to parse JSON from sessionStorage');
 	// Clear placeholders
 	container.innerHTML = "";
@@ -46,12 +48,14 @@ function FillOefeningen(): void {
 		desc.innerText = value.description;
 		listParser(desc);
 		article.appendChild(desc);
-		// Lastly the image if one exists.
+		// Lastly the image if one exists. While multiple images may exist we currently only use the first one.
 		if(value.images && value.images[0]) {
 			const img = document.createElement('img');
+			// Only load the images on screen to save on load time.
 			img.loading = "lazy";
 			img.referrerPolicy = "no-referrer";
 			img.src = value.images[0].src;
+			// Set the width and height properties of the image the scr links to so the page knows how much space it might take up.
 			if(value.images[0].height && value.images[0].width) {
 				img.height = value.images[0].height;
 				img.width = value.images[0].width;
@@ -60,20 +64,25 @@ function FillOefeningen(): void {
 			img.setAttribute("alt", "");
 			article.appendChild(img);
 		}
+		// If the user is logged in they will be able to change their favorites.
 		if(value.favorite != undefined) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
-			checkboxLabel.innerHTML = `<svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox"/>`;
+			// Add the svg used for the grafic and the input used for the functionality.
+			checkboxLabel.innerHTML = `<svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
+			// Select the created input.
 			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
 			checkboxLabel.style.fill = (value.favorite)? "yellow" : "none";
 			checkboxLabel.style.cursor = "pointer";
 			checkboxInput.checked = value.favorite;
 			// checkboxInput.id = element.ID.toString();
-			checkboxInput.hidden = true;
 			checkboxInput.addEventListener('input',
+				// Change whether the item is favorited or not.
 				function(this: HTMLInputElement, ev: Event): void {
-					ev.preventDefault();
+					// Disable the button from being triggered while handling this function.
 					this.disabled = true;
+					// Prevent the button from changing it's own state. We do that in the function itself.
+					ev.preventDefault();
 					const checked = (checkboxLabel.style.fill == "yellow");
 					var waiter = setFavorites([{
 						oefening: value.ID,
@@ -82,6 +91,8 @@ function FillOefeningen(): void {
 					waiter.done(() => {
 						this.checked = !checked;
 						checkboxLabel.style.fill = (checked)? "none": "yellow";
+						// The stored information no longer represents the data on the server so re-request it next time the page is loaded.
+						sessionStorage.removeItem('oefeningen');
 						this.disabled = false;
 					});
 					waiter.fail(() => {
@@ -92,7 +103,8 @@ function FillOefeningen(): void {
 			);
 			article.appendChild(checkboxLabel);
 		}
+		// Add the now complete article to the container.
 		container.appendChild(article);
 	});
 }
-export {FillOefeningen}
+export {fillOefeningen}

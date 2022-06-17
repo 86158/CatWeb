@@ -1,19 +1,13 @@
-// Special ts file for the Schema page
+/** Page specific functions for schema page.*/
 import {listParser, site_oefeningen} from './global.js';
 import {createSchema} from './ajax.js';
-/**
- * A function to be called if the request succeeds.
- * The function gets passed three arguments:
- ** The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function,
- ** if specified; a string describing the status;
- ** and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object.
- */
-function FillSchema() {
-	const container = document.getElementById("js-oefeningen");
-	if(container == null) return console.error("Missing element");
+/** Page specific filling of oefening data.*/
+function fillSchema(container: HTMLElement) {
+	// Get the data to add to the page and check it.
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	if(oefeningen == null) return console.error('Missing session item');
 	const data = JSON.parse(oefeningen);
+	// More in dept type checking is too much work.
 	if(!(data instanceof Array)) return console.error('Failed to parse JSON from sessionStorage');
 	// Clear placeholders
 	container.innerHTML = "";
@@ -24,17 +18,18 @@ function FillSchema() {
 	(data as site_oefeningen[]).forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
 		const article = document.createElement('article');
 		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row-oefeningen", "row", "static-height");
-		// The header element
 		const div_row8 = document.createElement('div');
 		div_row8.classList.add('col-8');
 		const div_row = document.createElement('div');
 		div_row.classList.add("row");
+		// The header element
 		const header = document.createElement('h4');
 		header.innerText = value.name;
 		header.classList.add('col-6');
 		div_row.appendChild(header);
 		const div_col6 = document.createElement('div');
 		div_col6.classList.add('col-6');
+		/** The button that changes whether the article hides overflowing text or expands to show it all.*/
 		const overflowShowHide = document.createElement('button');
 		overflowShowHide.type = "button";
 		overflowShowHide.innerText = 'Meer tekst';
@@ -50,7 +45,7 @@ function FillSchema() {
 		});
 		div_col6.appendChild(overflowShowHide);
 		div_row.appendChild(div_col6);
-		// The atributes under the header but above the description. Each atribute has its own span.
+		/** The atributes under the header but above the description. Each atribute has its own span.*/
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
 		//A span for the type of exercise.
@@ -73,7 +68,7 @@ function FillSchema() {
 			});
 		}
 		div_row.appendChild(atribs);
-		// The description.
+		/** The description of the oefening.*/
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
@@ -139,11 +134,13 @@ function schemaMaker(): void {
 	if(!(btnSave instanceof HTMLButtonElement)) return console.error('Missing button#js-saveSchema');
 	btnSave.addEventListener('click', schemaSubmit);
 }
+/** Get all elements in the list and add create a new schema for the user in the database for them.*/
 function schemaSubmit(): void {
 	const container = document.getElementById('js-selected');
 	if(container == null)
 		return console.error('Failed to find container for selected items.');
 	const output: number[] = [];
+	// Get the ID of each item and add it to a list.
 	for(let index = 0; index < container.childElementCount; index++) {
 		const schemaOption = container.children[index] as HTMLElement;
 		const result = /(?:^| )js-id-(\d+)(?: |$)/.exec(schemaOption.className);
@@ -151,6 +148,7 @@ function schemaSubmit(): void {
 		output.push(Number(result[1]));
 	}
 	if(output.length == 0) return;
+	// Send the list to the createSchema function to add to the database.
 	createSchema(output);
 }
-export {FillSchema, schemaMaker}
+export {fillSchema, schemaMaker}
