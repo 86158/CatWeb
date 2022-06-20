@@ -20,8 +20,11 @@ function fillWorkout(): void {
 	(data as site_oefeningen[]).forEach(function(this: any, value: site_oefeningen, _index: number, _array: site_oefeningen[]): void {
 		if(value.workout == null || value.workout.length < 1) return;
 		const article = document.createElement('article');
-		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1");
+		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row");
 		// The header element
+		const div_row8 = document.createElement('div');
+		div_row8.classList.add('col-8');
+		const div_row = document.createElement('div');
 		const header = document.createElement('h4');
 		header.innerText = value.name;
 		article.appendChild(header);
@@ -54,6 +57,10 @@ function fillWorkout(): void {
 		desc.innerText = value.description;
 		listParser(desc);
 		article.appendChild(desc);
+		div_row8.appendChild(div_row);
+		article.appendChild(div_row8);
+		const div3 = document.createElement('div');
+		div3.classList.add("col-4");
 		// Lastly the image if one exists. While multiple images may exist we currently only use the first one.
 		if(value.images && value.images[0]) {
 			const img = document.createElement('img');
