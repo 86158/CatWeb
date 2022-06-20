@@ -112,16 +112,27 @@ function schemaMaker(): void {
 	const container = document.getElementById('js-selected');
 	if(container == null)
 		return console.error('Failed to find container for selected items.');
+	// Unfortunately ts doesn't like global scope stuff https://stackoverflow.com/questions/38891522/typescript-import-only-as-declaration
+	// @ts-ignore
+	Sortable.create(container);
+	container.classList.add('sortable-container');
 	function clickListener(this: HTMLButtonElement, _ev: MouseEvent): void {
 		const container = document.getElementById('js-selected');
 		if(container == null) return;
 		const schemaOption = document.createElement('div');
 		const schemaText = document.createElement('p');
 		const schemaButton = document.createElement('button');
-		schemaOption.classList.add('js-id-'+ this.value);
+		const schemaDragger = document.createElement('i');
+		// schemaOption.id = "js-" + (new Date()).valueOf().toString();
+		schemaOption.classList.add('js-id-'+ this.value, 'sortable-item');
+		// schemaOption.setAttribute('draggable', 'true');
+		// schemaOption.addEventListener('dragstart', dragStart);
+		// schemaOption.setAttribute('data-mdb-drag-handle', '.draggable-drag-ico');
 		schemaButton.type = 'button';
 		schemaButton.innerText = 'X';
+		// schemaDragger.classList.add('draggable-cursor-grab', 'draggable-drag-ico');
 		schemaText.innerText = this.name;
+		schemaOption.appendChild(schemaDragger);
 		schemaOption.appendChild(schemaText);
 		schemaOption.appendChild(schemaButton);
 		container.appendChild(schemaOption);

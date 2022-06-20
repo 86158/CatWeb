@@ -38,6 +38,3 @@
 		</div>
 	</div>
 </section>
-<div class="js-local" hidden>
-	<script src="js/ajax_communication.js" defer></script>
-</div>
