@@ -1,5 +1,6 @@
 article.oefeningen-schema {
 	padding: .5rem;
+	position: relative;
 }
 article.oefeningen-schema>h4 {
 	text-align: center;
@@ -27,4 +28,9 @@ article.oefeningen-schema>img {
 }
 article.oefeningen-schema>button {
 	width: 100%;
+}
+article.oefeningen-schema label.customCheckbox {
+	position: absolute;
+	top: 0;
+	right: 0;
 }
