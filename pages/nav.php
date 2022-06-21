@@ -22,7 +22,7 @@
 						'<div class="dropdown show">
 							<a href="?page=user" class="btn btn-primary p-2 me-5" style="width: 80%;">'. $_SESSION['username'] .'</a>
 							<div class="dropdown-content">
-								<button role="submit" formmethod="POST" name="logout" value="logout" class="btn btn-primary dropdown-item">Logout</button>
+								<button type="submit" formmethod="POST" name="logout" value="logout" class="btn btn-primary dropdown-item">Logout</button>
 							</div>
 						</div>':
 						'<button type="button" class="btn me-5 text-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>';
