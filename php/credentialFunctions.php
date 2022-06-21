@@ -138,9 +138,9 @@ function getPerms($username, string $pwd) {
 		$isMail = strpos($username, "@") != FALSE;
 		// Get `pwd` to verify the given password with. `ID` so we know what user we have and `perms` for their permission level.
 		if($isMail) {
-			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `email`=?', 's', $username);
+			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `email`=?', 's', $username);
 		} else {
-			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email` FROM `site_users` WHERE `username`=?', 's', $username);
+			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `username`=?', 's', $username);
 		}
 		if(!is_object($m_result))
 			return 'Database request failed at SELECT `pwd`';
@@ -151,12 +151,14 @@ function getPerms($username, string $pwd) {
 		// Create a login token as we should not store the password in the session.
 		$m_ID = intval($m_result['ID']);
 		$m_token = random_int(0, 16777215);
+		$m_user = $m_result['username'];
 		$m_result = DatbQuery(null, "UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
 		if($m_result !== 1)
 			return 'Database request failed at UPDATE `users` SET `token`';
 		// Store `ID` of the user and their token.
 		$_SESSION['ID'] = $m_ID;
 		$_SESSION['loginToken'] = $m_token;
+		$_SESSION['username'] = $m_user;
 		// Using a encrypted username as the Key Encryption Key. The Data Encryption Key is never put in $_SESSION
 		$_SESSION['pwdKey'] = openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 		// Autentication with token

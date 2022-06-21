@@ -65,7 +65,7 @@ function fillOefeningen(container: HTMLElement): void {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
 			// Add the svg used for the grafic and the input used for the functionality.
-			checkboxLabel.innerHTML = `<svg><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
+			checkboxLabel.innerHTML = `<svg vieuwBox="0 0 22 22" height="4em" width="4em"><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
 			// Select the created input.
 			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
 			checkboxLabel.style.fill = (value.favorite)? "yellow" : "none";
