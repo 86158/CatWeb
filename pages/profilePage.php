@@ -71,6 +71,7 @@
                 <div class="content">
 
                 </div>
+                <a class="btn btn-primary text-center d-flex m-auto mt-3" href="?page=favorieten" tyle="color: white;">Zie alle favorieten oefeningen</a>
             </div>
         </div>
     </div>
