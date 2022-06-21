@@ -62,16 +62,16 @@
                 </div>
             </div>
             <!-- Right side of the page -->
-            <div class="profileFavourites" style="width: 20%;">
+            <div class="profileFavourites">
                 <div class="title">
                     <h2 class="text-center fw-bold">Favourite Exercises</h2>
-                    <hr class="mt-3" style="justify-content: center;">
+                    <hr class="mt-3" style="width: 120%">
                 </div>
                 <!-- The content of the favourites section -->
                 <div class="content">
 
                 </div>
-                <a class="btn btn-primary d-flex m-auto mt-3" href="?page=favorieten" style="color: white; justify-content: center; width: 70%">Zie alle favorieten oefeningen</a>
+                <a class="btn btn-primary text-center d-flex m-auto mt-3" href="?page=favorieten" tyle="color: white;">Zie alle favorieten oefeningen</a>
             </div>
         </div>
     </div>
