@@ -20,7 +20,7 @@ else if($_SESSION['workoutAantal' ]== ''){
     QuestionAantal();
 }
 else{
-    CompleteForm();
+    ShowInfo();
 }
 EndForm();
 AddJS();
