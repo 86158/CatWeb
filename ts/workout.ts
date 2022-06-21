@@ -1,5 +1,6 @@
 /** Page specific functions for workout page.*/
 import {listParser, site_oefeningen} from './global.js';
+import {setFavorites} from './ajax.js';
 /** Page specific filling of oefening data.*/
 function fillWorkout(): void {
 	// We use multiple containers on this page.
@@ -24,10 +25,9 @@ function fillWorkout(): void {
 		// The header element
 		const div_row8 = document.createElement('div');
 		div_row8.classList.add('col-8');
-		const div_row = document.createElement('div');
 		const header = document.createElement('h4');
 		header.innerText = value.name;
-		article.appendChild(header);
+		div_row8.appendChild(header);
 		/** The atributes under the header but above the description. Each atribute has its own span.*/
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
@@ -50,14 +50,13 @@ function fillWorkout(): void {
 				atribs.appendChild(attrib);
 			});
 		}
-		article.appendChild(atribs);
+		div_row8.appendChild(atribs);
 		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
 		listParser(desc);
-		article.appendChild(desc);
-		div_row8.appendChild(div_row);
+		div_row8.appendChild(desc);
 		article.appendChild(div_row8);
 		const div3 = document.createElement('div');
 		div3.classList.add("col-4");
@@ -72,6 +71,45 @@ function fillWorkout(): void {
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
 			article.appendChild(img);
+		}
+		// If the user is logged in they will be able to change their favorites.
+		if(value.favorite != undefined) {
+			const checkboxLabel = document.createElement('label');
+			checkboxLabel.classList.add('customCheckbox');
+			// Add the svg used for the grafic and the input used for the functionality.
+			checkboxLabel.innerHTML = `<svg vieuwBox="0 0 22 22" height="4em" width="4em"><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
+			// Select the created input.
+			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
+			checkboxLabel.style.fill = (value.favorite)? "yellow" : "none";
+			checkboxLabel.style.cursor = "pointer";
+			checkboxInput.checked = value.favorite;
+			// checkboxInput.id = element.ID.toString();
+			checkboxInput.addEventListener('input',
+				// Change whether the item is favorited or not.
+				function(this: HTMLInputElement, ev: Event): void {
+					// Disable the button from being triggered while handling this function.
+					this.disabled = true;
+					// Prevent the button from changing it's own state. We do that in the function itself.
+					ev.preventDefault();
+					const checked = (checkboxLabel.style.fill == "yellow");
+					var waiter = setFavorites([{
+						oefening: value.ID,
+						remove: checked
+					}]);
+					waiter.done(() => {
+						this.checked = !checked;
+						checkboxLabel.style.fill = (checked)? "none": "yellow";
+						// The stored information no longer represents the data on the server so re-request it next time the page is loaded.
+						sessionStorage.removeItem('oefeningen');
+						this.disabled = false;
+					});
+					waiter.fail(() => {
+						console.error("Failed to update favorite status");
+						this.disabled = false;
+					});
+				}
+			);
+			article.appendChild(checkboxLabel);
 		}
 		// Because there's potentually mulitple or no categories the article belongs to we add a copy to each and delete the original.
 		(value.workout as string[]).forEach(function(this: HTMLElement[], value: string, _index: number, _obj: string[]): void {
