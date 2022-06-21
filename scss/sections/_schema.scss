@@ -60,4 +60,7 @@
     div#js-selected {
         min-height: 20vh;
     }
+    .sortable-item {
+        cursor: grab;
+    }
 }
