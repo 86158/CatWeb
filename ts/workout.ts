@@ -73,7 +73,8 @@ function fillWorkout(): void {
 			article.appendChild(img);
 		}
 		// If the user is logged in they will be able to change their favorites.
-		if(value.favorite != undefined) {
+		const loginTest = document.querySelector('nav form button[name="logout"]');
+		if(value.favorite != undefined && loginTest != null) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
 			// Add the svg used for the grafic and the input used for the functionality.

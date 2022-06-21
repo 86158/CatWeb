@@ -170,13 +170,13 @@ function getPerms($username, string $pwd) {
 		$m_result = $m_result->fetch_assoc();
 		$permLevel = $m_result['perms'];
 		if(!is_array($m_result)) {
-			unset($_SESSION['loginToken']);
+			unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 			return 'Invallid/expired loginToken.';
 		}
 		// Ensure the token is the same as the one given and ensure it has not expired.
 		if($m_result['token'] != $pwd || $m_result['timeDif'] > 15) {
 			DatbQuery(null, 'UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $username);
-			unset($_SESSION['loginToken']);
+			unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 			return 'Invallid/expired loginToken.';
 		}
 	}
