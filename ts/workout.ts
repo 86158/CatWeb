@@ -69,10 +69,6 @@ function fillWorkout(): void {
 			img.referrerPolicy = "no-referrer";
 			img.src = value.images[0].src;
 			// Set the width and height properties of the image the scr links to so the page knows how much space it might take up.
-			if(value.images[0].height && value.images[0].width) {
-				img.height = value.images[0].height;
-				img.width = value.images[0].width;
-			}
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
 			article.appendChild(img);
