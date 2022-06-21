@@ -61,7 +61,7 @@ function fillOefeningen(container: HTMLElement): void {
 			article.appendChild(img);
 		}
 		// If the user is logged in they will be able to change their favorites.
-		if(value.favorite != undefined) {
+		if(value.favorite != undefined && document.querySelector('nav form button[name="logout"]') != null) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
 			// Add the svg used for the grafic and the input used for the functionality.
