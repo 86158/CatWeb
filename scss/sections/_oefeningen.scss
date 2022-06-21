@@ -1,0 +1,10 @@
+#js-filters div.filters input {
+	height: 100%;
+	width: 100%;
+}
+#js-filters div.filters>div {
+	min-width: 11rem;
+}
+#js-filters div.filters>div.col-1 {
+	min-width: 6rem;
+}

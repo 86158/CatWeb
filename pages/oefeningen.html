@@ -6,33 +6,23 @@
 				<p class="fs-5">Hier kunt u alle oefeningen zien die er zijn op onze website.</p>
 			</div>
 			<div class="filters row">
-				<div class="col-2">
-					<fieldset id=Search>
-						<legend>
-							Zoeken
-						</legend>
-						<div>
-							<input id=search type=search name=search aria-labelledby=Search>
-						</div>
-					</fieldset>
+				<div class="col-3">
+					<input id=search type=search name=search>
 				</div>
 				<div class="col-2">
-					<fieldset>
-						<select id=tags name=tags class="form-select" aria-label="Spiergroepen">
-							<option value="" selected>Select</option>
-							<option value="Triceps">Triceps</option>
-							<option value="Buik">Buik</option>
-							<option value="Borst">Borst</option>
-							<option value="Hamstrings">Hamstrings</option>
-						</select>
-					</fieldset>
+					<select id=tags name=tags class="form-select" aria-label="Spiergroepen">
+						<option value="" selected>Spiergroepen</option>
+						<option value="Triceps">Triceps</option>
+						<option value="Buik">Buik</option>
+						<option value="Borst">Borst</option>
+						<option value="Hamstrings">Hamstrings</option>
+					</select>
 				</div>
-				<div class="col-2">
-					<fieldset>
-						<legend>Actions:</legend>
-						<input type=reset value=Resetten onclick=handleFilter(event);>
-						<button type=button onclick=handleFilter(event);>Indienen</button>
-					</fieldset>
+				<div class="col-1">
+					<input type=reset value=Resetten />
+				</div>
+				<div class="col-1">
+					<input type=submit value=Filteren />
 				</div>
 			</div>
 			<section id="js-oefeningen"></section>
