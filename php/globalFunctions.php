@@ -47,11 +47,15 @@ function returnPage(): string {
 			return 'overons.php';
 		case 'login':
 			return 'login.html';
-		case  'contact':
+		case 'contact':
 			return 'contact.php';
-		case  'user':
+		case 'user':
 			// if($m_perms < 0) return 'login.html';
 			return 'profilePage.php';
+		case 'favorieten':
+			return 'favorieten.php';
+		case 'resultBYW':
+			return 'resultBYW.php';
 		default:
 			return 'homepage.php';
 	}
