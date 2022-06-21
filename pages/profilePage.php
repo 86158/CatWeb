@@ -21,7 +21,7 @@
                             <p class="fw-bold">Voornaam</p>
                         </div>
                         <div class="col-6 text-center">
-                            <p>Voornaam</p>
+                            <p contenteditable="true">Voornaam</p>
                         </div>
                     </div>
                     <!-- Horizontal Line -->

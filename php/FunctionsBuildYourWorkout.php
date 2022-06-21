@@ -289,31 +289,25 @@
         }
         else if($_SESSION['workoutAantal'] == ''){
             echo '<button type="submit" class="btn btn-primary mt-4" style="color: white;">Finish</button>';
-        }   
+        }  
+         
     }
 
-    function ConnectionPHP(string $sql){
-        // make a connection
-        $conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
-        //show an error connection error
-        if ($conn->connect_error)
-            return $conn->connect_error;
-        $result = $conn->query($sql);
+    function GetData(string $sql){
+        $result = DatbQuery(null, $sql);
         //create an empty array
         $oefeningen = array();
-        if($result->num_rows > 0){ 
             //output data of each row
             while($row = $result->fetch_assoc()){
                 //add each row to games
                 $oefeningen[] = $row;
             }
-        }
-        $conn->close();
         return $oefeningen;
     }
 
     function ShowInfo(){
         //construct a string for database request
+        echo '<div class="section-resultBYW"><div class="container"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div class="rounded border border-dark p-2">';
         $string = "SELECT o.*, IFNULL( CONCAT( '[', GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','), ']'
                 ), 'null') AS images,
                 GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
@@ -330,24 +324,54 @@
             ) ON wl.oefeningID = o.ID WHERE ";
         foreach($_SESSION['workoutDoel'] as $value){
             if ('afslanken' != $value) {
-                $string .= "`type` LIKE $value ";
+                $string .= "`type` LIKE '$value' ";
             }
             else{
-                $string .= "`spiergroepen` LIKE $value";
+                $string .= "`loseWeight` LIKE 1";
             }
             if ($value != end($_SESSION['workoutDoel'])){
                 $string .= " OR ";
             }
         }
+        $string .= " OR ";
         foreach($_SESSION['workoutSpier'] as $value){
-            $string .= "`spiergroepen` LIKE $value";
-            if($value == end($_SESSION['workoutSpier'])){
+            $string .= "`spiergroepen` LIKE '$value'";
+            if($value != end($_SESSION['workoutSpier'])){
                 $string .= " OR ";
             }
         }
         $string .= "GROUP BY o.ID
-            ORDER BY o.ID ASC LIMIT by " . $_SESSION['workoutAantal'] .";";
-        $oefening = ConnectionPHP($string);
-        var_dump($oefening);
+            ORDER BY o.ID;";
+            // make the sql request
+        $oefening = DatbQuery(null, $string);
+        //output data of each row
+        while($row = $oefening->fetch_all(MYSQLI_ASSOC)){
+        //add each row to games
+            $oefeningen[] = $row;
+        }
+        $amount =  count($oefeningen[0]);
+        $Cycle = 0;
+        while ($Cycle < $_SESSION['workoutAantal']){
+            $selectedArray = rand(0, $amount - 1);
+            ?>
+            <div class="row">
+                <div class="col-8">
+                    <h4><?php echo $oefeningen[0][$selectedArray]["name"] ?></h4>
+                    <div class="sub d-flex gap-3">
+                        <p class="type"><?php echo $oefeningen[0][$selectedArray]["type"] ?></p>
+                        <p class="spiergroep"><?php echo $oefeningen[0][$selectedArray]["spiergroepen"] ?></p>
+                    </div>
+                    <p class="description"><?php echo $oefeningen[0][$selectedArray]["description"] ?></p>
+                </div>
+                <div class="col-4">
+                    <img src="<?php echo json_decode($oefeningen[0][$selectedArray]["images"], true)[0]['src'] ?>" alt="image" style="width: 60%; margin: 0;">
+                    <button class="btn btn-primary mt-2" style="width: 100%; color: white;">Delete from favourites</button>
+                </div>
+            </div>
+            <?php
+            $Cycle++;
+        }
+        echo "</div></div></div></div>";
+        //var_dump($oefeningen);
     }
 ?>
