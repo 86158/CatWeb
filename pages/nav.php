@@ -20,7 +20,7 @@
 					<!-- Change the content based on whether the user is logged in or not. -->
 					<?php echo (isset($_SESSION['ID']))?
 						'<div class="dropdown show">
-							<a href="?page=user" class="btn btn-primary p-2 me-5" style="width: 80%;">User Name</a>
+							<a href="?page=user" class="btn btn-primary p-2 me-5" style="width: 80%;">'. $_SESSION['username'] .'</a>
 							<div class="dropdown-content">
 								<button role="submit" formmethod="POST" name="logout" value="logout" class="btn btn-primary dropdown-item">Logout</button>
 							</div>

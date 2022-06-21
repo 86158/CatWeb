@@ -27,6 +27,7 @@ function returnPage(): string {
 			$m_perms = -1;
 			unset($_SESSION['ID']);
 			unset($_SESSION['loginToken']);
+			unset($_SESSION['username']);
 		}
 	}
 	// Return the default page if `page` is not defined.
