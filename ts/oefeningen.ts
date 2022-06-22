@@ -102,7 +102,7 @@ function fillOefeningen(container: HTMLElement): void {
 					});
 				}
 			);
-			article.appendChild(checkboxLabel);
+			div_row8.appendChild(checkboxLabel);
 		}
 		// Add the now complete article to the container.
 		container.appendChild(article);
