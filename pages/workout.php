@@ -7,7 +7,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingOne">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-							Preset Workout Cardio
+							Cardio Workout
 						</button>
 					</h2>
 					<div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -17,7 +17,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingTwo">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-							Preset Workout Kracht
+							Kracht Workout
 						</button>
 					</h2>
 					<div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
@@ -27,7 +27,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingThree">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-							Preset Workout Rug
+							Rug Workout
 						</button>
 					</h2>
 					<div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
@@ -37,7 +37,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingFour">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-							Preset Workout Biceps
+							Biceos Workout
 						</button>
 					</h2>
 					<div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
@@ -47,7 +47,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingFive">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-							Preset Workout Triceps
+							Triceps Workout
 						</button>
 					</h2>
 					<div id="flush-collapseFive" class="accordion-collapse collapse" aria-labelledby="flush-headingFive" data-bs-parent="#accordionFlushExample">
@@ -57,7 +57,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingSix">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
-							Preset Workout Buik
+							Buik Workout
 						</button>
 					</h2>
 					<div id="flush-collapseSix" class="accordion-collapse collapse" aria-labelledby="flush-headingSix" data-bs-parent="#accordionFlushExample">
@@ -67,7 +67,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingSeven">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
-							Preset Workout Borst
+							Borst Workout
 						</button>
 					</h2>
 					<div id="flush-collapseSeven" class="accordion-collapse collapse" aria-labelledby="flush-headingSeven" data-bs-parent="#accordionFlushExample">
@@ -77,7 +77,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingEight">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
-							Preset Workout Benen
+							Benen Workout
 						</button>
 					</h2>
 					<div id="flush-collapseEight" class="accordion-collapse collapse" aria-labelledby="flush-headingEight" data-bs-parent="#accordionFlushExample">
@@ -87,7 +87,7 @@
 				<div class="accordion-item">
 					<h2 class="accordion-header" id="flush-headingNine">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
-							Preset Workout Schouders
+							Schouders Workout
 						</button>
 					</h2>
 					<div id="flush-collapseNine" class="accordion-collapse collapse" aria-labelledby="flush-headingNine" data-bs-parent="#accordionFlushExample">
