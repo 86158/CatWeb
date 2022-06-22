@@ -30,8 +30,11 @@ function returnPage(): string {
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
 		// setInfo($_SESSION['ID'], $_SESSION['pwdKey'], $_POST);
 	}
-	// This will assign the first non-null value (or null if there isn't one)
-	$page = $_GET['page'] ?? $_POST['page'];
+	if(isset($_GET['page'])) {
+		$page = $_GET['page'];
+	} elseif(isset($_POST['page'])) {
+		$page = $_POST['page'];
+	}
 	// Return the default page if `page` is not defined.
 	if(!isset($page)) return 'homepage.php';
 	// Select page
