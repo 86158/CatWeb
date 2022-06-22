@@ -17,11 +17,7 @@ interface site_oefeningen {
 	/** Estimated callori usage.*/
 	calorien: number|null;
 	/** Images */
-	images: Array<{
-		src: string;
-		width: number|null;
-		height: number|null;
-	}>|null;
+	images: string|null;
 	/** Videos */
 	videos: Array<string>|null;
 	workout: Array<string>|null;

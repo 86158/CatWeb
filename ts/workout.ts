@@ -72,8 +72,7 @@ function fillWorkout(): void {
 			// Only load the images on screen to save on load time.
 			img.loading = "lazy";
 			img.referrerPolicy = "no-referrer";
-			img.src = value.images[0].src;
-			// Set the width and height properties of the image the scr links to so the page knows how much space it might take up.
+			img.src = value.images[0];
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
 			div3.appendChild(img);

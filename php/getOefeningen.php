@@ -8,14 +8,14 @@ function getOefeninging(): array {
 		(isset($_SERVER['HTTP_ACCEPT']) && !preg_match('/(application\/(json|\*))|\*\/\*/', $_SERVER['HTTP_ACCEPT'])) ||
 		(isset($_SERVER['HTTP_ACCEPT_CHARSET']) && !preg_match('/utf-8/i', $_SERVER['HTTP_ACCEPT_CHARSET']))
 	) {
-		header($_SERVER["SERVER_PROTOCOL"]." 406 Not Acceptable", true, 406);
+		header($_SERVER['SERVER_PROTOCOL']. ' 406 Not Acceptable', true, 406);
 		$responce['code'] = 406;
 		$responce['error'] = 'Can only provide "application/json; charset=UTF-8"';
 		return $responce;
 	}
-	header("Content-Type: application/json");
+	header('Content-Type: application/json');
 	if(!file_exists(__DIR__ .'/credentialFunctions.php')) {
-		header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+		header($_SERVER['SERVER_PROTOCOL']. ' 500 Internal Server Error', true, 500);
 		$responce['error'] = 'Missing internal file';
 		return $responce;
 	}
@@ -42,11 +42,7 @@ function getOefeninging(): array {
 		$result = DatbQuery(null,
 			"SELECT
 				o.*,
-				IFNULL(CONCAT(
-					'[',
-					GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','),
-					']'
-				), 'null') AS images,
+				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
 				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
 				GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout
 			FROM site_oefeningen o
@@ -66,11 +62,7 @@ function getOefeninging(): array {
 		$result = DatbQuery(null,
 			"SELECT
 				o.*,
-				IFNULL(CONCAT(
-					'[',
-					GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','),
-					']'
-				), 'null') AS images,
+				GROUP_CONCAT(DISTINCT m.link ORDER BY m.ID ASC SEPARATOR '\n') AS images,
 				GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
 				GROUP_CONCAT(DISTINCT w.workTitle ORDER BY w.workoutID ASC SEPARATOR '\n') AS workout,
 				IF(f.ID_oefeningen IS NULL,0,1) AS favorite
@@ -91,7 +83,7 @@ function getOefeninging(): array {
 		);
 	}
 	if(!($result instanceof mysqli_result)) {
-		header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+		header($_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error', true, 500);
 		$responce['error'] = (is_string($result))?
 			$result : 'Expected mysqli_result but got int instead';
 		return $responce;
@@ -101,17 +93,8 @@ function getOefeninging(): array {
 	$result->close();
 	$responce['code'] = 200;
 	for($i=0; $i < count($output); $i++) {
-		if($output[$i]['images'] != null) {
-			$decodedJson = json_decode($output[$i]['images'], true);
-			if($output[$i]['images'] === false) {
-				header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
-				$responce['error'] = "Failed to decode JSON";
-				$responce['trace'] = json_last_error_msg();
-				$responce['code'] = 500;
-			} else {
-				$output[$i]['images'] = $decodedJson;
-			}
-		}
+		if($output[$i]['images'] != null)
+			$output[$i]['images'] = explode("\n", $output[$i]['images']);
 		if($output[$i]['videos'] != null)
 			$output[$i]['videos'] = explode("\n", $output[$i]['videos']);
 		if($output[$i]['workout'] != null)
@@ -125,7 +108,7 @@ function getOefeninging(): array {
 }
 $output = json_encode(getOefeninging());
 if($output == false) {
-	header($_SERVER["SERVER_PROTOCOL"]." 500 Internal Server Error", true, 500);
+	header($_SERVER['SERVER_PROTOCOL']. ' 500 Internal Server Error', true, 500);
 	echo '{"code":500,"error":"Failed to encode JSON","trace":"'. json_last_error_msg() .'"}';
 	exit();
 }

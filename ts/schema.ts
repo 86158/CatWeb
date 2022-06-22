@@ -84,11 +84,7 @@ function fillSchema(container: HTMLElement) {
 			const img = document.createElement('img');
 			img.loading = "lazy";
 			img.referrerPolicy = "no-referrer";
-			img.src = value.images[0].src;
-			if(value.images[0].height && value.images[0].width) {
-				img.height = value.images[0].height;
-				img.width = value.images[0].width;
-			}
+			img.src = value.images[0];
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
 			img.classList.add("col-4");
