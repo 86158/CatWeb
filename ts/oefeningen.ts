@@ -14,11 +14,13 @@ function fillOefeningen(container: HTMLElement): void {
 	// The element is created filled with data and then added to its container.
 	(data as site_oefeningen[]).forEach(function(this: any, value: site_oefeningen, _index: number, _array: site_oefeningen[]): void {
 		const article = document.createElement('article');
-		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1");
+		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row");
 		// The header element
+		const div_row8 = document.createElement('div');
+		div_row8.classList.add('col-8');
 		const header = document.createElement('h4');
 		header.innerText = value.name;
-		article.appendChild(header);
+		div_row8.appendChild(header);
 		// The atributes under the header but above the description. Each atribute has its own span.
 		const atribs = document.createElement('p');
 		atribs.classList.add('atributes');
@@ -41,13 +43,16 @@ function fillOefeningen(container: HTMLElement): void {
 				atribs.appendChild(attrib);
 			});
 		}
-		article.appendChild(atribs);
+		div_row8.appendChild(atribs);
 		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
 		desc.innerText = value.description;
 		listParser(desc);
-		article.appendChild(desc);
+		div_row8.appendChild(desc);
+		article.appendChild(div_row8);
+		const div3 = document.createElement('div');
+		div3.classList.add("col-4");
 		// Lastly the image if one exists. While multiple images may exist we currently only use the first one.
 		if(value.images && value.images[0]) {
 			const img = document.createElement('img');
@@ -58,7 +63,8 @@ function fillOefeningen(container: HTMLElement): void {
 			// Set the width and height properties of the image the scr links to so the page knows how much space it might take up.
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
-			article.appendChild(img);
+			div3.appendChild(img);
+			article.appendChild(div3);
 		}
 		// If the user is logged in they will be able to change their favorites.
 		if(value.favorite != undefined && document.querySelector('nav form button[name="logout"]') != null) {

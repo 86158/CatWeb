@@ -1,37 +1,85 @@
-article.oefeningen-schema {
-	padding: .5rem;
-	position: relative;
+.oefening-section {
+	.article {
+		position: relative;
+
+		p {
+			&.atributes {
+				margin-bottom: .5rem;
+
+				>span {
+					margin-right: 1rem;
+
+					&.difficulty {
+						font-weight: bold;
+					}
+
+					&.musclegroup {
+						font-style: italic;
+					}
+				}
+			}
+
+			&.explanation {
+				>ul, ol {
+					margin-bottom: 0;
+				}
+			}
+		}
+
+		img {
+			// object-fit: contain;
+			// max-width: 27%;
+			// display: block;
+			// margin: 0 auto 0 auto;
+			width: 100%;
+			height: 250px;
+			object-fit: cover;
+		}
+
+		button {
+			width: 100%;
+		}
+
+		.customCheckbox {
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: unset;
+		}
+	}
 }
-article.oefeningen-schema h4 {
-	text-align: center;
-}
-article.oefeningen-schema p.atributes {
-	margin-bottom: .5rem;
-}
-article.oefeningen-schema p.atributes>span {
-	margin-right: 1rem;
-}
-article.oefeningen-schema p.atributes>span.difficulty {
-	font-weight: bold;
-}
-article.oefeningen-schema p.atributes>span.musclegroup {
-	font-style: italic;
-}
-article.oefeningen-schema p.explanation, article.oefeningen-schema p.explanation>ul, article.oefeningen-schema p.explanation>ol {
-	margin-bottom: 0;
-}
-article.oefeningen-schema>img {
-	object-fit: contain;
-	max-width: 27%;
-	display: block;
-	margin: 0 auto 0 auto;
-}
-article.oefeningen-schema button {
-	width: 100%;
-}
-article.oefeningen-schema label.customCheckbox {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: unset;
-}
+
+// article.oefeningen-schema {
+// 	padding: .5rem;
+// 	position: relative;
+// }
+// article.oefeningen-schema p.atributes {
+// 	margin-bottom: .5rem;
+// }
+// article.oefeningen-schema p.atributes>span {
+// 	margin-right: 1rem;
+// }
+// article.oefeningen-schema p.atributes>span.difficulty {
+// 	font-weight: bold;
+// }
+// article.oefeningen-schema p.atributes>span.musclegroup {
+// 	font-style: italic;
+// }
+// article.oefeningen-schema p.explanation, article.oefeningen-schema p.explanation>ul, article.oefeningen-schema p.explanation>ol {
+// 	margin-bottom: 0;
+// }
+// article.oefeningen-schema>img {
+// 	object-fit: contain;
+// 	max-width: 27%;
+// 	display: block;
+// 	margin: 0 auto 0 auto;
+// }
+// article.oefeningen-schema button {
+// 	width: 100%;
+// }
+// article.oefeningen-schema label.customCheckbox {
+// 	position: absolute;
+// 	top: 0;
+// 	right: 0;
+// 	width: unset;
+// }

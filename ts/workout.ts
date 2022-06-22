@@ -27,7 +27,7 @@ function fillWorkout(): void {
 	(data as site_oefeningen[]).forEach(function(this: any, value: site_oefeningen, _index: number, _array: site_oefeningen[]): void {
 		if(value.workout == null || value.workout.length < 1) return;
 		const article = document.createElement('article');
-		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row");
+		article.classList.add("border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row");
 		// The header element
 		const div_row8 = document.createElement('div');
 		div_row8.classList.add('col-8');
@@ -76,7 +76,8 @@ function fillWorkout(): void {
 			// Set the width and height properties of the image the scr links to so the page knows how much space it might take up.
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
-			article.appendChild(img);
+			div3.appendChild(img);
+			article.appendChild(div3);
 		}
 		// If the user is logged in they will be able to change their favorites.
 		if(value.favorite != undefined && document.querySelector('nav form button[name="logout"]') != null) {
@@ -115,6 +116,7 @@ function fillWorkout(): void {
 					});
 				}
 			);
+			
 			article.appendChild(checkboxLabel);
 		}
 		// Because there's potentually mulitple or no categories the article belongs to we add a copy to each and delete the original.
