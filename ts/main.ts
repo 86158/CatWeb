@@ -8,7 +8,23 @@ async function main(): Promise<void> {
 	// Called on every page.
 	loginNewUser();
 	// Get the page we are on.
-	const page = new URLSearchParams(window.location.search).get('page');
+	const searchParams = new URLSearchParams(window.location.search);
+	const alert = searchParams.get('alert');
+	if(alert != null) {
+		console.warn(alert);
+		const modalButton = document.querySelector<HTMLButtonElement>('nav button[data-bs-target="#exampleModal"]');
+		if(modalButton != null) {
+			modalButton.click();
+			const modalHeader = document.querySelector<HTMLDivElement>('nav div.modal-header');
+			if(modalHeader != null) {
+				const alertDiv = document.createElement('div');
+				alertDiv.innerText = alert;
+				alertDiv.classList.add('alert');
+				modalHeader.insertBefore(alertDiv, modalHeader.lastChild);
+			} else console.error('Failed to find modal header.');
+		} else console.error('Failed to find modal button.');
+	}
+	const page = searchParams.get('page');
 	// if(page == null) page = '';
 	// Get the elements we'll need prepaired. We don't check if they exist as we may not actually use them.
 	const oefeningen = sessionStorage.getItem('oefeningen');

@@ -23,8 +23,8 @@ function returnPage(): string {
 		else if(isset($_SESSION['loginToken']) && isset($_SESSION['ID']))
 			$m_perms = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
 		if(is_string($m_perms)) {
-			echo '<p class=error role=alert>'. $m_perms .'</p>';
 			$m_perms = -1;
+			return 'homepage.php?alert='. urlencode($m_perms);
 		}
 	}
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
