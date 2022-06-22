@@ -295,7 +295,7 @@
 
     function ShowInfo(){
         //construct a string for database request
-        echo '<div class="section-resultBYW"><div class="container"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div class="rounded border border-dark p-2">';
+        echo '<div class="section-resultBYW"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div class="rounded border border-dark p-2">';
         $string = "SELECT o.*, IFNULL( CONCAT( '[', GROUP_CONCAT(DISTINCT '{\"src\":\"', m.link, '\",\"width\":', IFNULL(m.width, 'null'), ',\"height\":', IFNULL(m.height, 'null'), '}' ORDER BY m.ID ASC SEPARATOR ','), ']'
                 ), 'null') AS images,
                 GROUP_CONCAT(DISTINCT t.link ORDER BY t.ID ASC SEPARATOR '\n') AS videos,
@@ -359,7 +359,7 @@
             <?php
             $Cycle++;
         }
-        echo "</div></div></div></div>";
+        echo "</div></div></div>";
         //var_dump($oefeningen);
     }
 ?>
