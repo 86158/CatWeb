@@ -44,31 +44,34 @@ function articleFilter(container: HTMLElement, searchQuery?: string|RegExp|undef
  * @param {HTMLElement} itemContainer The container that contains the elements to be checked.
 */
 function setupFilters(filterForm: HTMLFormElement, itemContainer: HTMLElement) {
-	filterForm.addEventListener('submit', function(this: HTMLFormElement, _ev: SubmitEvent) {
-		// Prevent the form from being triggered again while busy.
-		this.style.pointerEvents = 'none';
-		// Get the formdata and extract the values.
-		const formData = new FormData(this);
-		var query: string|undefined = undefined;
-		var tags: Array<string>|undefined = undefined;
-		for(var pair of formData.entries()) {
-			switch(pair[0]) {
-				case 'search':
-					query = pair[1].toString();
-					if(query == '') query = undefined;
-					break;
-				case 'tags':
-					tags = (pair[1].toString() == '')?
-						undefined :
-						pair[1].toString().split(',');
-					break;
+	const submit = filterForm.querySelector<HTMLButtonElement|HTMLInputElement>('[name="submit"][type="button"]');
+	if(submit instanceof HTMLButtonElement || submit instanceof HTMLInputElement) {
+		(submit as HTMLButtonElement).addEventListener('click', function(this: HTMLButtonElement|HTMLInputElement, _ev: MouseEvent) {
+			// Prevent the form from being triggered again while busy.
+			this.style.pointerEvents = 'none';
+			// Get the formdata and extract the values.
+			const formData = new FormData(filterForm);
+			var query: string|undefined = undefined;
+			var tags: Array<string>|undefined = undefined;
+			for(var pair of formData.entries()) {
+				switch(pair[0]) {
+					case 'search':
+						query = pair[1].toString();
+						if(query == '') query = undefined;
+						break;
+					case 'tags':
+						tags = (pair[1].toString() == '')?
+							undefined :
+							pair[1].toString().split(',');
+						break;
+				}
 			}
-		}
-		// Send the data to the articleFilter function to test each element.
-		articleFilter(itemContainer, query, tags);
-		// Re-enable the form after a delay.
-		setTimeout(() => this.style.pointerEvents = '', 950);
-	});
+			// Send the data to the articleFilter function to test each element.
+			articleFilter(itemContainer, query, tags);
+			// Re-enable the form after a delay.
+			setTimeout(() => this.style.pointerEvents = '', 950);
+		});
+	} else console.error('Failed to find submit button.');
 	filterForm.addEventListener('reset', function(this: HTMLFormElement, _ev: Event) {
 		// Prevent the form from being triggered again while busy.
 		this.style.pointerEvents = 'none';
