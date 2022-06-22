@@ -1,7 +1,12 @@
 @use '../custom' as *;
 
 .schema-section {
-    .row {
+    .filters {
+        .col-6 {
+            float: left;
+        }
+    }
+    .content {
         .col-custom {
             height: 66vh;
         }
@@ -31,6 +36,7 @@
             }
         }       
     }
+    
     .row {
         .oefeningen-schema {
             overflow: hidden;

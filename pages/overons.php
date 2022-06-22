@@ -20,7 +20,7 @@
 				<img src="img/overons.jpg" class="img-fluid" alt="Group_foto">
 			</div>
 		</div>
-		<div class="row">
+		<div class="row content">
 			<div class="col-2">
 			</div>
 			<div class="col-8">
@@ -43,19 +43,19 @@
 					<p class="voordelen-text ">
 						<ul class="list-group">
 							<li class="d-flex flex-row">
-								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png" style="color: #5eb4a8; width: 2%; height: 2%;"></img>
+								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png"></img>
 								<p>
 									Het recht op toegang op het opslaan van je eigen gemaakte schema's
 								</p>
 							</li>
 							<li class="d-flex flex-row">
-								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png" style="color: #5eb4a8; width: 2%; height: 2%;"></img>
+								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png"></img>
 								<p>
 									Je favoriete workouts toevoegen op je account
 								</p>
 							</li>
 							<li class="d-flex flex-row">
-								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png" style="color: #5eb4a8; width: 2%; height: 2%;"></img>
+								<img class="fa fa-light fa-check me-3 pt-1" src="img/check.png"></img>
 								<p>
 									Een weekoverzicht met het aantal calorieën en kilo's
 								</p>
