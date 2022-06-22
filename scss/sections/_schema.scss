@@ -63,5 +63,17 @@
     .sortable-item {
         cursor: grab;
         margin-top: 2%;
+
+        button {
+            background-color: #5eb4a8;
+            border: none;
+            color: white;
+            width: 10%;
+
+            &:hover {
+                color: black;
+                background-color: #8ed3c8;
+            }
+        }
     }
 }
