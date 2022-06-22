@@ -1,12 +1,7 @@
 @use '../custom' as *;
 
 .schema-section {
-    .filters {
-        .col-6 {
-            float: left;
-        }
-    }
-    .content {
+    .row {
         .col-custom {
             height: 66vh;
         }
@@ -36,7 +31,6 @@
             }
         }       
     }
-    
     .row {
         .oefeningen-schema {
             overflow: hidden;
@@ -64,9 +58,10 @@
         margin-bottom: 0;
     }
     div#js-selected {
-        min-height: 20vh;
+        min-height:47vh;
     }
     .sortable-item {
         cursor: grab;
+        margin-top: 2%;
     }
 }
