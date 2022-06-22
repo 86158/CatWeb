@@ -7,7 +7,13 @@ function fillWorkout(): void {
 	const containers = [
 		document.getElementById("js-cardio"),
 		document.getElementById("js-kracht"),
-		document.getElementById("js-rug")
+		document.getElementById("js-rug"),
+		document.getElementById("js-biceps"),
+		document.getElementById("js-triceps"),
+		document.getElementById("js-buik"),
+		document.getElementById("js-borst"),
+		document.getElementById("js-benen"),
+		document.getElementById("js-schouders")
 	];
 	if(containers[0] == null || containers[1] == null || containers[2] == null) {
 		return console.error("Missing element");
@@ -122,6 +128,24 @@ function fillWorkout(): void {
 					break;
 				case "Rug":
 					(this[2] as HTMLElement).appendChild(article.cloneNode(true));
+					break;
+				case "Biceps":
+					(this[3] as HTMLElement).appendChild(article.cloneNode(true));
+					break;
+				case "Triceps":
+					(this[4] as HTMLElement).appendChild(article.cloneNode(true));
+					break;
+				case "Buik":
+					(this[5] as HTMLElement).appendChild(article.cloneNode(true));
+					break;
+				case "Borst":
+					(this[6] as HTMLElement).appendChild(article.cloneNode(true));
+					break;
+				case "Benen":
+					(this[7] as HTMLElement).appendChild(article.cloneNode(true));
+					break;
+				case "Schouders":
+					(this[8] as HTMLElement).appendChild(article.cloneNode(true));
 					break;
 			}
 		}, (containers as HTMLElement[]));
