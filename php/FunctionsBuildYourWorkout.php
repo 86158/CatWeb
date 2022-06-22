@@ -293,18 +293,6 @@
          
     }
 
-    function GetData(string $sql){
-        $result = DatbQuery(null, $sql);
-        //create an empty array
-        $oefeningen = array();
-            //output data of each row
-            while($row = $result->fetch_assoc()){
-                //add each row to games
-                $oefeningen[] = $row;
-            }
-        return $oefeningen;
-    }
-
     function ShowInfo(){
         //construct a string for database request
         echo '<div class="section-resultBYW"><div class="container"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div class="rounded border border-dark p-2">';
@@ -346,7 +334,7 @@
         $oefening = DatbQuery(null, $string);
         //output data of each row
         while($row = $oefening->fetch_all(MYSQLI_ASSOC)){
-        //add each row to games
+            //add each row to oefeningen
             $oefeningen[] = $row;
         }
         $amount =  count($oefeningen[0]);

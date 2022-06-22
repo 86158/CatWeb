@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 17 jun 2022 om 10:52
+-- Gegenereerd op: 22 jun 2022 om 09:12
 -- Serverversie: 10.4.24-MariaDB
--- PHP-versie: 7.4.29
+-- PHP-versie: 8.1.6
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -61,28 +61,18 @@ CREATE TABLE IF NOT EXISTS `site_link_media` (
   PRIMARY KEY (`ID`),
   KEY `oefening_media_link` (`oefeningenID`),
   KEY `media_link` (`mediaID`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `site_link_media`
 --
 
 REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 3, 3),
-(4, 4, 4),
-(5, 5, 5),
-(6, 6, 6),
-(7, 7, 7),
-(8, 8, 8),
-(9, 9, 9),
-(10, 10, 10),
-(11, 11, 11),
-(12, 12, 12),
-(13, 13, 13),
-(14, 14, 14),
-(15, 6, 15);
+(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
+(7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
+(12, 12, 12), (13, 13, 13), (14, 14, 14),
+(15, 6, 15),
+(16, 15, 16);
 
 -- --------------------------------------------------------
 
@@ -159,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `site_media` (
   `height` smallint(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `image_links` (`link`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Gegevens worden geëxporteerd voor tabel `site_media`
@@ -180,7 +170,8 @@ REPLACE INTO `site_media` (`ID`, `link`, `width`, `height`) VALUES
 (12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', 6000, 4000),
 (13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', 1280, 960),
 (14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', 600, 600),
-(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', 4800, 2700);
+(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', 4800, 2700),
+(16, 'https://www.anytimefitness.com/wp-content/uploads/2020/07/fullsizeoutput_36.jpeg', 1000, 1000);
 
 -- --------------------------------------------------------
 
@@ -340,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `site_users` (
 --
 
 REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`, `FirstName`, `LastName`) VALUES
-(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', NULL, NULL, 1, '', ''),
+(1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 2035498, '2022-06-21 11:35:14', 1, '', ''),
 (2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', NULL, NULL, 0, '', ''),
 (3, 'MelanieHoogenboom44@gmail.com', 'MelanieTheSquad', '$2y$10$Fwnlsalij.MoCbNapgNr5edNt0ftmjCLNaHUvLxAQ5u6G3ZHXv61m', 'EoQlge5znGe+EW4oVNGKr13QIjmWK2lZcp6BF9WTxCVXCMeEA1vfULfKifHIp4pJfqZG9ss1ksYRoiTat1KnVA==', NULL, NULL, 0, '', '');
 
@@ -418,22 +409,6 @@ ALTER TABLE `site_schemacontent`
 USE `phpmyadmin`;
 
 --
--- Metadata voor tabel site_favorites
---
-
---
--- Metadata voor tabel site_link_media
---
-
---
--- Metadata voor tabel site_link_tube
---
-
---
--- Metadata voor tabel site_link_workout
---
-
---
 -- Metadata voor tabel site_media
 --
 
@@ -443,18 +418,6 @@ USE `phpmyadmin`;
 
 REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
 ('catweb', 'site_media', 'link', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
-
---
--- Metadata voor tabel site_oefeningen
---
-
---
--- Metadata voor tabel site_schema
---
-
---
--- Metadata voor tabel site_schemacontent
---
 
 --
 -- Metadata voor tabel site_tube
@@ -480,13 +443,6 @@ REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `commen
 ('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
 ('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
 
---
--- Metadata voor tabel site_workout
---
-
---
--- Metadata voor database catweb
---
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
