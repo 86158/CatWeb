@@ -1,7 +1,6 @@
 <?php
 require_once './php/credentialFunctions.php';
 $data = getInfo();
-echo var_export($data, true);
 ?>
 <!-- The section of the profile page -->
 <div class="section-profilepage">
@@ -11,7 +10,6 @@ echo var_export($data, true);
             <img class="rounded-circle" src="img/profile.png" alt="Profile Pic">
             <h5 class="mt-2"><?php if(is_array($data) && is_string($data['username'])) echo $data['username']; else echo 'Username';?></h5>
         </div>
-        
         <div class="information mt-4 d-flex justify-content-around">
             <div class="profileInformation">
                 <!-- The left side of the page -->

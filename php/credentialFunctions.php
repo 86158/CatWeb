@@ -168,8 +168,10 @@ function getPerms($username, string $pwd) {
 	} else {
 		// Get the token.
 		$m_result = DatbQuery(null, 'SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
-		if(!is_object($m_result) || $m_result->num_rows == 0)
+		if(!is_object($m_result) || $m_result->num_rows == 0) {
+			unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 			return 'Database request failed at SELECT `token`';
+		}
 		$m_result = $m_result->fetch_assoc();
 		$permLevel = $m_result['perms'];
 		if(!is_array($m_result)) {
@@ -250,13 +252,13 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 	/** @var array<int,mysqli_result|string|int> $m_results */
 	$m_results = [];
 	// We basically go over all given arguments and change those that are set.
-	if(isset($username))
+	if(isset($username) && $username != '')
 		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', $username, $id);
 	if(isset($perms))
 		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
-	if(isset($FirstName))
+	if(isset($FirstName) && $FirstName != '')
 		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `FirstName`=? WHERE `ID`=?', 'si', openssl_encrypt($FirstName, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
-	if(isset($LastName))
+	if(isset($LastName) && $LastName != '')
 		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `LastName`=? WHERE `ID`=?', 'si', openssl_encrypt($LastName, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
 	$m_conn->close();
 	$m_error = array_filter($m_results, function($value): bool {return !is_int($value);});

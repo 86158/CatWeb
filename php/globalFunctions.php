@@ -25,13 +25,10 @@ function returnPage(): string {
 		if(is_string($m_perms)) {
 			echo '<p class=error role=alert>'. $m_perms .'</p>';
 			$m_perms = -1;
-			unset($_SESSION['ID']);
-			unset($_SESSION['loginToken']);
-			unset($_SESSION['username']);
 		}
 	}
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
-		
+		// setInfo($_SESSION['ID'], $_SESSION['pwdKey'], $_POST);
 	}
 	// This will assign the first non-null value (or null if there isn't one)
 	$page = $_GET['page'] ?? $_POST['page'];
