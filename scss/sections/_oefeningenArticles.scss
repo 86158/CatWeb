@@ -1,5 +1,5 @@
 .oefening-section {
-	.article {
+	article.oefeningen-schema {
 		position: relative;
 
 		p {
@@ -40,7 +40,7 @@
 			width: 100%;
 		}
 
-		.customCheckbox {
+		label.customCheckbox {
 			position: absolute;
 			top: 0;
 			right: 0;
