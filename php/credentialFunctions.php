@@ -79,7 +79,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 			$blobless = $vars;
 			/** @var int[] $long_data */
 			$long_data = [];
-			foreach(strpositions($types, "b") as $index) {
+			foreach(strpositions($types, 'b') as $index) {
 				$blobless[$index] = null;
 				$long_data[] = $index;
 			}
@@ -132,17 +132,17 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 */
 function getPerms($username, string $pwd) {
 	/** @param string $m_iv A non-NULL Initialization Vector.*/
-	$m_iv = "0000000000000069";
+	$m_iv = '0000000000000069';
 	// Autentication with password
 	if(is_string($username)) {
-		$isMail = strpos($username, "@") != FALSE;
+		$isMail = strpos($username, '@') != FALSE;
 		// Get `pwd` to verify the given password with. `ID` so we know what user we have and `perms` for their permission level.
 		if($isMail) {
 			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `email`=?', 's', $username);
 		} else {
 			$m_result = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `username`=?', 's', $username);
 		}
-		if(!is_object($m_result))
+		if(!is_object($m_result) || $m_result->num_rows == 0)
 			return 'Database request failed at SELECT `pwd`';
 		$m_result = $m_result->fetch_assoc();
 		if(!is_array($m_result) || !password_verify(($pwd . $m_result['email']), $m_result['pwd']))
@@ -155,17 +155,20 @@ function getPerms($username, string $pwd) {
 		$m_result = DatbQuery(null, "UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
 		if($m_result !== 1)
 			return 'Database request failed at UPDATE `users` SET `token`';
-		// Store `ID` of the user and their token.
+		// Using a encrypted username as the Key Encryption Key. The Data Encryption Key is never even put in $_SESSION
+		$m_pwdKey = openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+		if($m_pwdKey === false)
+			return 'Failed to encrypt pwdKey';
+		// Store `ID` and info of the user.
 		$_SESSION['ID'] = $m_ID;
 		$_SESSION['loginToken'] = $m_token;
 		$_SESSION['username'] = $m_user;
-		// Using a encrypted username as the Key Encryption Key. The Data Encryption Key is never put in $_SESSION
-		$_SESSION['pwdKey'] = openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+		$_SESSION['pwdKey'] = $m_pwdKey;
 		// Autentication with token
 	} else {
 		// Get the token.
 		$m_result = DatbQuery(null, 'SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
-		if(!is_object($m_result))
+		if(!is_object($m_result) || $m_result->num_rows == 0)
 			return 'Database request failed at SELECT `token`';
 		$m_result = $m_result->fetch_assoc();
 		$permLevel = $m_result['perms'];
@@ -209,41 +212,55 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 function getInfo() {
 	$id = $_SESSION['ID'];
 	$pwdKey = $_SESSION['pwdKey'];
-	$m_iv = "0000000000000069";
-	$m_result = DatbQuery(null, 'SELECT `encryptedkey`, `username` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	if(!is_int($id) || !is_string($pwdKey))
+		return 'Incorrect/missing ID and pwdKey values';
+	$m_iv = '0000000000000069';
+	$m_result = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
 		return 'Database request mislukt at SELECT `encryptedkey`';
+	if($m_result->num_rows == 0)
+		return 'Database returned a empty result set';
 	$m_result = $m_result->fetch_assoc();
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	if(!is_string($m_userKey)) return 'Decryption failed';
 	// We put the data in a relative array decrypting it first if it is not null.
 	/** @var array<string,(string|false|null)> $decryptedData */
 	$decryptedData = [
-		'username'	=> ($m_result['username'])?	openssl_decrypt($m_result['nameFirst'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null
+		'email' => $m_result['email'],
+		'username'	=> $m_result['username'],
+		'FirstName'	=> ($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
+		'LastName'	=> ($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null
 	];
 	return $decryptedData;
 }
 /** Update/change user info
  * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
  */
-function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null): ?string {
+function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	$m_iv = "0000000000000069";
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
 	$m_result = DatbQuery($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_object($m_result))
-		return 'Database request mislukt at SELECT `email`';
+	if(!is_object($m_result) || $m_result->num_rows == 0)
+		return 'Database request mislukt at SELECT `encryptedkey`';
 	$m_result = $m_result->fetch_assoc();
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	if($m_userKey == false) return 'Decryption failed';
+	/** @var array<int,mysqli_result|string|int> $m_results */
 	$m_results = [];
 	// We basically go over all given arguments and change those that are set.
 	if(isset($username))
-		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `username`=? WHERE `ID`=?', 'si', $username, $id);
 	if(isset($perms))
 		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `perms`=? WHERE `ID`=?', 'ii', $perms, $id);
+	if(isset($FirstName))
+		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `FirstName`=? WHERE `ID`=?', 'si', openssl_encrypt($FirstName, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
+	if(isset($LastName))
+		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `LastName`=? WHERE `ID`=?', 'si', openssl_encrypt($LastName, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
 	$m_conn->close();
+	$m_error = array_filter($m_results, function($value): bool {return !is_int($value);});
+	if(count($m_error) != 0) return strval($m_error[0]);
 	return null;
 }
 /**
@@ -251,6 +268,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
  * @return null|string null on success. Error message on failure.
 */
 function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
+	$m_iv = "0000000000000069";
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
@@ -258,19 +276,18 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_vars = [
-		$FirstName,
-		$LastName,
 		$email,
+		$username, // Because username is used to login it's no longer encrypted
 		password_hash($pwd . $email, '2y'),	// Hash to verify if the password is correct.
 		$m_pass[0],	// encrypted_userKey
+		$perms,
 		// Data encrypted with userKey
-		// ($username)?	openssl_encrypt($username,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
-		$username, // Because username is used to login it's no longer encrypted
-		$perms
+		($FirstName)?	openssl_encrypt($FirstName,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
+		($LastName)?	openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null
 	];
 	if($m_vars[1] === false) return 'Encryptie mislukt; Failed to create password hash';
 	if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
-	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`FirstName`, `LastName`, `email`, `pwd`, `encryptedkey`, `username`, `perms`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssssi', ...$m_vars);
+	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssiss', ...$m_vars);
 	if(is_string($m_return)) return $m_return;
 	return null;
 }

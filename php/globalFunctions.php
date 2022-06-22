@@ -30,19 +30,22 @@ function returnPage(): string {
 			unset($_SESSION['username']);
 		}
 	}
+	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
+		
+	}
+	// This will assign the first non-null value (or null if there isn't one)
+	$page = $_GET['page'] ?? $_POST['page'];
 	// Return the default page if `page` is not defined.
-	if(!isset($_GET['page'])) return 'homepage.php';
+	if(!isset($page)) return 'homepage.php';
 	// Select page
-	switch($_GET['page']) {
+	switch($page) {
 		case 'build':
 			return 'buildyourworkout.php';
 		case 'prac':
 			return 'oefeningen.html';
 		case 'schema':
-			//if($m_perms < 0) return 'login.html';
 			return 'schema.html';
 		case 'work':
-			//if($m_perms < 0) return 'login.html';
 			return 'workout.php';
 		case 'info':
 			return 'overons.php';
@@ -51,7 +54,7 @@ function returnPage(): string {
 		case 'contact':
 			return 'contact.php';
 		case 'user':
-			// if($m_perms < 0) return 'login.html';
+			if($m_perms < 0) return 'homepage.php';
 			return 'profilePage.php';
 		case 'favorieten':
 			return 'favorieten.php';
