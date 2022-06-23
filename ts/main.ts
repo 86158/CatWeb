@@ -25,8 +25,7 @@ async function main(): Promise<void> {
 		} else console.error('Failed to find modal button.');
 	}
 	const page = searchParams.get('page');
-	// if(page == null) page = '';
-	// Get the elements we'll need prepaired. We don't check if they exist as we may not actually use them.
+	// Get the elements we'll need prepaired. We don't check if they exist yet as we may not actually use them.
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	const filterform = document.getElementById('js-filters');
 	const container = document.getElementById('js-oefeningen');
@@ -69,9 +68,6 @@ async function main(): Promise<void> {
 				await requestOefeningen();
 			}
 			fillWorkout();
-			break;
-		// Does switch break with null values?
-		case null:
 			break;
 	}
 }
