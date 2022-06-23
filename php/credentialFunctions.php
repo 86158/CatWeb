@@ -191,13 +191,22 @@ function getPerms($username, string $pwd) {
  * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  * @return array<int,string>|null [encrypted_userKey, userKey]
  */
-function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string $encryptedKey_old = null): ?array {
-	$m_iv = "0000000000000069";
+function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string $encryptedKey_old = null, ?string $email_new = null): ?array {
+	if(!(
+		preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)
+		&& (
+			$email_new == null ||
+			preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new)
+		)
+	)) return null;
+	$m_iv = '0000000000000069';
 	// Derive old password key from old password and new password key from new password.
 	/** @var string|false $m_pwdkey_old Old Encryption Key*/
 	$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_old, 0, $m_iv);
 	/** @var string|false $m_pwdkey_new New Key Encryption Key*/
-	$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+	$m_pwdkey_new = ($email_new)?
+	openssl_encrypt($email_new, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv) :
+	openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 	// Decrypt user-key using old key
 	/** @var string|false $m_userKey Data Encryption Key*/
 	$m_userKey = (isset($encryptedKey_old))? openssl_decrypt($encryptedKey_old, 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv) : random_bytes(60);
@@ -230,6 +239,7 @@ function getInfo() {
 	$decryptedData = [
 		'email' => $m_result['email'],
 		'username'	=> $m_result['username'],
+		'encryptedkey' => $m_result['encryptedkey'],
 		'FirstName'	=> ($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null,
 		'LastName'	=> ($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],	'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv) : null
 	];
@@ -287,7 +297,7 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 		($FirstName)?	openssl_encrypt($FirstName,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null,
 		($LastName)?	openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_pass[1], 0, $m_iv) : null
 	];
-	if($m_vars[1] === false) return 'Encryptie mislukt; Failed to create password hash';
+	if($m_vars[2] === false) return 'Encryptie mislukt; Failed to create password hash';
 	if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssiss', ...$m_vars);
 	if(is_string($m_return)) return $m_return;

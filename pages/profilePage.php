@@ -43,7 +43,7 @@ $data = getInfo();
                     <!-- Horizontal Line -->
                     <hr class="text-center m-auto mb-3">
                     <!-- Email -->
-                    <label class="row item-1 justify-content-between">
+                    <label class="row item-1 justify-content-between" title="Changing password or email requires password field to be filled.">
                         <div class="col-6 text-center">
                             <p class="fw-bold">Email</p>
                         </div>
@@ -54,12 +54,23 @@ $data = getInfo();
                     <!-- Horizontal Line -->
                     <hr class="text-center m-auto mb-3">
                     <!-- Password -->
-                    <label class="row item-1 justify-content-between">
+                    <label class="row item-1 justify-content-between" title="Changing password or email requires password field to be filled.">
+                        <div class="col-6 text-center">
+                            <p class="fw-bold">Nieuw wachtwoord</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <input type=password autocomplete=new-password name=pwd_new>
+                        </div>
+                    </label>
+                    <!-- Horizontal Line -->
+                    <hr class="text-center m-auto mb-3">
+                    <!-- Password -->
+                    <label class="row item-1 justify-content-between" title="Changing password or email requires password field to be filled.">
                         <div class="col-6 text-center">
                             <p class="fw-bold">Wachtwoord</p>
                         </div>
                         <div class="col-6 text-center">
-                            <input type=password autocomplete=new-password name=pwd>
+                            <input type=password autocomplete=new-password name=pwd_old>
                         </div>
                     </label>
                     <!-- Button to change the information about the user -->
