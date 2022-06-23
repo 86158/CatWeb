@@ -34,9 +34,9 @@ function fillWorkout(): void {
 		const header = document.createElement('h4');
 		header.innerText = value.name;
 		div_row8.appendChild(header);
-		/** The atributes under the header but above the description. Each atribute has its own span.*/
-		const atribs = document.createElement('p');
-		atribs.classList.add('atributes');
+		/** The attributes under the header but above the description. Each attribute has its own span.*/
+		const attribs = document.createElement('p');
+		attribs.classList.add('attributes');
 		/** A span for the type of exercise.*/
 		const oType = document.createElement('span');
 		oType.classList.add('difficulty');
@@ -44,8 +44,8 @@ function fillWorkout(): void {
 			(value.type)?
 				value.type
 				: "-";
-		atribs.appendChild(oType);
-		// The musslegroups a exercise uses as tags under the description.
+		attribs.appendChild(oType);
+		// The musclegroups a exercise uses as tags under the description.
 		if(value.spiergroepen) {
 			// Converting the comma seperated list into an array and iterating over it.
 			value.spiergroepen.split(',').forEach(function(this: any, value: string, _index: number, _array: string[]): void {
@@ -53,10 +53,10 @@ function fillWorkout(): void {
 				const attrib = document.createElement('span');
 				attrib.classList.add('musclegroup');
 				attrib.innerText = value;
-				atribs.appendChild(attrib);
+				attribs.appendChild(attrib);
 			});
 		}
-		div_row8.appendChild(atribs);
+		div_row8.appendChild(attribs);
 		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
@@ -82,8 +82,8 @@ function fillWorkout(): void {
 		if(value.favorite != undefined && document.querySelector('nav form button[name="logout"]') != null) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
-			// Add the svg used for the grafic and the input used for the functionality.
-			checkboxLabel.innerHTML = `<svg vieuwBox="0 0 22 22" height="4em" width="4em"><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
+			// Add the svg used for the graphic and the input used for the functionality.
+			checkboxLabel.innerHTML = `<svg viewbox="0 0 22 22" height="4em" width="4em"><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
 			// Select the created input.
 			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
 			checkboxLabel.style.fill = (value.favorite)? "yellow" : "none";
@@ -91,7 +91,7 @@ function fillWorkout(): void {
 			checkboxInput.checked = value.favorite;
 			// checkboxInput.id = element.ID.toString();
 			checkboxInput.addEventListener('input',
-				// Change whether the item is favorited or not.
+				// Change whether the item is marked favorite or not.
 				function(this: HTMLInputElement, ev: Event): void {
 					// Disable the button from being triggered while handling this function.
 					this.disabled = true;
@@ -118,7 +118,7 @@ function fillWorkout(): void {
 			
 			article.appendChild(checkboxLabel);
 		}
-		// Because there's potentually mulitple or no categories the article belongs to we add a copy to each and delete the original.
+		// Because there's potentially multiple or no categories the article belongs to we add a copy to each and delete the original.
 		(value.workout as string[]).forEach(function(this: HTMLElement[], value: string, _index: number, _obj: string[]): void {
 			switch(value) {
 				case "Cardio":
