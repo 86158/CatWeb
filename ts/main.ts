@@ -9,19 +9,20 @@ async function main(): Promise<void> {
 	loginNewUser();
 	// Get the page we are on.
 	const searchParams = new URLSearchParams(window.location.search);
+	// Check if we need to make a login error message
 	const alert = searchParams.get('alert');
 	if(alert != null) {
 		console.warn(alert);
 		const modalButton = document.querySelector<HTMLButtonElement>('nav button[data-bs-target="#exampleModal"]');
 		if(modalButton != null) {
 			modalButton.click();
-			const modalHeader = document.querySelector<HTMLDivElement>('nav div.modal-header');
-			if(modalHeader != null) {
+			const modalContent = document.querySelector<HTMLDivElement>('nav div.modal-content');
+			if(modalContent != null) {
 				const alertDiv = document.createElement('div');
-				alertDiv.innerText = alert;
+				alertDiv.innerText = decodeURIComponent(alert).replace(/\+/g, ' ');
 				alertDiv.classList.add('alert');
-				modalHeader.insertBefore(alertDiv, modalHeader.lastChild);
-			} else console.error('Failed to find modal header.');
+				modalContent.insertBefore(alertDiv, modalContent.lastElementChild);
+			} else console.error('Failed to find modal.');
 		} else console.error('Failed to find modal button.');
 	}
 	const page = searchParams.get('page');
@@ -29,7 +30,7 @@ async function main(): Promise<void> {
 	const oefeningen = sessionStorage.getItem('oefeningen');
 	const filterform = document.getElementById('js-filters');
 	const container = document.getElementById('js-oefeningen');
-	// For each page check if the needed items exist and activate the needed funtions.
+	// For each page check if the needed items exist and activate the needed functions.
 	switch(page) {
 		case 'prac':
 			if(container == null) {

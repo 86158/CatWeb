@@ -7,7 +7,7 @@ mysqli_report(MYSQLI_REPORT_OFF);
  * @param string $haystack The string to search in
  * @param string $needle  If needle is not a string, it is converted to an integer and applied as the ordinal value of a character.
  * @param int $offset If specified, search will start this number of characters counted from the beginning of the string. Unlike {@see strrpos()} and {@see strripos()}, the offset cannot be negative.
- * @return int[] Returns the positions where the needle exists relative to the beginnning of the haystack string (independent of search direction or offset). Also note that string positions start at 0, and not 1.
+ * @return int[] Returns the positions where the needle exists relative to the beginning of the haystack string (independent of search direction or offset). Also note that string positions start at 0, and not 1.
  * @see https://stackoverflow.com/a/15737449
  */
 function strpositions(string $haystack, string $needle, int $offset = 0): array {
@@ -23,9 +23,9 @@ function strpositions(string $haystack, string $needle, int $offset = 0): array 
 /**
  * Wrapper for class mysqli.
  * @param mysqli|null $conn The connection you want to use. Pass null to use a default mysqli() instance.
- * @param string $query SQL query wihout terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
+ * @param string $query SQL query without terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
  * 
- * The lenght may not be larger than the max_allowed_packet size of the server.
+ * The length may not be larger than the max_allowed_packet size of the server.
  * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type.
  * * 's' for strings
  * * 'd' for floats
@@ -36,7 +36,7 @@ function strpositions(string $haystack, string $needle, int $offset = 0): array 
  * @param string|int|float|null ...$vars
  * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
  * @throws InvalidArgumentException If $types does not match the constrants.
- * @see https://php.net/manual/en/class.mysqli.php Used for the actual database comminucation.
+ * @see https://php.net/manual/en/class.mysqli.php Used for the actual database communication.
  */
 function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$vars) {
 	// Ensure types doesn't contain obvious errors.
@@ -68,7 +68,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 			}
 		// Handle blob values.
 		} else {
-			// Check the max lenght we may send at a time.
+			// Check the max length we may send at a time.
 			$maxp = $conn->query('SELECT @@global.max_allowed_packet')->fetch_array(MYSQLI_NUM)[0];
 			if(!is_int($maxp)) {
 				$error = $conn->error;
@@ -89,7 +89,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 				$m_prep->close(); if($m_close) $conn->close();
 				return $error;
 			}
-			// Split each blob into the maxiumum allowed size to send.
+			// Split each blob into the maximum allowed size to send.
 			foreach($long_data as $param_num) {
 				/** @var string[]|false $split */
 				$split = str_split($vars[$param_num], $maxp);
@@ -97,7 +97,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 					$m_prep->close(); if($m_close) $conn->close();
 					return '"SELECT @@global.max_allowed_packet" returned a value less than 1';
 				}
-				// Send each part seperately.
+				// Send each part separately.
 				foreach($split as $blob_part) {
 					if(!(mysqli_stmt_send_long_data($m_prep, $param_num, $blob_part))) {
 						$error = $m_prep->error;
@@ -108,7 +108,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 			}
 		}
 	}
-	// Execute the querry.
+	// Execute the query.
 	if(!$m_prep->execute()) {
 		$error = $m_prep->error;
 		$m_prep->close(); if($m_close) $conn->close();
@@ -133,7 +133,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 function getPerms($username, string $pwd) {
 	/** @param string $m_iv A non-NULL Initialization Vector.*/
 	$m_iv = '0000000000000069';
-	// Autentication with password
+	// Authentication with password
 	if(is_string($username)) {
 		$isMail = strpos($username, '@') != FALSE;
 		// Get `pwd` to verify the given password with. `ID` so we know what user we have and `perms` for their permission level.
@@ -146,7 +146,7 @@ function getPerms($username, string $pwd) {
 			return 'Database request failed at SELECT `pwd`';
 		$m_result = $m_result->fetch_assoc();
 		if(!is_array($m_result) || !password_verify(($pwd . $m_result['email']), $m_result['pwd']))
-			return 'Incorrecte gebruikersnaam, wachtwoord combination.';
+			return 'Incorrecte gebruikersnaam/wachtwoord combination.';
 		$permLevel = $m_result['perms'];
 		// Create a login token as we should not store the password in the session.
 		$m_ID = intval($m_result['ID']);
@@ -164,7 +164,7 @@ function getPerms($username, string $pwd) {
 		$_SESSION['loginToken'] = $m_token;
 		$_SESSION['username'] = $m_user;
 		$_SESSION['pwdKey'] = $m_pwdKey;
-		// Autentication with token
+		// Authentication with token
 	} else {
 		// Get the token.
 		$m_result = DatbQuery(null, 'SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
@@ -188,7 +188,7 @@ function getPerms($username, string $pwd) {
 	return $permLevel;
 }
 /**
- * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
+ * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  * @return array<int,string>|null [encrypted_userKey, userKey]
  */
 function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string $encryptedKey_old = null): ?array {
@@ -208,7 +208,7 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 	return [$m_encrypted_userKey, $m_userKey];
 }
 /** How to get the encrypted data
- * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
+ * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  * @return array<string,string|false|null>|string Array with the decoded data from the database with false on failure or a string with error message.
 */
 function getInfo() {
@@ -236,7 +236,7 @@ function getInfo() {
 	return $decryptedData;
 }
 /** Update/change user info
- * @see https://security.stackexchange.com/a/182008 How we handle autentication and encryption.
+ * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  */
 function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	$m_iv = "0000000000000069";
