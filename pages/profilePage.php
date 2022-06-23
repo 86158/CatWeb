@@ -17,7 +17,7 @@ $data = getInfo();
                     <h2 class="fw-bold text-center">Profile information</h2>
                     <hr class="mt-3">
                 </div>
-                <form method=POST class="cresedentials fs-5">
+                <form method=POST class="credentials fs-5">
                     <input type=hidden name=formID value=updateUser />
                     <input type=hidden name=page value=user />
                     <!-- First Name -->
@@ -70,7 +70,7 @@ $data = getInfo();
             <!-- Right side of the page -->
             <div class="profileFavourites">
                 <div class="title">
-                    <h2 class="text-center fw-bold">Favourite Exercises</h2>
+                    <h2 class="text-center fw-bold">Favorite Exercises</h2>
                     <hr class="mt-3">
                 </div>
                 <!-- The content of the favourites section -->
