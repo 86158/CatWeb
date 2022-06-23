@@ -52,7 +52,7 @@ $page = returnPage();
 require __DIR__ .'/pages/head.html';
 // Getting the nav.
 require __DIR__ .'/pages/nav.php';
-// Geting the page.
+// Getting the page.
 require __DIR__ .'/pages/'. $page;
 // Loading scripts
 echo '<div id="js-global" hidden>';

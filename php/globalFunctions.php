@@ -23,8 +23,10 @@ function returnPage(): string {
 		else if(isset($_SESSION['loginToken']) && isset($_SESSION['ID']))
 			$m_perms = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
 		if(is_string($m_perms)) {
-			$m_perms = -1;
-			return 'homepage.html?alert='. urlencode($m_perms);
+			$current_url = explode('?', $_SERVER['REQUEST_URI'])[0];
+			$request_uri = http_build_query(['alert'=>urlencode($m_perms)]);
+			header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url .'?'. $request_uri);
+			exit();
 		}
 	}
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
