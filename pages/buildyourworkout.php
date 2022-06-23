@@ -3,24 +3,19 @@ CheckIfPageReloaded();
 SessionAdd();
 SessionChange();
 BeginForm();
-if($_SESSION['workoutStart'] == false){
-    ParagraphBYW();
-    ImagesBYW();
-}
-else if($_SESSION['workoutGeslacht'] == ''){
-    QuestionGeslacht();
-}
-else if(empty($_SESSION['workoutDoel'])){
-    QuestionDoel();
-}
-else if(empty($_SESSION['workoutSpier'])){
-    QuestionSpier();
-}
-else if($_SESSION['workoutAantal' ]== ''){
-    QuestionAantal();
-}
-else{
-    ShowInfo();
+if($_SESSION['workoutStart'] == false) {
+	ParagraphBYW();
+	ImagesBYW();
+} elseif($_SESSION['workoutGeslacht'] == '') {
+	QuestionGeslacht();
+} elseif(empty($_SESSION['workoutDoel'])) {
+	QuestionDoel();
+} elseif(empty($_SESSION['workoutSpier'])) {
+	QuestionSpier();
+} elseif($_SESSION['workoutAantal' ]== '') {
+	QuestionAantal();
+} else {
+	ShowInfo();
 }
 EndForm();
 AddJS();

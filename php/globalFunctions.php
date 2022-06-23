@@ -5,7 +5,7 @@ require_once __DIR__.'/credentialFunctions.php';
  * @return string The url of the page to load.
 */
 function returnPage(): string {
-	// perms is used to track the permissionlevel of the user.
+	// perms is used to track the permission level of the user.
 	$m_perms = -1;
 	// Logout
 	if(isset($_POST['logout'])) {
@@ -24,7 +24,7 @@ function returnPage(): string {
 			$m_perms = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
 		if(is_string($m_perms)) {
 			$m_perms = -1;
-			return 'homepage.php?alert='. urlencode($m_perms);
+			return 'homepage.html?alert='. urlencode($m_perms);
 		}
 	}
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
@@ -36,7 +36,7 @@ function returnPage(): string {
 		$page = $_POST['page'];
 	}
 	// Return the default page if `page` is not defined.
-	if(!isset($page)) return 'homepage.php';
+	if(!isset($page)) return 'homepage.html';
 	// Select page
 	switch($page) {
 		case 'build':
@@ -54,13 +54,13 @@ function returnPage(): string {
 		case 'contact':
 			return 'contact.php';
 		case 'user':
-			if($m_perms < 0) return 'homepage.php';
+			if($m_perms < 0) return 'homepage.html';
 			return 'profilePage.php';
 		case 'favorieten':
 			return 'favorieten.php';
 		case 'resultBYW':
 			return 'resultBYW.php';
 		default:
-			return 'homepage.php';
+			return 'homepage.html';
 	}
 }
