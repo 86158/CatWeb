@@ -339,8 +339,7 @@
 					<p class="description"><?php echo $oefeningen[0][$selectedArray]['description'] ?></p>
 				</div>
 				<div class="col-4">
-					<img src="<?php echo explode("\n", $oefeningen[0][$selectedArray]['images'])[0] ?>" alt="image" style="width: 60%; margin: 0;">
-					<button class="btn btn-primary mt-2" style="width: 100%; color: white;">Delete from favorites</button>
+					<img src="img/oefeningFoto/<?php echo explode("\n", $oefeningen[0][$selectedArray]['images'])[0] ?>" alt="image" style="width: 60%; margin: 0;">
 				</div>
 			</div>
 			<?php

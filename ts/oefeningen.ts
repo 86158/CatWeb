@@ -59,7 +59,7 @@ function fillOefeningen(container: HTMLElement): void {
 			// Only load the images on screen to save on load time.
 			img.loading = "lazy";
 			img.referrerPolicy = "no-referrer";
-			img.src = value.images[0];
+			img.src = "img/oefeningFoto/" + value.images[0];
 			// An empty string into the alt attribute to mark it as decorative.
 			img.setAttribute("alt", "");
 			div3.appendChild(img);

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 22 jun 2022 om 09:12
--- Serverversie: 10.4.24-MariaDB
--- PHP-versie: 8.1.6
+-- Generation Time: Jun 27, 2022 at 11:57 AM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.9
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -27,7 +27,7 @@ USE `catweb`;
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_favorites`
+-- Table structure for table `site_favorites`
 --
 
 DROP TABLE IF EXISTS `site_favorites`;
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `site_favorites` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_favorites`
+-- Dumping data for table `site_favorites`
 --
 
 REPLACE INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
@@ -50,7 +50,7 @@ REPLACE INTO `site_favorites` (`ID`, `ID_users`, `ID_oefeningen`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_link_media`
+-- Table structure for table `site_link_media`
 --
 
 DROP TABLE IF EXISTS `site_link_media`;
@@ -61,23 +61,62 @@ CREATE TABLE IF NOT EXISTS `site_link_media` (
   PRIMARY KEY (`ID`),
   KEY `oefening_media_link` (`oefeningenID`),
   KEY `media_link` (`mediaID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_link_media`
+-- Dumping data for table `site_link_media`
 --
 
 REPLACE INTO `site_link_media` (`ID`, `oefeningenID`, `mediaID`) VALUES
-(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5), (6, 6, 6),
-(7, 7, 7), (8, 8, 8), (9, 9, 9), (10, 10, 10), (11, 11, 11),
-(12, 12, 12), (13, 13, 13), (14, 14, 14),
-(15, 6, 15),
-(16, 15, 16);
+(1, 1, 30),
+(2, 2, 28),
+(3, 2, 29),
+(4, 3, 34),
+(5, 4, 42),
+(6, 5, 17),
+(7, 7, 43),
+(8, 7, 44),
+(9, 8, 4),
+(10, 8, 5),
+(11, 9, 38),
+(12, 10, 40),
+(13, 11, 20),
+(14, 12, 15),
+(15, 6, 1),
+(16, 13, 37),
+(17, 14, 8),
+(18, 15, 39),
+(19, 16, 31),
+(20, 17, 26),
+(21, 18, 35),
+(22, 19, 21),
+(23, 20, 24),
+(24, 21, 13),
+(25, 22, 16),
+(26, 23, 14),
+(27, 24, 36),
+(28, 25, 11),
+(29, 26, 6),
+(30, 27, 22),
+(31, 28, 41),
+(32, 29, 12),
+(33, 30, 27),
+(34, 31, 33),
+(35, 32, 18),
+(36, 33, 32),
+(37, 34, 2),
+(38, 35, 3),
+(39, 36, 9),
+(40, 37, 23),
+(41, 38, 7),
+(42, 39, 25),
+(43, 40, 19),
+(44, 41, 10);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_link_tube`
+-- Table structure for table `site_link_tube`
 --
 
 DROP TABLE IF EXISTS `site_link_tube`;
@@ -91,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `site_link_tube` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_link_tube`
+-- Dumping data for table `site_link_tube`
 --
 
 REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
@@ -114,7 +153,7 @@ REPLACE INTO `site_link_tube` (`ID`, `oefeningenID`, `mediaID`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_link_workout`
+-- Table structure for table `site_link_workout`
 --
 
 DROP TABLE IF EXISTS `site_link_workout`;
@@ -125,58 +164,127 @@ CREATE TABLE IF NOT EXISTS `site_link_workout` (
   PRIMARY KEY (`ID`),
   KEY `Oefening ID` (`oefeningID`),
   KEY `Workout ID` (`workoutID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_link_workout`
+-- Dumping data for table `site_link_workout`
 --
 
 REPLACE INTO `site_link_workout` (`ID`, `workoutID`, `oefeningID`) VALUES
-(1, 1, 4),
-(2, 1, 13);
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 2, 11),
+(7, 2, 23),
+(8, 2, 35),
+(9, 2, 29),
+(10, 2, 19),
+(11, 5, 15),
+(12, 5, 26),
+(13, 5, 27),
+(14, 5, 28),
+(15, 5, 29),
+(16, 6, 12),
+(17, 6, 34),
+(18, 6, 20),
+(19, 6, 13),
+(20, 6, 11),
+(21, 7, 17),
+(22, 7, 35),
+(23, 7, 36),
+(24, 7, 37),
+(25, 8, 1),
+(26, 8, 3),
+(27, 8, 4),
+(28, 8, 5),
+(29, 8, 6),
+(30, 8, 8),
+(31, 3, 2),
+(32, 3, 38),
+(33, 3, 39),
+(34, 3, 40),
+(35, 3, 41),
+(36, 9, 16),
+(37, 9, 21),
+(38, 9, 30),
+(39, 9, 31),
+(40, 9, 32),
+(41, 4, 14),
+(42, 4, 22),
+(43, 4, 23),
+(44, 4, 24),
+(45, 4, 25);
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_media`
+-- Table structure for table `site_media`
 --
 
 DROP TABLE IF EXISTS `site_media`;
 CREATE TABLE IF NOT EXISTS `site_media` (
   `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `link` varchar(145) NOT NULL,
-  `width` smallint(4) DEFAULT NULL,
-  `height` smallint(4) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `image_links` (`link`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_media`
+-- Dumping data for table `site_media`
 --
 
-REPLACE INTO `site_media` (`ID`, `link`, `width`, `height`) VALUES
-(1, 'https://i.stack.imgur.com/g8eij.jpg', 350, 263),
-(2, 'https://media3.popsugar-assets.com/files/2015/03/10/677/n/1922729/4dad4839_Triceps-Extensions-Red/i/Triceps-Kickback.jpg', 1500, 1500),
-(3, 'https://cdn.prod.openfit.com/uploads/2018/04/A-Open_Fit_Alt_Seated_Overhead_Tricep_Ex_770.jpg', 770, 583),
-(4, 'https://www.topinspired.com/wp-content/uploads/2015/01/fire-hydrant.jpg', 736, 779),
-(5, 'https://annawood.co.za/wp-content/uploads/2015/07/Anna_side_plank_seq2.jpg', 4256, 2832),
-(6, 'https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2014/08/V-Up_Exercise.jpg', 550, 555),
-(7, 'https://cdn.fitzport.com/wp-content/uploads/exercise/glutes/glute-kickback/glute-kickback-2-fitzport.com.jpg', 1280, 720),
-(8, 'https://themovementfix.com/wp-content/uploads/2020/10/hip-extension-only.jpg', 1000, 607),
-(9, 'https://www.strongfitnessmag.com/wp-content/uploads/2017/06/Plank-Walkout-to-Push-Up.jpg', 800, 394),
-(10, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/studio/6101/6101_B.jpg', 800, 800),
-(11, 'https://www.gymguider.com/wp-content/uploads/2020/04/pike-press-up.jpg', 980, 677),
-(12, 'https://www.goodfreephotos.com/albums/people/guy-doing-push-up.jpg', 6000, 4000),
-(13, 'https://cdn-ami-drupal.heartyhosting.com/sites/muscleandfitness.com/files/_main_highpull.jpg', 1280, 960),
-(14, 'https://i.pinimg.com/originals/91/74/00/917400b311ef474be7cefe4a1de4ba3a.jpg', 600, 600),
-(15, 'https://www.crossfit.com/wp-content/uploads/2019/07/10131951/VuPKellyJackson.png', 4800, 2700),
-(16, 'https://www.anytimefitness.com/wp-content/uploads/2020/07/fullsizeoutput_36.jpeg', 1000, 1000);
+REPLACE INTO `site_media` (`ID`, `link`) VALUES
+(1, 'aansluitpasGrondtik.png'),
+(2, 'AbRoller.jpg'),
+(3, 'Bankdrukken.jpg'),
+(4, 'banksprintjes1.png'),
+(5, 'banksprintjes2.png'),
+(6, 'BarAndRopePushdown.png'),
+(7, 'BarbellDeadlift.jpg'),
+(8, 'bicep curls.jpg'),
+(9, 'CableCrossoverFlyes.jpg'),
+(10, 'CableSeatedRow.jpg'),
+(11, 'ConcentrationCurl.jpg'),
+(12, 'DiamondPush.jpg'),
+(13, 'faceppull.jpg'),
+(14, 'HammerCurls.jpg'),
+(15, 'heeltouch.jpg'),
+(16, 'InclineCurl.jpg'),
+(17, 'kikkersprong.jpg'),
+(18, 'LateralRaise.jpg'),
+(19, 'LatPulldown.jpg'),
+(20, 'leg-raises.jpg'),
+(21, 'lunges.jpg'),
+(22, 'OverheadRopeExtension.jpg'),
+(23, 'PcFlyMachine.jpg'),
+(24, 'plank.jpg'),
+(25, 'PullUp.jpg'),
+(26, 'pushup.jpg'),
+(27, 'ReverseFlyCable.jpg'),
+(28, 'rugrollen1.jpg'),
+(29, 'rugrollen2.jpg'),
+(30, 'schaatssprong.jpg'),
+(31, 'schouderraise.jpg'),
+(32, 'SchuineCrunch.jpg'),
+(33, 'SeatedOverheadDumbellPress.jpg'),
+(34, 'sprongburpee.jpg'),
+(35, 'squads.jpg'),
+(36, 'StandingCurl.jpg'),
+(37, 'superman.jpg'),
+(38, 'touwtjespringen.png'),
+(39, 'tricepsdips.jpg'),
+(40, 'Walking lunge.png'),
+(41, 'WeightedTricepDips.jpg'),
+(42, 'Zijwaartse.png'),
+(43, 'zittendebeenkick1.png'),
+(44, 'zittendebeenkick2.png');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_oefeningen`
+-- Table structure for table `site_oefeningen`
 --
 
 DROP TABLE IF EXISTS `site_oefeningen`;
@@ -193,7 +301,7 @@ CREATE TABLE IF NOT EXISTS `site_oefeningen` (
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_oefeningen`
+-- Dumping data for table `site_oefeningen`
 --
 
 REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroepen`, `duration`, `calorien`, `loseWeight`) VALUES
@@ -242,7 +350,26 @@ REPLACE INTO `site_oefeningen` (`ID`, `name`, `description`, `type`, `spiergroep
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_schema`
+-- Stand-in structure for view `site_oefening_media`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `site_oefening_media`;
+CREATE TABLE IF NOT EXISTS `site_oefening_media` (
+`ID` int(10) unsigned
+,`name` varchar(45)
+,`description` text
+,`type` enum('Kracht','Cardio')
+,`spiergroepen` set('Triceps','Buik','Borst','Benen','Rug','Schouders','Biceps')
+,`duration` int(10) unsigned
+,`calorien` mediumint(10) unsigned
+,`images` mediumtext
+,`videos` mediumtext
+);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_schema`
 --
 
 DROP TABLE IF EXISTS `site_schema`;
@@ -256,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `site_schema` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_schemacontent`
+-- Table structure for table `site_schemacontent`
 --
 
 DROP TABLE IF EXISTS `site_schemacontent`;
@@ -272,7 +399,7 @@ CREATE TABLE IF NOT EXISTS `site_schemacontent` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_tube`
+-- Table structure for table `site_tube`
 --
 
 DROP TABLE IF EXISTS `site_tube`;
@@ -284,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `site_tube` (
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_tube`
+-- Dumping data for table `site_tube`
 --
 
 REPLACE INTO `site_tube` (`ID`, `link`) VALUES
@@ -307,7 +434,7 @@ REPLACE INTO `site_tube` (`ID`, `link`) VALUES
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_users`
+-- Table structure for table `site_users`
 --
 
 DROP TABLE IF EXISTS `site_users`;
@@ -327,18 +454,18 @@ CREATE TABLE IF NOT EXISTS `site_users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_users`
+-- Dumping data for table `site_users`
 --
 
 REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `token`, `tokenTime`, `perms`, `FirstName`, `LastName`) VALUES
 (1, '86501@roc-teraa.nl', 'ExampleUser', '$2y$10$LmQ9bC0a7S6LdBODQDUYa.Ctvxplv1dyOwKe9.wf84Agy99cf52Mi', '0G+rGrFVY3j4BGkPFmWbIUBRx5lLiPL+8lWSwP+R7+c=', 2035498, '2022-06-21 11:35:14', 1, '', ''),
-(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', NULL, NULL, 0, '', ''),
+(2, 'jurienbraat2002@gmail.com', 'Deadvire', '$2y$10$QVDivmLX53f2dW4HvA4EqeO62hvYuUC64oZZ1c3OtBMYib6UzkZyS', 'NQd636GWtEfkS/M0EWe+Ul42F2K3JTbwgyFiAZ9AjpP6richgSdbSI0XRuCsJTJ54+vVMlRkeSmciHvTEz0oHg==', 12642524, '2022-06-27 11:47:21', 0, '', ''),
 (3, 'MelanieHoogenboom44@gmail.com', 'MelanieTheSquad', '$2y$10$Fwnlsalij.MoCbNapgNr5edNt0ftmjCLNaHUvLxAQ5u6G3ZHXv61m', 'EoQlge5znGe+EW4oVNGKr13QIjmWK2lZcp6BF9WTxCVXCMeEA1vfULfKifHIp4pJfqZG9ss1ksYRoiTat1KnVA==', NULL, NULL, 0, '', '');
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `site_workout`
+-- Table structure for table `site_workout`
 --
 
 DROP TABLE IF EXISTS `site_workout`;
@@ -347,102 +474,85 @@ CREATE TABLE IF NOT EXISTS `site_workout` (
   `workTitle` varchar(30) NOT NULL,
   `Beschrijving` text NOT NULL,
   PRIMARY KEY (`workoutID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 --
--- Gegevens worden geëxporteerd voor tabel `site_workout`
+-- Dumping data for table `site_workout`
 --
 
 REPLACE INTO `site_workout` (`workoutID`, `workTitle`, `Beschrijving`) VALUES
 (1, 'Cardio', 'Hier is een tekst om in te vullen waarbij cardio als deze workout hoofddoel wordt gebruikt'),
-(2, 'Kracht', 'Hier is een tekst om in te vullen waarbij kracht als deze workout hoofddoel wordt gebruikt');
+(2, 'Kracht', 'Hier is een tekst om in te vullen waarbij kracht als deze workout hoofddoel wordt gebruikt'),
+(3, 'Rug', 'Hier is een tekst om in te vullen waarbij rug als deze workout hoofddoel wordt gebruikt'),
+(4, 'Biceps', 'Hier is een tekst om in te vullen waarbij biceps als deze workout hoofddoel wordt gebruikt'),
+(5, 'Triceps', 'Hier is een tekst om in te vullen waarbij triceps als deze workout hoofddoel wordt gebruikt'),
+(6, 'buik', 'Hier is een tekst om in te vullen waarbij buik als deze workout hoofddoel wordt gebruikt'),
+(7, 'borst', 'Hier is een tekst om in te vullen waarbij borst als deze workout hoofddoel wordt gebruikt'),
+(8, 'benen', 'Hier is een tekst om in te vullen waarbij benen als deze workout hoofddoel wordt gebruikt'),
+(9, 'schouders', 'Hier is een tekst om in te vullen waarbij schouders als deze workout hoofddoel wordt gebruikt');
+
+-- --------------------------------------------------------
 
 --
--- Beperkingen voor geëxporteerde tabellen
+-- Structure for view `site_oefening_media` exported as a table
+--
+DROP TABLE IF EXISTS `site_oefening_media`;
+CREATE TABLE IF NOT EXISTS `site_oefening_media`(
+    `ID` int(10) unsigned NOT NULL DEFAULT '0',
+    `name` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+    `description` text COLLATE utf8mb4_general_ci NOT NULL,
+    `type` enum('Kracht','Cardio') COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `spiergroepen` set('Triceps','Buik','Borst','Benen','Rug','Schouders','Biceps') COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `duration` int(10) unsigned DEFAULT NULL COMMENT 'In seconden',
+    `calorien` mediumint(10) unsigned DEFAULT NULL,
+    `images` mediumtext COLLATE utf8mb4_general_ci DEFAULT NULL,
+    `videos` mediumtext COLLATE utf8mb4_general_ci DEFAULT NULL
+);
+
+--
+-- Constraints for dumped tables
 --
 
 --
--- Beperkingen voor tabel `site_favorites`
+-- Constraints for table `site_favorites`
 --
 ALTER TABLE `site_favorites`
   ADD CONSTRAINT `fav_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fav_user` FOREIGN KEY (`ID_users`) REFERENCES `site_users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `site_link_media`
+-- Constraints for table `site_link_media`
 --
 ALTER TABLE `site_link_media`
   ADD CONSTRAINT `media_link` FOREIGN KEY (`mediaID`) REFERENCES `site_media` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `oefening_media_link` FOREIGN KEY (`oefeningenID`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `site_link_tube`
+-- Constraints for table `site_link_tube`
 --
 ALTER TABLE `site_link_tube`
   ADD CONSTRAINT `oefening_tube_link` FOREIGN KEY (`oefeningenID`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tube_link` FOREIGN KEY (`mediaID`) REFERENCES `site_tube` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `site_link_workout`
+-- Constraints for table `site_link_workout`
 --
 ALTER TABLE `site_link_workout`
   ADD CONSTRAINT `Oefening ID` FOREIGN KEY (`oefeningID`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `Workout ID` FOREIGN KEY (`workoutID`) REFERENCES `site_workout` (`workoutID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `site_schema`
+-- Constraints for table `site_schema`
 --
 ALTER TABLE `site_schema`
   ADD CONSTRAINT `schema_users` FOREIGN KEY (`ID_users`) REFERENCES `site_users` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Beperkingen voor tabel `site_schemacontent`
+-- Constraints for table `site_schemacontent`
 --
 ALTER TABLE `site_schemacontent`
   ADD CONSTRAINT `schema_id` FOREIGN KEY (`ID_schema`) REFERENCES `site_schema` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `schema_oefening` FOREIGN KEY (`ID_oefeningen`) REFERENCES `site_oefeningen` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
---
--- Metadata
---
-USE `phpmyadmin`;
-
---
--- Metadata voor tabel site_media
---
-
---
--- Gegevens worden geëxporteerd voor tabel `pma__column_info`
---
-
-REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_media', 'link', '', 'text_plain', 'output/text_plain_imagelink.php', '', '', '');
-
---
--- Metadata voor tabel site_tube
---
-
---
--- Gegevens worden geëxporteerd voor tabel `pma__column_info`
---
-
-REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_tube', 'link', '', 'text_plain', 'text_plain_link.php', '\'https://youtu.be/\'', '', '');
-
---
--- Metadata voor tabel site_users
---
-
---
--- Gegevens worden geëxporteerd voor tabel `pma__column_info`
---
-
-REPLACE INTO `pma__column_info` (`db_name`, `table_name`, `column_name`, `comment`, `mimetype`, `transformation`, `transformation_options`, `input_transformation`, `input_transformation_options`) VALUES
-('catweb', 'site_users', 'email', '', 'text_plain', '', '', 'Input/Text_Plain_RegexValidation.php', '\'/^[\\\\w!#$%&\\\\\\\'*+\\\\-\\\\/=?^_`{|}~]+(\\\\.[\\\\w!#$%&\\\\\\\'*+\\\\-\\\\/=?^_`{|}~]+)*@((([\\\\-\\\\w]+\\\\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\\\\.){3}[0-9]{1,3}))$/\''),
-('catweb', 'site_users', 'perms', '', '', 'output/text_plain_bool2text.php', '', '', ''),
-('catweb', 'site_users', 'tokenTime', '', 'text_plain', 'output/text_plain_dateformat.php', '', '', '');
-
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
