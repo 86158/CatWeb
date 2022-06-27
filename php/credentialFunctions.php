@@ -220,11 +220,7 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
  * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  * @return array<string,string|false|null>|string Array with the decoded data from the database with false on failure or a string with error message.
 */
-function getInfo() {
-	$id = $_SESSION['ID'];
-	$pwdKey = $_SESSION['pwdKey'];
-	if(!is_int($id) || !is_string($pwdKey))
-		return 'Incorrect/missing ID and pwdKey values';
+function getInfo(int $id, string $pwdKey) {
 	$m_iv = '0000000000000069';
 	$m_result = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
 	if(!is_object($m_result))
@@ -302,4 +298,7 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 	$m_return = DatbQuery(null, 'INSERT INTO `site_users` (`email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssiss', ...$m_vars);
 	if(is_string($m_return)) return $m_return;
 	return null;
+}
+function modifyAccount(int $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null) {
+	// TODO
 }
