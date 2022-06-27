@@ -6,7 +6,11 @@ function updateUser(): ?string {
 	if((isset($_POST['FirstName']) && $_POST['FirstName'] != '') || (isset($_POST['LastName']) && $_POST['LastName'] != ''))
 		setInfo($_SESSION['ID'], $_SESSION['pwdKey'], null, null, $_POST['FirstName'], $_POST['LastName']);
 	if(isset($_POST['pwd_old']) && $_POST['pwd_old'] != '') {
-		$m_info = getInfo();
+		$id = $_SESSION['ID'];
+		$pwdKey = $_SESSION['pwdKey'];
+		if(!is_int($id) || !is_string($pwdKey))
+			return 'Incorrect/missing ID and pwdKey values';
+		$m_info = getInfo($id, $pwdKey);
 		if(is_string($m_info)) return $m_info;
 		$mail_new = null;
 		if(isset($_POST['email']) && $_POST['email'] != '') {

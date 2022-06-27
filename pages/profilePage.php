@@ -1,6 +1,10 @@
 <?php
 require_once './php/credentialFunctions.php';
-$data = getInfo();
+$id = $_SESSION['ID'];
+$pwdKey = $_SESSION['pwdKey'];
+$data = 'Incorrect/missing ID and pwdKey values';
+if(is_int($id) && is_string($pwdKey))
+	$data = getInfo($id, $pwdKey);
 ?>
 <!-- The section of the profile page -->
 <div class="section-profilepage">
