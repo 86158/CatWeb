@@ -16,12 +16,12 @@ if(is_int($id) && is_string($pwdKey))
         </div>
         <!-- Bottom of the page -->
         <div class="row justify-content-around mt-3">
-            <div class="col-5">
+            <div class="col-4">
                 <!-- The left side of the page -->
                 <div class="profileInformation">
                     <div class="title d-flex flex-column align-items-center">
-                        <h2 class="fw-bold text-center">Profile information</h2>
-                        <hr class="mt-3" style="width: 50%;">
+                        <h2 class="fw-bold text-center">Profile Information</h2>
+                        <hr class="mt-1" style="width: 60%;">
                     </div>
                     <form class="d-flex flex-column m-auto" method=POST class="credentials fs-5" style="width: 60%;">
                         <input type=hidden name=formID value=updateUser />
@@ -32,7 +32,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Voornaam</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input type=text name=FirstName autocomplete=given-name <?php if(is_array($data) && is_string($data['FirstName'])) echo 'value="', $data['FirstName'], '" ';?>>
+                                <input type=text name=FirstName autocomplete=given-name style="width: 100%; border: none; border-bottom: 1px solid #5eb4a8; outline: none;" <?php if(is_array($data) && is_string($data['FirstName'])) echo 'value="', $data['FirstName'], '" ';?>>
                             </div>
                         </label>
                         <!-- Last Name -->
@@ -41,7 +41,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Achternaam</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input type=text name=LastName autocomplete=family-name <?php if(is_array($data) && is_string($data['LastName'])) echo 'value="', $data['LastName'], '" ';?>>
+                                <input type=text name=LastName autocomplete=family-name style="width: 100%; border: none; border-bottom: 1px solid #5eb4a8; outline: none;" <?php if(is_array($data) && is_string($data['LastName'])) echo 'value="', $data['LastName'], '" ';?>>
                             </div>
                         </label>
                         <!-- Email -->
@@ -50,7 +50,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Email</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input type=email autocomplete=email name=email <?php if(is_array($data) && is_string($data['email'])) echo 'value="', $data['email'], '" ';?>>
+                                <input type=email autocomplete=email name=email style="width: 100%; border: none; border-bottom: 1px solid #5eb4a8; outline: none;" <?php if(is_array($data) && is_string($data['email'])) echo 'value="', $data['email'], '" ';?>>
                             </div>
                         </label>
                         <!-- Password -->
@@ -59,7 +59,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Nieuw wachtwoord</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input type=password autocomplete=new-password name=pwd_new>
+                                <input type=password autocomplete=new-password name=pwd_new style="width: 100%; border: none; border-bottom: 1px solid #5eb4a8; outline: none;">
                             </div>
                         </label>
                         <!-- Password -->
@@ -68,7 +68,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Wachtwoord</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input type=password autocomplete=new-password name=pwd_old>
+                                <input type=password autocomplete=new-password name=pwd_old style="width: 100%; border: none; border-bottom: 1px solid #5eb4a8; outline: none;">
                             </div>
                         </label>
                         <!-- Button to change the information about the user -->
@@ -82,11 +82,11 @@ if(is_int($id) && is_string($pwdKey))
                 <div class="profileFavourites">
                     <div class="title d-flex flex-column align-items-center">
                         <h2 class="text-center fw-bold">Favorite Exercises</h2>
-                        <hr class="mt-3" style="width: 50%;">
+                        <hr class="mt-1" style="width: 50%;">
                     </div>
                     <!-- The content of the favourites section -->
                     <div class="content d-flex justify-content-center">
-                        <a class="btn btn-primary m-auto mt-3" href="?page=favorieten" style="color: white;">Zie alle favorieten oefeningen</a>
+                        <a class="btn btn-primary m-auto mt-2" href="?page=favorieten" style="color: white;">Zie alle favorieten oefeningen</a>
                     </div>
                 </div>
             </div>
