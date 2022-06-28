@@ -52,11 +52,12 @@ function loginNewUser() {
 		if(fieldset1.hidden) {
 			fieldset1.hidden = fieldset3.hidden = false;
 			emailField.required = pwdConformField.required = true;
-			usernameField.pattern = '^[\\w]+$';
+			usernameField.pattern = '\\w+';
 			usernameField.title = 'Usernames may only contain word characters.\nA word character is a character a-z, A-Z, 0-9, including _ (underscore).';
 			formType.value = 'newUser';
 			this.innerText = 'Heeft u al een account?';
 			pwdField.autocomplete = 'new-password';
+			pwdField.title = 'Passwords may not contain NULL characters, tab characters, carriage return characters, new line characters, vertical tab characters or form feed characters.';
 			btnChange.value = 'Account Aanmaken';
 			pwdField.addEventListener('input', checkPwdConform);
 			h3.innerText = 'Account Aanmaken';

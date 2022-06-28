@@ -3,45 +3,32 @@
 require_once __DIR__.'/credentialFunctions.php';
 /** Function to go over the formdata and update fields */
 function updateUser(): ?string {
-	if((isset($_POST['FirstName']) && $_POST['FirstName'] != '') || (isset($_POST['LastName']) && $_POST['LastName'] != ''))
-		setInfo($_SESSION['ID'], $_SESSION['pwdKey'], null, null, $_POST['FirstName'], $_POST['LastName']);
-	if(isset($_POST['pwd_old']) && $_POST['pwd_old'] != '') {
-		$id = $_SESSION['ID'];
-		$pwdKey = $_SESSION['pwdKey'];
-		if(!is_int($id) || !is_string($pwdKey))
-			return 'Incorrect/missing ID and pwdKey values';
-		$m_info = getInfo($id, $pwdKey);
-		if(is_string($m_info)) return $m_info;
-		$mail_new = null;
-		if(isset($_POST['email']) && $_POST['email'] != '') {
-			$mail_new = $_POST['email'];
-		}
-		$credentials_new = null;
-		if(isset($_POST['pwd_new'])) {
-			$pwd = $_POST['pwd_new'];
-			$credentials_new = createPass($m_info['email'], $_POST['pwd_new'], $_POST['pwd_old'], $m_info['encryptedkey'], $mail_new);
-		} elseif(isset($mail_new)) {
-			$pwd = $_POST['pwd_old'];
-			$credentials_new = createPass($m_info['email'], $_POST['pwd_old'], null, null, $mail_new);
-		} else return null;
-		if(!isset($credentials_new)) return 'Failed to generate new credentials. Check if the provided fields are valid.';
-		$m_iv = '0000000000000069';
-		$m_vars = [
-			$m_info['email'],
-			$m_info['username'], // Because username is used to login it's no longer encrypted
-			password_hash($pwd . $m_info['email'], '2y'),	// Hash to verify if the password is correct.
-			$credentials_new[0],	// encrypted_userKey
-			// Data encrypted with userKey
-			($m_info['FirstName'])?	openssl_encrypt($m_info['FirstName'],	'aes-256-cbc-hmac-sha256', $credentials_new[1], 0, $m_iv) : null,
-			($m_info['LastName'])?	openssl_encrypt($m_info['LastName'],	'aes-256-cbc-hmac-sha256', $credentials_new[1], 0, $m_iv) : null,
-			$_SESSION['ID'] // The ID of the user to change.
-		];
-		if($m_vars[2] === false) return 'Encryptie mislukt; Failed to create password hash';
-		if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
-		$m_return = DatbQuery(null, 'UPDATE `site_users` SET (`email`, `username`, `pwd`, `encryptedkey`, `FirstName`, `LastName`) VALUES (?, ?, ?, ?, ?, ?) WHERE `ID`=?', 'ssssssi', ...$m_vars);
-		if(is_string($m_return)) return $m_return;
-		return null;
-	}
+	$m_vars = [
+		'ID' => null,
+		'pwd_old' => null,
+		'pwd_new' => null,
+		'email_new' => null,
+		'username_new' => null,
+		'perms' => null,
+		'FirstName' => null,
+		'LastName' => null
+	];
+	if(isset($_SESSION['ID']) && is_int($_SESSION['ID']))
+		$m_vars['ID'] = $_SESSION['ID'];
+	else return 'Incorrect/missing ID';
+	if(isset($_POST['pwd_old']) && is_string($_POST['pwd_old']))
+		$m_vars['pwd_old'] = $_POST['pwd_old'];
+	if(isset($_POST['pwd_new']) && is_string($_POST['pwd_new']))
+		$m_vars['pwd_new'] = $_POST['pwd_new'];
+	if(isset($_POST['email']) && is_string($_POST['email']))
+		$m_vars['email_new'] = $_POST['email'];
+	// Username is not a form option so it's skipped
+	// Perms are not changed with this so it's skipped
+	if(isset($_POST['FirstName']) && is_string($_POST['FirstName']))
+		$m_vars['FirstName'] = $_POST['FirstName'];
+	if(isset($_POST['LastName']) && is_string($_POST['LastName']))
+		$m_vars['LastName'] = $_POST['LastName'];
+	return modifyAccount(...$m_vars);
 }
 /** Get the page.
  * @return string The url of the page to load.

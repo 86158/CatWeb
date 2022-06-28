@@ -50,7 +50,7 @@
 			</div>
 			<!-- Image of the page -->
 			<div class="col-3">
-				<img src="img/BYW3.png" alt="Muscles">
+				<img class="img-middle" src="img/BYW3.png" alt="Muscles">
 			</div>
 		</div>
 		<?php
@@ -110,7 +110,7 @@
 			</div>
 			<!-- The Image of the page -->
 			<div class="col-3">
-				<img src="img/BYW1.jpg" alt="Gender">
+				<img class="img-middle" src="img/BYW1.jpg" alt="Gender">
 			</div>
 		</div>
 		<?php
@@ -151,7 +151,7 @@
 			</div>
 			<!-- Image of the page -->
 			<div class="col-3">
-				<img src="img/BYW2.jpg" alt="Goal">
+				<img class="img-middle" src="img/BYW2.jpg" alt="Goal">
 			</div>
 		</div>
 		<?php
@@ -191,7 +191,7 @@
 			</div>
 			<!-- Image of the page -->
 			<div class="col-3">
-				<img src="img/BYW4.png" alt="Exercises">
+				<img class="img-middle" src="img/BYW4.png" alt="Exercises">
 			</div>
 		</div>
 		<?php
@@ -268,9 +268,9 @@
 		SubmitButton();
 		?>
 		<div class="images d-flex justify-content-around mt-5">
-			<img class="" src="img/water.jpg" alt="water" style="width: 15%">
-			<img class="" src="img/graph.jpg" alt="graph" style="width: 15%">
-			<img class="" src="img/weight.jpg" alt="weight" style="width: 15%">
+			<img class="" src="img/water.jpg" alt="water">
+			<img class="" src="img/graph.jpg" alt="graph">
+			<img class="" src="img/weight.jpg" alt="weight">
 		</div>
 		<?php
 	}
@@ -282,11 +282,11 @@
 	// Function of the submit button
 	function SubmitButton() {
 		if($_SESSION['workoutStart'] == false) {
-			echo '<div class="button-start d-flex justify-content-center mt-4"><button type=submit class="btn btn-primary" style="color: white;">Start</button></div>';
+			echo '<div class="button-start d-flex justify-content-center mt-4"><button type=submit class="btn btn-primary">Start</button></div>';
 		} elseif(empty($_SESSION['workoutSpier'])) {
-			echo '<button type=submit class="btn btn-primary align-self-center mt-4" style="color: white;">Volgende</button>';
+			echo '<button type=submit class="btn btn-primary align-self-center mt-4">Volgende</button>';
 		} elseif($_SESSION['workoutAantal'] == '') {
-			echo '<button type=submit class="btn btn-primary mt-4" style="color: white;">Finish</button>';
+			echo '<button type=submit class="btn btn-primary mt-4">Finish</button>';
 		}
 	}
 
@@ -339,7 +339,7 @@
 					<p class="description text-center"><?php echo $oefeningen[0][$selectedArray]['description'] ?></p>
 				</div>
 				<div class="col-4">
-					<img src="img/oefeningFoto/<?php echo explode("\n", $oefeningen[0][$selectedArray]['images'])[0] ?>" alt="image" style="width: 60%; margin: 0;">
+					<img class="img-end" src="img/oefeningFoto/<?php echo explode("\n", $oefeningen[0][$selectedArray]['images'])[0] ?>" alt="image">
 				</div>
 			</div>
 			<?php
