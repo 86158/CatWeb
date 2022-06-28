@@ -7,7 +7,7 @@ if(is_int($id) && is_string($pwdKey))
 	$data = getInfo($id, $pwdKey);
 ?>
 <!-- The section of the profile page -->
-<div class="section-profilepage">
+<section class="profilepage-section">
     <div class="container-fluid">
         <!-- The image and username of the user -->
         <div class="profile d-flex justify-content-center align-items-center flex-column mt-3">
@@ -92,4 +92,4 @@ if(is_int($id) && is_string($pwdKey))
             </div>
         </div>
     </div>
-</div>
+</section>
