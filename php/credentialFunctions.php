@@ -314,11 +314,11 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
  */
 function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	$m_iv = '0000000000000069';
-	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
-	$m_result = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
-	if(!is_object($m_result) || $m_result->num_rows == 0)
+	$m_output = DatbQuery(null, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
+	if(!is_object($m_output) || $m_output->num_rows == 0)
 		return 'Database request failed at SELECT *';
-	$m_result = $m_result->fetch_assoc();
+	$m_result = $m_output->fetch_assoc();
+	$m_output->close();
 	/** @var array<string|null|int>|null $m_result */
 	if(!is_array($m_result) || !password_verify(($pwd . $email), $m_result['pwd']))
 		return 'Incorrecte gebruikersnaam/wachtwoord combination.';
@@ -352,12 +352,14 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 		$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
 	if($FirstName === false || $LastName === false)
 		return 'Failed to encrypt new values';
-	$m_result = DatbQuery($m_conn,
+	$m_output = DatbQuery(null,
 		'REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`, `token`, `tokenTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, null, null)',
 		'issssiss',
 		$m_result['ID'], $email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName
 	);
-	if($m_result === 1)
-		return null;
-	return (is_string($m_result))? $m_result : "Failed to replace database entry.\nTrace: `". var_export($m_result, true) .'`';
+	$m_return = null;
+	if($m_result !== 1)
+		$m_return = (is_string($m_output))? $m_output : "Failed to replace database entry.\nTrace: `". var_export($m_output, true) .'`';
+	$m_output->close();
+	return $m_return;
 }
