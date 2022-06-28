@@ -331,12 +331,12 @@
 			?>
 			<div class="row">
 				<div class="col-8">
-					<h4><?php echo $oefeningen[0][$selectedArray]['name'] ?></h4>
-					<div class="sub d-flex gap-3">
+					<h4 class="text-center"><?php echo $oefeningen[0][$selectedArray]['name'] ?></h4>
+					<div class="sub d-flex gap-2 justify-content-center">
 						<p class="type"><?php echo $oefeningen[0][$selectedArray]['type'] ?></p>
 						<p class="spiergroep"><?php echo $oefeningen[0][$selectedArray]['spiergroepen'] ?></p>
 					</div>
-					<p class="description"><?php echo $oefeningen[0][$selectedArray]['description'] ?></p>
+					<p class="description text-center"><?php echo $oefeningen[0][$selectedArray]['description'] ?></p>
 				</div>
 				<div class="col-4">
 					<img src="img/oefeningFoto/<?php echo explode("\n", $oefeningen[0][$selectedArray]['images'])[0] ?>" alt="image" style="width: 60%; margin: 0;">
@@ -344,6 +344,9 @@
 			</div>
 			<?php
 			$Cycle++;
+			if($Cycle != $_SESSION['workoutAantal']){
+				echo "<hr class='mt-3'>";
+			}
 		}
 		echo "</div></div></div>";
 		//var_dump($oefeningen);
