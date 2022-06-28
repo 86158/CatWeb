@@ -1,13 +1,41 @@
 @use '../custom' as *;
 
 .profilepage-section {
-    .profileInformation {
-        input {
-            width: 100%;
-            margin-bottom: 30px;
-            border-bottom: 1px solid $primary;
-            border: none;
-            outline: none;
+    img {
+        width: 7%;
+        height: 7%;
+    }
+
+    .col-4 {
+        .profileInformation {
+            hr {
+                width: 60%;
+            }
+
+            form {
+                width: 60%;
+
+                .inputs {
+                    width: 100%;
+                    border: none;
+                    border-bottom: 1px solid $primary;
+                    outline: none;
+                }
+                
+                button {
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    .col-5 {
+        hr {
+            width: 50%;
+        }
+
+        a {
+            color: $white;
         }
     }
 }
