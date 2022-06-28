@@ -46,16 +46,16 @@
 								<input type=hidden name=formID value=login>
 								<br><br>
 								<fieldset class="fieldset-signup p-0" hidden>
-									<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=FirstName></label>
-									<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=LastName></label>
+									<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=FirstName pattern="\w*"></label>
+									<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=LastName pattern="\w*"></label>
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle">
-									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username maxlength=60 required></label>
-									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password required></label>
+									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username pattern="\S+" maxlength=60 required></label>
+									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password pattern="\S+" required></label>
 								</fieldset>
 								<fieldset class="fieldset-signup p-0" hidden>
-									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=new-password name=confirmPassword maxlength=60></label>
+									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=new-password name=confirmPassword pattern="\S*" maxlength=60></label>
 								</fieldset>
 								<div class="buttons d-flex flex-column mt-3">
 									<input class="btn btn-primary" type=submit value="Login"></input>

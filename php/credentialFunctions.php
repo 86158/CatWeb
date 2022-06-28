@@ -204,7 +204,8 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 		&& (
 			$email_new == null ||
 			preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new)
-		)
+		) &&
+		preg_match('/^\S+$/', $pwd)
 	)) return null;
 	$m_iv = '0000000000000069';
 	// Derive old password key from old password and new password key from new password.
@@ -292,9 +293,10 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
-	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Incorrect username format';
-	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Incorrect FirstName format';
-	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Incorrect LastName format';
+	if(!preg_match('/^\S+$/', $pwd)) return 'Invallid characters in password';
+	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Invallid characters in username';
+	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Invallid characters in FirstName';
+	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Invallid characters in LastName';
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_iv = '0000000000000069';
