@@ -145,7 +145,9 @@ function getPerms($username, string $pwd) {
 		if(!is_object($m_result) || $m_result->num_rows == 0)
 			return 'Database request failed at SELECT `pwd`';
 		$m_result = $m_result->fetch_assoc();
-		if(!is_array($m_result) || !password_verify(($pwd . $m_result['email']), $m_result['pwd']))
+		/** @var string $m_mail */
+		$m_mail = $m_result['email'];
+		if(!is_array($m_result) || !password_verify(($pwd . $m_mail), $m_result['pwd']))
 			return 'Incorrecte gebruikersnaam/wachtwoord combination.';
 		$permLevel = $m_result['perms'];
 		// Create a login token as we should not store the password in the session.
@@ -155,8 +157,8 @@ function getPerms($username, string $pwd) {
 		$m_result = DatbQuery(null, "UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
 		if($m_result !== 1)
 			return 'Database request failed at UPDATE `users` SET `token`';
-		// Using a encrypted username as the Key Encryption Key. The Data Encryption Key is never even put in $_SESSION
-		$m_pwdKey = openssl_encrypt($username, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+		// Using a encrypted email as the Key Encryption Key. The Data Encryption Key is never even put in $_SESSION
+		$m_pwdKey = openssl_encrypt($m_mail, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 		if($m_pwdKey === false)
 			return 'Failed to encrypt pwdKey';
 		// Store `ID` and info of the user.
@@ -299,6 +301,63 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 	if(is_string($m_return)) return $m_return;
 	return null;
 }
-function modifyAccount(int $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null) {
-	// TODO
+/** Modify data in the account and generate a new userKey to encrypt the data with.
+ * @param string $email The email currently associated with the account.
+ * @param string $pwd The current password of the account.
+ * @param ?string $pwd_new The replacement password of the account or `null` to keep the current value.
+ * @param ?string $email_new The replacement email of the account or `null` to keep the current value.
+ * @param ?string $username The replacement username of the account or `null` to keep the current value.
+ * @param ?int $perms The new permlevel of the account or `null` to keep the current value.
+ * @param ?string $FirstName The new FirstName of the account or `null` to keep the current value.
+ * @param ?string $LastName The new LastName of the account or `null` to keep the current value.
+ * @return ?string `null` on a success and a string describing the error on a failure.
+ */
+function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
+	$m_iv = '0000000000000069';
+	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+	$m_result = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
+	if(!is_object($m_result) || $m_result->num_rows == 0)
+		return 'Database request failed at SELECT *';
+	$m_result = $m_result->fetch_assoc();
+	/** @var array<string|null|int>|null $m_result */
+	if(!is_array($m_result) || !password_verify(($pwd . $email), $m_result['pwd']))
+		return 'Incorrecte gebruikersnaam/wachtwoord combination.';
+	$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+	$m_userKey_old = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv);
+	if($m_pwdKey_old === false || $m_userKey_old === false)
+		return 'Failed to decrypt the encryptedkey';
+	// If the new values are not acceptable the old values are used.
+	if(!isset($pwd_new) || !preg_match('/^\S+$/', $pwd_new))
+		$pwd_new = $pwd;
+	if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
+		$email_new = $email;
+	$m_userKey_new = random_bytes(60);
+	$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
+	if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
+	$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
+	if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
+	if(!isset($username) || !preg_match('/^\w$/', $username))
+		$username = $m_result['username'];
+	if(!isset($perms))
+		$perms = $m_result['perms'];
+	if(!isset($FirstName) || !preg_match('/^\w$/', $FirstName))
+		$FirstName	=	($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
+	if(!isset($LastName) || !preg_match('/^\w$/', $LastName))
+		$LastName	=	($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],		'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
+	if($FirstName === false || $LastName === false)
+		return 'Failed to decrypt original values';
+	if(isset($FirstName))
+		$FirstName = openssl_encrypt($FirstName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
+	if(isset($LastName))
+		$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
+	if($FirstName === false || $LastName === false)
+		return 'Failed to encrypt new values';
+	$m_result = DatbQuery($m_conn,
+		'REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`, `token`, `tokenTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, null, null)',
+		'issssiss',
+		$m_result['ID'], $email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName
+	);
+	if($m_result === 1)
+		return null;
+	return (is_string($m_result))? $m_result : "Failed to replace database entry.\nTrace: `". var_export($m_result, true) .'`';
 }
