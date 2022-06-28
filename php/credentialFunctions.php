@@ -39,14 +39,15 @@ function strpositions(string $haystack, string $needle, int $offset = 0): array 
  * @see https://php.net/manual/en/class.mysqli.php Used for the actual database communication.
  */
 function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$vars) {
+	$m_close = false;
+	try {
 	// Ensure types doesn't contain obvious errors.
 	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
 	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
 	// Ensure connection
-	$m_close = false;
 	if($conn == null) {
-		$conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 		$m_close = true;
+		$conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 	}
 	// Check if the connection succeeded.
 	if($conn->connect_error) return $conn->connect_error;
@@ -54,27 +55,25 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 	$m_prep = $conn->prepare($query);
 	if($m_prep == false) {
 		$error = $conn->error;
-		if($m_close) $conn->close();
 		return $error;
 	}
 	// Attempt to bind parameters to their relative placeholders.
 	if($types != '') {
 		// Check if there are any blob values.
 		if(strpos($types, 'b') === false) {
-			if(!($m_prep->bind_param($types, ...$vars))) {
-				$error = $m_prep->error;
-				$m_prep->close(); if($m_close) $conn->close();
-				return $error;
-			}
+			if(!($m_prep->bind_param($types, ...$vars)))
+				return $m_prep->error;
 		// Handle blob values.
 		} else {
 			// Check the max length we may send at a time.
-			$maxp = $conn->query('SELECT @@global.max_allowed_packet')->fetch_array(MYSQLI_NUM)[0];
-			if(!is_int($maxp)) {
-				$error = $conn->error;
-				if($m_close) $conn->close();
-				return $error;
+			try {
+				$m_query = $conn->query('SELECT @@global.max_allowed_packet');
+				$max_allowed_packet = $m_query->fetch_array(MYSQLI_NUM)[0];
+			} finally {
+				$m_query->close();
 			}
+			if(!is_int($max_allowed_packet))
+				return $conn->error;
 			/** @var (string|int|float|null)[] $blobless A copy of $vars that had it's blob values replaced with null values.*/
 			$blobless = $vars;
 			/** @var int[] $long_data */
@@ -92,37 +91,30 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 			// Split each blob into the maximum allowed size to send.
 			foreach($long_data as $param_num) {
 				/** @var string[]|false $split */
-				$split = str_split($vars[$param_num], $maxp);
-				if($split === false) {
-					$m_prep->close(); if($m_close) $conn->close();
+				$split = str_split($vars[$param_num], $max_allowed_packet);
+				if($split === false)
 					return '"SELECT @@global.max_allowed_packet" returned a value less than 1';
-				}
 				// Send each part separately.
-				foreach($split as $blob_part) {
-					if(!(mysqli_stmt_send_long_data($m_prep, $param_num, $blob_part))) {
-						$error = $m_prep->error;
-						$m_prep->close(); if($m_close) $conn->close();
-						return $error;
-					}
-				}
+				foreach($split as $blob_part)
+					if(!(mysqli_stmt_send_long_data($m_prep, $param_num, $blob_part)))
+						return $m_prep->error;
 			}
 		}
 	}
 	// Execute the query.
-	if(!$m_prep->execute()) {
-		$error = $m_prep->error;
-		$m_prep->close(); if($m_close) $conn->close();
-		return $error;
-	}
+	if(!$m_prep->execute())
+		return $m_prep->error;
 	// Get the results.
 	$m_result = $m_prep->get_result();
 	if($m_result == false)
 		$m_result = ($m_prep->errno == 0)?
 			$m_prep->affected_rows : $m_prep->error;
-	// close connection
-	$m_prep->close();
-	if($m_close) $conn->close();
 	return $m_result;
+	} finally {
+		// Close connections
+		if($m_prep) $m_prep->close();
+		if($conn && $m_close) $conn->close();
+	}
 }
 /** Check the user credentials en permissions.
  * @param int|string $username If using a token use an `int` else it should be the email or username of the user as a `string`.
@@ -223,13 +215,14 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
  * @return array<string,string|false|null>|string Array with the decoded data from the database with false on failure or a string with error message.
 */
 function getInfo(int $id, string $pwdKey) {
-	$m_iv = '0000000000000069';
-	$m_result = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_object($m_result))
+	$m_output = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	if(!is_object($m_output))
 		return 'Database request mislukt at SELECT `encryptedkey`';
-	if($m_result->num_rows == 0)
+	if($m_output->num_rows == 0)
 		return 'Database returned a empty result set';
-	$m_result = $m_result->fetch_assoc();
+	$m_result = $m_output->fetch_assoc();
+	$m_output->close();
+	$m_iv = '0000000000000069';
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	if(!is_string($m_userKey)) return 'Decryption failed';
 	// We put the data in a relative array decrypting it first if it is not null.
@@ -247,14 +240,15 @@ function getInfo(int $id, string $pwdKey) {
  * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  */
 function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
-	$m_iv = "0000000000000069";
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
-	$m_result = DatbQuery($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_object($m_result) || $m_result->num_rows == 0)
+	$m_output = DatbQuery($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
+	if(!is_object($m_output) || $m_output->num_rows == 0)
 		return 'Database request mislukt at SELECT `encryptedkey`';
-	$m_result = $m_result->fetch_assoc();
+	$m_result = $m_output->fetch_assoc();
+	$m_output->close();
+	$m_iv = '0000000000000069';
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	if($m_userKey == false) return 'Decryption failed';
 	/** @var array<int,mysqli_result|string|int> $m_results */
@@ -278,11 +272,10 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
  * @return null|string null on success. Error message on failure.
 */
 function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
-	$m_iv = "0000000000000069";
+	$m_iv = '0000000000000069';
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
-	// $m_iv = "0000000000000069";
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_vars = [
@@ -313,51 +306,59 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
  * @return ?string `null` on a success and a string describing the error on a failure.
  */
 function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
-	$m_iv = '0000000000000069';
-	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
-	$m_result = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
-	if(!is_object($m_result) || $m_result->num_rows == 0)
-		return 'Database request failed at SELECT *';
-	$m_result = $m_result->fetch_assoc();
-	/** @var array<string|null|int>|null $m_result */
-	if(!is_array($m_result) || !password_verify(($pwd . $email), $m_result['pwd']))
-		return 'Incorrecte gebruikersnaam/wachtwoord combination.';
-	$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
-	$m_userKey_old = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv);
-	if($m_pwdKey_old === false || $m_userKey_old === false)
-		return 'Failed to decrypt the encryptedkey';
-	// If the new values are not acceptable the old values are used.
-	if(!isset($pwd_new) || !preg_match('/^\S+$/', $pwd_new))
-		$pwd_new = $pwd;
-	if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
-		$email_new = $email;
-	$m_userKey_new = random_bytes(60);
-	$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
-	if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
-	$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
-	if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
-	if(!isset($username) || !preg_match('/^\w$/', $username))
-		$username = $m_result['username'];
-	if(!isset($perms))
-		$perms = $m_result['perms'];
-	if(!isset($FirstName) || !preg_match('/^\w$/', $FirstName))
-		$FirstName	=	($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
-	if(!isset($LastName) || !preg_match('/^\w$/', $LastName))
-		$LastName	=	($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],		'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
-	if($FirstName === false || $LastName === false)
-		return 'Failed to decrypt original values';
-	if(isset($FirstName))
-		$FirstName = openssl_encrypt($FirstName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
-	if(isset($LastName))
-		$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
-	if($FirstName === false || $LastName === false)
-		return 'Failed to encrypt new values';
-	$m_result = DatbQuery($m_conn,
-		'REPLACE INTO `site_users` (`ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`, `token`, `tokenTime`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, null, null)',
-		'issssiss',
-		$m_result['ID'], $email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName
-	);
-	if($m_result === 1)
-		return null;
-	return (is_string($m_result))? $m_result : "Failed to replace database entry.\nTrace: `". var_export($m_result, true) .'`';
+	try {
+		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		$m_output = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
+		if(!is_object($m_output) || $m_output->num_rows == 0)
+			return 'Database request failed at SELECT *';
+		$m_result = $m_output->fetch_assoc();
+		$m_output->close();
+		/** @var array<string|null|int>|null $m_result */
+		if(!is_array($m_result) || !password_verify(($pwd . $email), $m_result['pwd']))
+			return 'Incorrecte gebruikersnaam/wachtwoord combination.';
+		$m_iv = '0000000000000069';
+		$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+		$m_userKey_old = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv);
+		if($m_pwdKey_old === false || $m_userKey_old === false)
+			return 'Failed to decrypt the encryptedkey';
+		// If the new values are not acceptable the old values are used.
+		if(!isset($pwd_new) || !preg_match('/^\S+$/', $pwd_new))
+			$pwd_new = $pwd;
+		if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
+			$email_new = $email;
+		$m_userKey_new = random_bytes(60);
+		$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
+		if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
+		$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
+		if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
+		if(!isset($username) || !preg_match('/^\w$/', $username))
+			$username = $m_result['username'];
+		if(!isset($perms))
+			$perms = $m_result['perms'];
+		if(!isset($FirstName) || !preg_match('/^\w$/', $FirstName))
+			$FirstName	=	($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
+		if(!isset($LastName) || !preg_match('/^\w$/', $LastName))
+			$LastName	=	($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],		'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
+		if($FirstName === false || $LastName === false)
+			return 'Failed to decrypt original values';
+		if(isset($FirstName))
+			$FirstName = openssl_encrypt($FirstName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
+		if(isset($LastName))
+			$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
+		if($FirstName === false || $LastName === false)
+			return 'Failed to encrypt new values';
+		$m_output = DatbQuery($m_conn,
+			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = null, `tokenTime` = null) WHERE `ID` = ?',
+			'ssssissi',
+			$email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName, $m_result['ID']
+		);
+		$m_return = null;
+		if($m_result !== 1)
+			$m_return = (is_string($m_output))? $m_output : "Failed to replace database entry.\nTrace: `". var_export($m_output, true) .'`';
+		$m_output->close();
+		return $m_return;
+	} finally {
+		if($m_output) $m_output->close();
+		if($m_conn) $m_conn->close();
+	}
 }
