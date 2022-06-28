@@ -30,11 +30,11 @@
 							Buik
 						</label>
 					</div>
-					<!-- Hamstring -->
+					<!-- Benen -->
 					<div class="form-check fs-5">
-						<input class="form-check-input" type="checkbox" name="hamstring" id="inputHamstring" value="Hamstring">
-						<label class="form-check-label" for="inputHamstring">
-							Hamstring
+						<input class="form-check-input" type="checkbox" name="benen" id="inputBenen" value="Benen">
+						<label class="form-check-label" for="inputBenen">
+							Benen
 						</label>
 					</div>
 					<!-- Biceps -->
@@ -42,6 +42,13 @@
 						<input class="form-check-input" type="checkbox" name="biceps" id="inputBiceps" value="Biceps">
 						<label class="form-check-label" for="inputBiceps">
 							Biceps
+						</label>
+					</div>
+					<!-- Schouders -->
+					<div class="form-check fs-5">
+						<input class="form-check-input" type="checkbox" name="schouders" id="inputSchouders" value="Schouders">
+						<label class="form-check-label" for="inputSchouders">
+							Schouders
 						</label>
 					</div>
 					<!-- The submit button -->
@@ -235,7 +242,7 @@
 				array_push($_SESSION['workoutDoel'], $_POST[$value]);
 			}
 		}
-		$spierNames = ['triceps', 'rug', 'buik', 'biceps', 'hamstring'];
+		$spierNames = ['triceps', 'rug', 'buik', 'biceps', 'benen', 'schouders'];
 		foreach($spierNames as $value) {
 			if(isset($_POST[$value])) {
 				array_push($_SESSION['workoutSpier'], $_POST[$value]);
