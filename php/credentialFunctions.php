@@ -388,7 +388,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 			return 'Failed to encrypt new values';
 		// Use UPDATE to prevent overwriting other existing users.
 		$m_output = DatbQuery($m_conn,
-			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = null, `tokenTime` = null) WHERE `ID` = ?',
+			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = NULL, `tokenTime` = NULL WHERE `ID` = ?',
 			'ssssissi',
 			$email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName, $m_result['ID']
 		);
