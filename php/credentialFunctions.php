@@ -319,7 +319,7 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 	}
 }
 /** Modify data in the account and generate a new userKey to encrypt the data with.
- * @param string $email The email currently associated with the account.
+ * @param string|int $user The email, username or ID of the account.
  * @param string $pwd The current password of the account.
  * @param ?string $pwd_new The replacement password of the account or `null` to keep the current value.
  * @param ?string $email_new The replacement email of the account or `null` to keep the current value.
@@ -329,12 +329,18 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
  * @param ?string $LastName The new LastName of the account or `null` to keep the current value.
  * @return ?string `null` on a success and a string describing the error on a failure.
  */
-function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
+function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	try {
 		// Create the connection
 		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
 		// Get the original values.
-		$m_output = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
+		$m_output = 'Failed to find current user';
+		if(is_int($user))
+			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $user);
+		elseif(strpos($user, '@') !== false)
+			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $user);
+		else
+			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `username`=?', 's', $user);
 		if(!is_object($m_output) || $m_output->num_rows == 0)
 			return 'Database request failed at SELECT *';
 		/** @var array<string|null|int>|null $m_result */
@@ -342,11 +348,11 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 		$m_output->close();
 		if(!is_array($m_result)) return 'Empty result set.';
 		// Check if the password is correct.
-		if(!password_verify(($pwd . $email), $m_result['pwd']))
+		if(!password_verify(($pwd . $m_result['email']), $m_result['pwd']))
 			return 'Incorrecte gebruikersnaam/wachtwoord combination.';
 		$m_iv = '0000000000000069';
 		// Get the old pwdKey and userKey.
-		$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+		$m_pwdKey_old = openssl_encrypt($m_result['email'], 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 		$m_userKey_old = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv);
 		if($m_pwdKey_old === false || $m_userKey_old === false)
 			return 'Failed to decrypt the encryptedkey';
@@ -354,10 +360,10 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 		if(!isset($pwd_new) || !preg_match('/^\S+$/', $pwd_new))
 			$pwd_new = $pwd;
 		if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
-			$email_new = $email;
+			$email_new = $m_result['email'];
 		// Generate a new userKey, pwdkey and encrypted userkey.
 		$m_userKey_new = random_bytes(60);
-		$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
+		$m_pwdkey_new = openssl_encrypt($m_result['email'], 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
 		if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
 		$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
 		if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
