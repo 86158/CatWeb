@@ -2,12 +2,11 @@
 @use 'custom';
 @use 'base';
 
-//SECTIONS
+// SECTIONS
 @use 'sections/navbar';
 @use 'sections/homepage';
 @use 'sections/buildyourworkout';
 @use 'sections/oefeningen';
-@use 'sections/oefeningenArticles';
 @use 'sections/schema';
 @use 'sections/workout';
 @use 'sections/overons';
