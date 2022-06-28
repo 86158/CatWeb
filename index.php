@@ -46,6 +46,7 @@ if(!(
 // Getting functions
 require_once __DIR__ .'/php/globalFunctions.php';
 require_once __DIR__ . "/php/FunctionsBuildYourWorkout.php";
+require_once __DIR__ . "/php/functionsShowSavedSchema.php";
 // Run the function first to deal with the login/logout functionality.
 $page = returnPage();
 // Getting the head.

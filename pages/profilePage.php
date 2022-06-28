@@ -88,7 +88,17 @@ if(is_int($id) && is_string($pwdKey))
                     <div class="content d-flex justify-content-center">
                         <a class="btn btn-primary m-auto mt-2" href="?page=favorieten">Zie alle favorieten oefeningen</a>
                     </div>
-                </div>
+                </div>'
+                <div class="profileFavourites">
+                    <div class="title d-flex flex-column align-items-center">
+                        <h2 class="text-center fw-bold">Saved Schema</h2>
+                        <hr class="mt-3" style="width: 50%;">
+                    </div>
+                    <!-- The content of the saved schema section -->
+                    <div class="content d-flex justify-content-center">
+                        <a class="btn btn-primary m-auto mt-3" href="?page=savedSchema" style="color: white;">Zie alle opgeslagen Schema's</a>
+                    </div>
+                </div>'
             </div>
         </div>
     </div>

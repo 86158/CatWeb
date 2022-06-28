@@ -110,6 +110,8 @@ function returnPage(): string {
 			return 'profilePage.php';
 		case 'favorieten':
 			return 'favorieten.php';
+		case 'savedSchema':
+			return 'savedSchema.php';
 		case 'resultBYW':
 			return 'resultBYW.php';
 		default:
