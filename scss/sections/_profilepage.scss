@@ -1,12 +1,12 @@
-.section-profilepage {
-    .profileInformation {
-        
-        input {
+@use '../custom' as *;
 
+.profilepage-section {
+    .profileInformation {
+        input {
             width: 100%;
             margin-bottom: 30px;
+            border-bottom: 1px solid $primary;
             border: none;
-            border-bottom: 1px solid #5EB4A8;
             outline: none;
         }
     }
