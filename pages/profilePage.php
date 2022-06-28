@@ -32,7 +32,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Voornaam</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=text name=FirstName autocomplete=given-name pattern="\w+"<?php if(is_array($data) && is_string($data['FirstName'])) echo 'value="', $data['FirstName'], '" ';?>>
+                                <input class="inputs" type=text name=FirstName autocomplete=given-name pattern="\w*"<?php if(is_array($data) && is_string($data['FirstName'])) echo 'value="', $data['FirstName'], '" ';?>>
                             </div>
                         </label>
                         <!-- Last Name -->
@@ -41,7 +41,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Achternaam</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=text name=LastName autocomplete=family-name pattern="\w+"<?php if(is_array($data) && is_string($data['LastName'])) echo 'value="', $data['LastName'], '" ';?>>
+                                <input class="inputs" type=text name=LastName autocomplete=family-name pattern="\w*"<?php if(is_array($data) && is_string($data['LastName'])) echo 'value="', $data['LastName'], '" ';?>>
                             </div>
                         </label>
                         <!-- Email -->
@@ -54,21 +54,21 @@ if(is_int($id) && is_string($pwdKey))
                             </div>
                         </label>
                         <!-- Password -->
-                        <label class="row item-1 justify-content-between" title="Changing password or email requires password field to be filled.">
+                        <label class="row item-1 justify-content-between">
                             <div class="col-6">
                                 <p class="fw-bold">Nieuw wachtwoord</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=password autocomplete=new-password name=pwd_new>
+                                <input class="inputs" type=password autocomplete=new-password pattern="[^\0\n\f\r\t\v]*" name=pwd_new>
                             </div>
                         </label>
                         <!-- Password -->
-                        <label class="row item-1 justify-content-between" title="Changing password or email requires password field to be filled.">
+                        <label class="row item-1 justify-content-between">
                             <div class="col-6">
                                 <p class="fw-bold">Wachtwoord</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=password autocomplete=new-password pattern="\S+" name=pwd_old>
+                                <input class="inputs" type=password autocomplete=new-password pattern="[^\0\n\f\r\t\v]+" name=pwd_old required>
                             </div>
                         </label>
                         <!-- Button to change the information about the user -->
