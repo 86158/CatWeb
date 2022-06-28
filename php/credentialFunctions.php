@@ -255,6 +255,7 @@ function getInfo(int $id, string $pwdKey) {
 }
 /** Update/change user info
  * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
+ * @deprecated Use {@see modifyAccount()} instead
  */
 function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
@@ -289,12 +290,14 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
  * @return null|string null on success. Error message on failure.
 */
 function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
-	$m_iv = '0000000000000069';
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
-	if($username != null && !preg_match('/^[\w]+$/', $username)) return 'Incorrect username format';
+	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Incorrect username format';
+	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Incorrect FirstName format';
+	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Incorrect LastName format';
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
+	$m_iv = '0000000000000069';
 	$m_vars = [
 		$email,
 		$username, // Because username is used to login it's no longer encrypted
@@ -352,13 +355,13 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 		if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
 		$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
 		if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
-		if(!isset($username) || !preg_match('/^\w$/', $username))
+		if(!isset($username) || !preg_match('/^\w+$/', $username))
 			$username = $m_result['username'];
 		if(!isset($perms))
 			$perms = $m_result['perms'];
-		if(!isset($FirstName) || !preg_match('/^\w$/', $FirstName))
+		if(!isset($FirstName) || !preg_match('/^\w+$/', $FirstName))
 			$FirstName	=	($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
-		if(!isset($LastName) || !preg_match('/^\w$/', $LastName))
+		if(!isset($LastName) || !preg_match('/^\w+$/', $LastName))
 			$LastName	=	($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],		'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
 		if($FirstName === false || $LastName === false)
 			return 'Failed to decrypt original values';
