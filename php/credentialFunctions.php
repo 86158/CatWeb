@@ -293,7 +293,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
-	if(!preg_match('/^\S+$/', $pwd)) return 'Invallid characters in password';
+	if(!preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd)) return 'Invallid characters in password';
 	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Invallid characters in username';
 	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Invallid characters in FirstName';
 	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Invallid characters in LastName';
@@ -359,7 +359,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 		if($m_pwdKey_old === false || $m_userKey_old === false)
 			return 'Failed to decrypt the encryptedkey';
 		// If the new values are not acceptable the old values are used.
-		if(!isset($pwd_new) || !preg_match('/^\S+$/', $pwd_new))
+		if(!isset($pwd_new) || !preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd_new))
 			$pwd_new = $pwd;
 		if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
 			$email_new = $m_result['email'];

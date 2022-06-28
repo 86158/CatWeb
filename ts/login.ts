@@ -57,7 +57,7 @@ function loginNewUser() {
 			formType.value = 'newUser';
 			this.innerText = 'Heeft u al een account?';
 			pwdField.autocomplete = 'new-password';
-			pwdField.title = 'Passwords may not contain whitespace characters.';
+			pwdField.title = 'Passwords may not contain NULL characters, tab characters, carriage return characters, new line characters, vertical tab characters or form feed characters.';
 			btnChange.value = 'Account Aanmaken';
 			pwdField.addEventListener('input', checkPwdConform);
 			h3.innerText = 'Account Aanmaken';

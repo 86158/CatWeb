@@ -51,11 +51,11 @@
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle">
-									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username pattern="\S+" maxlength=60 required></label>
-									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password pattern="\S+" required></label>
+									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username pattern="[^\0\n\f\r\t\v]+" maxlength=60 required></label>
+									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password pattern="[^\0\n\f\r\t\v]+" required></label>
 								</fieldset>
 								<fieldset class="fieldset-signup p-0" hidden>
-									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=new-password name=confirmPassword pattern="\S*" maxlength=60></label>
+									<label class="fw-bold fs-5">Bevestig Wachtwoord<input type=password autocomplete=new-password name=confirmPassword maxlength=60></label>
 								</fieldset>
 								<div class="buttons d-flex flex-column mt-3">
 									<input class="btn btn-primary" type=submit value="Login"></input>
