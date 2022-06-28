@@ -15,7 +15,7 @@ if(is_int($id) && is_string($pwdKey))
             <h5 class="mt-2"><?php if(is_array($data) && is_string($data['username'])) echo $data['username']; else echo 'Username';?></h5>
         </div>
         <!-- Bottom of the page -->
-        <div class="row justify-content-around mt-3">
+        <div class="row mt-3">
             <div class="col-4">
                 <!-- The left side of the page -->
                 <div class="profileInformation">
@@ -77,7 +77,19 @@ if(is_int($id) && is_string($pwdKey))
                     </form>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-4">
+                <div class="profileSavedSchema">
+                    <div class="title d-flex flex-column align-items-center">
+                        <h2 class="text-center fw-bold">Opgeslagen Schema</h2>
+                        <hr class="mt-1" style="width: 50%;">
+                    </div>
+                    <!-- The content of the saved schema section -->
+                    <div class="content d-flex justify-content-center">
+                        <a class="btn btn-primary m-auto mt-3" href="?page=savedSchema" style="color: white;">Zie alle opgeslagen Schema's</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
                 <!-- Right side of the page -->
                 <div class="profileFavourites">
                     <div class="title d-flex flex-column align-items-center">
@@ -88,17 +100,7 @@ if(is_int($id) && is_string($pwdKey))
                     <div class="content d-flex justify-content-center">
                         <a class="btn btn-primary m-auto mt-2" href="?page=favorieten">Zie alle favorieten oefeningen</a>
                     </div>
-                </div>'
-                <div class="profileFavourites">
-                    <div class="title d-flex flex-column align-items-center">
-                        <h2 class="text-center fw-bold">Saved Schema</h2>
-                        <hr class="mt-3" style="width: 50%;">
-                    </div>
-                    <!-- The content of the saved schema section -->
-                    <div class="content d-flex justify-content-center">
-                        <a class="btn btn-primary m-auto mt-3" href="?page=savedSchema" style="color: white;">Zie alle opgeslagen Schema's</a>
-                    </div>
-                </div>'
+                </div>  
             </div>
         </div>
     </div>
