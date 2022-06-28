@@ -331,16 +331,21 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
  */
 function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	try {
+		// Create the connection
 		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		// Get the original values.
 		$m_output = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
 		if(!is_object($m_output) || $m_output->num_rows == 0)
 			return 'Database request failed at SELECT *';
+		/** @var array<string|null|int>|null $m_result */
 		$m_result = $m_output->fetch_assoc();
 		$m_output->close();
-		/** @var array<string|null|int>|null $m_result */
-		if(!is_array($m_result) || !password_verify(($pwd . $email), $m_result['pwd']))
+		if(!is_array($m_result)) return 'Empty result set.';
+		// Check if the password is correct.
+		if(!password_verify(($pwd . $email), $m_result['pwd']))
 			return 'Incorrecte gebruikersnaam/wachtwoord combination.';
 		$m_iv = '0000000000000069';
+		// Get the old pwdKey and userKey.
 		$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 		$m_userKey_old = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv);
 		if($m_pwdKey_old === false || $m_userKey_old === false)
@@ -350,11 +355,13 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 			$pwd_new = $pwd;
 		if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
 			$email_new = $email;
+		// Generate a new userKey, pwdkey and encrypted userkey.
 		$m_userKey_new = random_bytes(60);
 		$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
 		if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
 		$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
 		if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
+		// If the new values are not acceptable the old values are used.
 		if(!isset($username) || !preg_match('/^\w+$/', $username))
 			$username = $m_result['username'];
 		if(!isset($perms))
@@ -371,6 +378,7 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 			$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
 		if($FirstName === false || $LastName === false)
 			return 'Failed to encrypt new values';
+		// Use UPDATE to prevent overwriting other existing users.
 		$m_output = DatbQuery($m_conn,
 			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = null, `tokenTime` = null) WHERE `ID` = ?',
 			'ssssissi',
@@ -381,6 +389,7 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 			$m_return = (is_string($m_output))? $m_output : "Failed to replace database entry.\nTrace: `". var_export($m_output, true) .'`';
 		return $m_return;
 	} finally {
+		// Close all objects to prevent memory leaks.
 		if(is_object($m_output)) $m_output->close();
 		if(is_object($m_conn)) $m_conn->close();
 	}
