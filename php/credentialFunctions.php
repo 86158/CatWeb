@@ -204,7 +204,8 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 		&& (
 			$email_new == null ||
 			preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new)
-		)
+		) &&
+		preg_match('/^\S+$/', $pwd)
 	)) return null;
 	$m_iv = '0000000000000069';
 	// Derive old password key from old password and new password key from new password.
@@ -292,9 +293,10 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
-	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Incorrect username format';
-	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Incorrect FirstName format';
-	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Incorrect LastName format';
+	if(!preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd)) return 'Invallid characters in password';
+	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Invallid characters in username';
+	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Invallid characters in FirstName';
+	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Invallid characters in LastName';
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_iv = '0000000000000069';
@@ -319,7 +321,7 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 	}
 }
 /** Modify data in the account and generate a new userKey to encrypt the data with.
- * @param string $email The email currently associated with the account.
+ * @param string|int $user The email, username or ID of the account.
  * @param string $pwd The current password of the account.
  * @param ?string $pwd_new The replacement password of the account or `null` to keep the current value.
  * @param ?string $email_new The replacement email of the account or `null` to keep the current value.
@@ -329,32 +331,45 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
  * @param ?string $LastName The new LastName of the account or `null` to keep the current value.
  * @return ?string `null` on a success and a string describing the error on a failure.
  */
-function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
+function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
 	try {
+		// Create the connection
 		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
-		$m_output = DatbQuery($m_conn, 'SELECT `ID`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $email);
+		// Get the original values.
+		$m_output = 'Failed to find current user';
+		if(is_int($user))
+			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $user);
+		elseif(strpos($user, '@') !== false)
+			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $user);
+		else
+			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `username`=?', 's', $user);
 		if(!is_object($m_output) || $m_output->num_rows == 0)
 			return 'Database request failed at SELECT *';
+		/** @var array<string|null|int>|null $m_result */
 		$m_result = $m_output->fetch_assoc();
 		$m_output->close();
-		/** @var array<string|null|int>|null $m_result */
-		if(!is_array($m_result) || !password_verify(($pwd . $email), $m_result['pwd']))
+		if(!is_array($m_result)) return 'Empty result set.';
+		// Check if the password is correct.
+		if(!password_verify(($pwd . $m_result['email']), $m_result['pwd']))
 			return 'Incorrecte gebruikersnaam/wachtwoord combination.';
 		$m_iv = '0000000000000069';
-		$m_pwdKey_old = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
+		// Get the old pwdKey and userKey.
+		$m_pwdKey_old = openssl_encrypt($m_result['email'], 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
 		$m_userKey_old = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $m_pwdKey_old, 0, $m_iv);
 		if($m_pwdKey_old === false || $m_userKey_old === false)
 			return 'Failed to decrypt the encryptedkey';
 		// If the new values are not acceptable the old values are used.
-		if(!isset($pwd_new) || !preg_match('/^\S+$/', $pwd_new))
+		if(!isset($pwd_new) || !preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd_new))
 			$pwd_new = $pwd;
 		if(!isset($email_new) || !preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email_new))
-			$email_new = $email;
+			$email_new = $m_result['email'];
+		// Generate a new userKey, pwdkey and encrypted userkey.
 		$m_userKey_new = random_bytes(60);
-		$m_pwdkey_new = openssl_encrypt($email, 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
+		$m_pwdkey_new = openssl_encrypt($m_result['email'], 'aes-256-cbc-hmac-sha256', $pwd_new, 0, $m_iv);
 		if($m_pwdkey_new === false) return 'Failed to create new pwdkey';
 		$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
 		if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
+		// If the new values are not acceptable the old values are used.
 		if(!isset($username) || !preg_match('/^\w+$/', $username))
 			$username = $m_result['username'];
 		if(!isset($perms))
@@ -371,8 +386,9 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 			$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
 		if($FirstName === false || $LastName === false)
 			return 'Failed to encrypt new values';
+		// Use UPDATE to prevent overwriting other existing users.
 		$m_output = DatbQuery($m_conn,
-			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = null, `tokenTime` = null) WHERE `ID` = ?',
+			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = NULL, `tokenTime` = NULL WHERE `ID` = ?',
 			'ssssissi',
 			$email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName, $m_result['ID']
 		);
@@ -381,6 +397,7 @@ function modifyAccount(string $email, string $pwd, ?string $pwd_new = null, ?str
 			$m_return = (is_string($m_output))? $m_output : "Failed to replace database entry.\nTrace: `". var_export($m_output, true) .'`';
 		return $m_return;
 	} finally {
+		// Close all objects to prevent memory leaks.
 		if(is_object($m_output)) $m_output->close();
 		if(is_object($m_conn)) $m_conn->close();
 	}
