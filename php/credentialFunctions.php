@@ -133,13 +133,13 @@ function getPerms($username, string $pwd) {
 			} else {
 				$m_output = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `username`=?', 's', $username);
 			}
-			if(!is_object($m_output))
+			if(!is_resource($m_output))
 				return 'Database request failed at SELECT `pwd`';
 			elseif($m_output->num_rows == 0)
 				return 'Onbekende gebruiker';
 			$m_result = $m_output->fetch_assoc();
 		} finally {
-			if(is_object($m_output)) $m_output->close();
+			if(is_resource($m_output)) $m_output->close();
 		}
 		/** @var string $m_mail */
 		$m_mail = $m_result['email'];
@@ -154,7 +154,7 @@ function getPerms($username, string $pwd) {
 			$m_output = DatbQuery(null, "UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
 			if($m_output !== 1) return 'Database request failed at UPDATE `users` SET `token`';
 		} finally {
-			if(is_object($m_output)) $m_output->close();
+			if(is_resource($m_output)) $m_output->close();
 		}
 		// Using a encrypted email as the Key Encryption Key. The Data Encryption Key is never even put in $_SESSION
 		$m_pwdKey = openssl_encrypt($m_mail, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
@@ -170,7 +170,7 @@ function getPerms($username, string $pwd) {
 		// Get the token.
 		try {
 			$m_output = DatbQuery(null, 'SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
-			if(!is_object($m_output) || $m_output->num_rows == 0) {
+			if(!is_resource($m_output) || $m_output->num_rows == 0) {
 				unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 				return 'Database request failed at SELECT `token`';
 			}
@@ -188,7 +188,7 @@ function getPerms($username, string $pwd) {
 			try {
 				$m_result = DatbQuery(null, 'UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $username);
 			} finally {
-				if(is_object($m_result)) $m_result->close();
+				if(is_resource($m_result)) $m_result->close();
 			}
 			unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 			return 'Invallid/expired loginToken.';
@@ -233,14 +233,14 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 function getInfo(int $id, string $pwdKey) {
 	try {
 		$m_output = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
-		if(!is_object($m_output))
+		if(!is_resource($m_output))
 			return 'Database request mislukt at SELECT `encryptedkey`';
 		if($m_output->num_rows == 0) {
 			return 'Database returned a empty result set';
 		}
 		$m_result = $m_output->fetch_assoc();
 	} finally {
-		if(is_object($m_output)) $m_output->close();
+		if(is_resource($m_output)) $m_output->close();
 	}
 	$m_iv = '0000000000000069';
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
@@ -265,7 +265,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
 	$m_output = DatbQuery($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_object($m_output) || $m_output->num_rows == 0)
+	if(!is_resource($m_output) || $m_output->num_rows == 0)
 		return 'Database request mislukt at SELECT `encryptedkey`';
 	$m_result = $m_output->fetch_assoc();
 	$m_output->close();
@@ -319,7 +319,7 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 		if(is_string($m_output)) return $m_output;
 		return null;
 	} finally {
-		if(is_object($m_output)) $m_output->close();
+		if(is_resource($m_output)) $m_output->close();
 	}
 }
 /** Modify data in the account and generate a new userKey to encrypt the data with.
@@ -345,7 +345,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $user);
 		else
 			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `username`=?', 's', $user);
-		if(!is_object($m_output) || $m_output->num_rows == 0)
+		if(!is_resource($m_output) || $m_output->num_rows == 0)
 			return 'Database request failed at SELECT *';
 		/** @var array<string|null|int>|null $m_result */
 		$m_result = $m_output->fetch_assoc();
@@ -400,7 +400,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 		return $m_return;
 	} finally {
 		// Close all objects to prevent memory leaks.
-		if(is_object($m_output)) $m_output->close();
-		if(is_object($m_conn)) $m_conn->close();
+		if(is_resource($m_output)) $m_output->close();
+		if(is_resource($m_conn)) $m_conn->close();
 	}
 }

@@ -62,9 +62,9 @@ echo '<script src=https://code.jquery.com/jquery-3.6.0.min.js integrity="sha256-
 // Bootstrap
 echo '<script src=https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin=anonymous async></script>';
 // Drag and drop functionality
-if($page == 'schema.html') echo '<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" integrity="sha384-eeLEhtwdMwD3X9y+8P3Cn7Idl/M+w8H4uZqkgD/2eJVkWIN1yKzEj6XegJ9dL3q0" crossorigin="anonymous" defer></script>';
+if($page == 'schema.html') echo '<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" integrity="sha384-eeLEhtwdMwD3X9y+8P3Cn7Idl/M+w8H4uZqkgD/2eJVkWIN1yKzEj6XegJ9dL3q0" crossorigin=anonymous defer></script>';
 // Custom script
-echo '<script src="js/main.js" type="module" defer></script>';
+echo '<script src="js/main.js" type=module defer></script>';
 echo '</div>';
 // Getting footer.
 include __DIR__ .'/pages/footer.html';

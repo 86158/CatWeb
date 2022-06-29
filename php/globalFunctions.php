@@ -4,20 +4,20 @@ require_once __DIR__.'/credentialFunctions.php';
 /** Function to go over the formdata and update fields */
 function updateUser(): ?string {
 	$m_vars = [
-		'ID' => null,
-		'pwd_old' => null,
+		'user' => null,
+		'pwd' => null,
 		'pwd_new' => null,
 		'email_new' => null,
-		'username_new' => null,
+		'username' => null,
 		'perms' => null,
 		'FirstName' => null,
 		'LastName' => null
 	];
 	if(isset($_SESSION['ID']) && is_int($_SESSION['ID']))
-		$m_vars['ID'] = $_SESSION['ID'];
+		$m_vars['user'] = $_SESSION['ID'];
 	else return 'Incorrect/missing ID';
 	if(isset($_POST['pwd_old']) && is_string($_POST['pwd_old']))
-		$m_vars['pwd_old'] = $_POST['pwd_old'];
+		$m_vars['pwd'] = $_POST['pwd_old'];
 	if(isset($_POST['pwd_new']) && is_string($_POST['pwd_new']))
 		$m_vars['pwd_new'] = $_POST['pwd_new'];
 	if(isset($_POST['email']) && is_string($_POST['email']))
@@ -39,6 +39,10 @@ function returnPage(): string {
 	// Logout
 	if(isset($_POST['logout'])) {
 		session_unset();
+		// Rewrite the URL to remove login error messages.
+		$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
+		header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url); // Rebuild the URL
+		exit();
 	// Create new user.
 	} elseif(isset($_POST['formID']) && $_POST['formID'] === 'newUser') {
 		$m_result = createAccount($_POST['FirstName'], $_POST['LastName'], $_POST['Mail'], $_POST['Password'], $_POST['Username']);
