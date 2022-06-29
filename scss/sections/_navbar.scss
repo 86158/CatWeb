@@ -3,7 +3,9 @@
 .navbar-section {
     .bg-customnavbar {
         background-color: $primary;
-    
+        max-width: 100vw;
+        overflow-x: hidden;
+
         img {
             width: 150px;
             height: auto;
@@ -160,4 +162,3 @@
         }
     }
 }
-
