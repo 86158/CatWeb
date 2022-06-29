@@ -17,7 +17,7 @@
 			</div>
 			<!-- Image -->
 			<div class="image w-30 col-5 mt-2 mb-3">
-				<img src="img/overons.jpg" class="img-fluid" alt="Group_foto">
+				<img src="img/us.png" class="img-fluid" alt="Group_foto">
 			</div>
 		</div>
 		<div class="row content">
