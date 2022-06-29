@@ -12,7 +12,7 @@ function fillUserFavorites(container: HTMLElement) {
 	// Clear placeholders
 	container.innerHTML = "";
 	// Add classes
-	container.classList.add('col-7', 'col-custom', 'mt-3');
+	container.classList.add('col-12', 'col-custom', 'mt-3');
 	// For each row we add a article to the container.
 	// The element is created filled with data and then added to its container.
 	(data as site_oefeningen[]).forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
