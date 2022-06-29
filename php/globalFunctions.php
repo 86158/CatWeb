@@ -45,7 +45,7 @@ function returnPage(): string {
 		exit();
 	// Create new user.
 	} elseif(isset($_POST['formID']) && $_POST['formID'] === 'newUser') {
-		$m_result = createAccount($_POST['FirstName'], $_POST['LastName'], $_POST['Mail'], $_POST['Password'], $_POST['Username']);
+		$m_result = createAccount($_POST['Mail'], $_POST['Password'], $_POST['Username'], $_POST['FirstName'], $_POST['LastName']);
 		if(is_string($m_result)) echo '<p class=error role=alert>'. $m_result .'</p>';
 	// Login
 	} else {

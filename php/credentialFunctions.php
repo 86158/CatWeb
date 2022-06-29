@@ -297,7 +297,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
  * Create a new account with encrypted personal details.
  * @return null|string null on success. Error message on failure.
 */
-function createAccount(string $FirstName, string $LastName, string $email, string $pwd, ?string $username = null, int $perms = 0): ?string {
+function createAccount(string $email, string $pwd, ?string $username = null, int $perms = 0, ?string $FirstName = null, ?string $LastName = null): ?string {
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if(!preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd)) return 'Invallid characters in password';
