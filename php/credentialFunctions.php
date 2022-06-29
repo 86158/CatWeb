@@ -82,11 +82,8 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 					$long_data[] = $index;
 				}
 				// Bind the data but use null for blobs.
-				if(!($m_prep->bind_param($types, ...$blobless))) {
-					$error = $m_prep->error;
-					$m_prep->close(); if($m_close) $conn->close();
-					return $error;
-				}
+				if(!($m_prep->bind_param($types, ...$blobless)))
+					return $m_prep->error;
 				// Split each blob into the maximum allowed size to send.
 				foreach($long_data as $param_num) {
 					/** @var string[]|false $split */
@@ -111,8 +108,8 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 		return $m_result;
 	} finally {
 		// Ensure all resources are closed to prevent memory leaks.
-		if($m_prep) $m_prep->close();
-		if($conn && $m_close) $conn->close();
+		if(is_object($m_prep)) $m_prep->close();
+		if(is_object($conn) && $m_close) $conn->close();
 	}
 }
 /** Check the user credentials en permissions.
@@ -141,7 +138,7 @@ function getPerms($username, string $pwd) {
 			$m_result = $m_output->fetch_assoc();
 		} finally {
 			// Ensure all resources are closed to prevent memory leaks.
-			if(is_resource($m_output)) $m_output->close();
+			if(is_object($m_output)) $m_output->close();
 		}
 		/** @var string $m_mail */
 		$m_mail = $m_result['email'];
@@ -157,7 +154,7 @@ function getPerms($username, string $pwd) {
 			if($m_output !== 1) return 'Database request failed at UPDATE `users` SET `token`';
 		} finally {
 			// Ensure all resources are closed to prevent memory leaks.
-			if(is_resource($m_output)) $m_output->close();
+			if(is_object($m_output)) $m_output->close();
 		}
 		// Using a encrypted email as the Key Encryption Key. The Data Encryption Key is never even put in $_SESSION
 		$m_pwdKey = openssl_encrypt($m_mail, 'aes-256-cbc-hmac-sha256', $pwd, 0, $m_iv);
@@ -193,7 +190,7 @@ function getPerms($username, string $pwd) {
 				$m_result = DatbQuery(null, 'UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $username);
 			} finally {
 				// Ensure all resources are closed to prevent memory leaks.
-				if(is_resource($m_result)) $m_result->close();
+				if(is_object($m_result)) $m_result->close();
 			}
 			unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 			return 'Invallid/expired loginToken.';
@@ -245,7 +242,7 @@ function getInfo(int $id, string $pwdKey) {
 		}
 		$m_result = $m_output->fetch_assoc();
 	} finally {
-		if(is_resource($m_output)) $m_output->close();
+		if(is_object($m_output)) $m_output->close();
 	}
 	$m_iv = '0000000000000069';
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
@@ -274,6 +271,8 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 		return 'Database request mislukt at SELECT `encryptedkey`';
 	$m_result = $m_output->fetch_assoc();
 	$m_output->close();
+	// Unasign mysqli handle because using close when already closed creates an exception instead of returning false like it should.
+	$m_output = null;
 	$m_iv = '0000000000000069';
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
 	if($m_userKey == false) return 'Decryption failed';
@@ -325,7 +324,7 @@ function createAccount(string $email, string $pwd, ?string $username = null, int
 		return null;
 	} finally {
 		// Ensure all resources are closed to prevent memory leaks.
-		if(is_resource($m_output)) $m_output->close();
+		if(is_object($m_output)) $m_output->close();
 	}
 }
 /** Modify data in the account and generate a new userKey to encrypt the data with.
@@ -356,6 +355,8 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 		/** @var array<string|null|int>|null $m_result */
 		$m_result = $m_output->fetch_assoc();
 		$m_output->close();
+		// Unasign mysqli handle because using close when already closed creates an exception instead of returning false like it should.
+		$m_output = null;
 		if(!is_array($m_result)) return 'Empty result set.';
 		// Check if the password is correct.
 		if(!password_verify(($pwd . $m_result['email']), $m_result['pwd']))
@@ -406,7 +407,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 		return $m_return;
 	} finally {
 		// Ensure all resources are closed to prevent memory leaks.
-		if(is_resource($m_output)) $m_output->close();
-		if(is_resource($m_conn)) $m_conn->close();
+		if(is_object($m_output)) $m_output->close();
+		if(is_object($m_conn)) $m_conn->close();
 	}
 }
