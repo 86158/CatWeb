@@ -99,12 +99,6 @@ if(is_int($id) && is_string($pwdKey))
                         </div>
                         <!-- The content of the favourites section -->
                         <section id="js-oefeningen"></section>
-
-
-
-                        <!-- <div class="content d-flex justify-content-center">
-                            <a class="btn btn-primary m-auto mt-2" href="?page=favorieten">Zie alle favorieten oefeningen</a>
-                        </div> -->
                     </div>  
                 </form>
             </div>
