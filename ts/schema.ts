@@ -103,6 +103,8 @@ function fillSchema(container: HTMLElement) {
 		btn.type = 'button';
 		btn.name = value.name;
 		btn.value = value.ID.toString();
+		if(value.duration)
+			btn.setAttribute('js-data-duration', value.duration.toString());
 		div3.appendChild(btn);
 		article.appendChild(div3);
 		(container as HTMLElement).appendChild(article);
@@ -138,7 +140,7 @@ function schemaMaker(): void {
 		schemaOption.appendChild(schemaText);
 		schemaOption.appendChild(schemaButton);
 		container.appendChild(schemaOption);
-		schemaButton.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {schemaOption.remove();});
+		schemaButton.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {schemaOption.remove(); calcDuration();});
 	}
 	buttons.forEach(function(this: any, value: HTMLButtonElement, _key: number, _parent: NodeListOf<HTMLButtonElement>): void {
 		value.addEventListener('click', clickListener);
@@ -146,6 +148,19 @@ function schemaMaker(): void {
 	const btnSave = document.getElementById('js-saveSchema');
 	if(!(btnSave instanceof HTMLButtonElement)) return console.error('Missing button#js-saveSchema');
 	btnSave.addEventListener('click', schemaSubmit);
+}
+function calcDuration() {
+	const container = document.getElementById('js-selected');
+	const duration = document.getElementById('js-duration');
+	if(container == null || duration == null) return;
+	var output: number = 0;
+	// Get the ID of each item and add it to a list.
+	for(let index = 0; index < container.childElementCount; index++) {
+		const schemaOption = container.children[index] as HTMLElement;
+		const result = schemaOption.getAttribute('js-data-duration');
+		if(result == null) continue;
+		output += Number(result);
+	}
 }
 /** Get all elements in the list and add create a new schema for the user in the database for them.*/
 function schemaSubmit(): void {
