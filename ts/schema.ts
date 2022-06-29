@@ -127,20 +127,19 @@ function schemaMaker(): void {
 		const schemaText = document.createElement('p');
 		const schemaButton = document.createElement('button');
 		const schemaDragger = document.createElement('i');
-		// schemaOption.id = "js-" + (new Date()).valueOf().toString();
+		const duration = this.getAttribute('js-data-duration');
+		if(duration)
+			schemaOption.setAttribute('js-data-duration', duration);
 		schemaOption.classList.add('js-id-'+ this.value, 'sortable-item');
-		// schemaOption.setAttribute('draggable', 'true');
-		// schemaOption.addEventListener('dragstart', dragStart);
-		// schemaOption.setAttribute('data-mdb-drag-handle', '.draggable-drag-ico');
 		schemaButton.type = 'button';
 		schemaButton.innerText = 'X';
-		// schemaDragger.classList.add('draggable-cursor-grab', 'draggable-drag-ico');
 		schemaText.innerText = this.name;
 		schemaOption.appendChild(schemaDragger);
 		schemaOption.appendChild(schemaText);
 		schemaOption.appendChild(schemaButton);
 		container.appendChild(schemaOption);
 		schemaButton.addEventListener('click', function(this: HTMLButtonElement, _ev: MouseEvent): void {schemaOption.remove(); calcDuration();});
+		calcDuration();
 	}
 	buttons.forEach(function(this: any, value: HTMLButtonElement, _key: number, _parent: NodeListOf<HTMLButtonElement>): void {
 		value.addEventListener('click', clickListener);
@@ -149,7 +148,7 @@ function schemaMaker(): void {
 	if(!(btnSave instanceof HTMLButtonElement)) return console.error('Missing button#js-saveSchema');
 	btnSave.addEventListener('click', schemaSubmit);
 }
-function calcDuration() {
+function calcDuration(): void {
 	const container = document.getElementById('js-selected');
 	const duration = document.getElementById('js-duration');
 	if(container == null || duration == null) return;
@@ -161,6 +160,12 @@ function calcDuration() {
 		if(result == null) continue;
 		output += Number(result);
 	}
+	if(output == 0)
+		duration.innerText = 'Tijd: 0';
+	else if(output < 120)
+		duration.innerText = 'Tijd: ~'+ output +' seconden';
+	else
+		duration.innerText = 'Tijd: ~'+ Math.round(output / 60) +' minuten';
 }
 /** Get all elements in the list and add create a new schema for the user in the database for them.*/
 function schemaSubmit(): void {
