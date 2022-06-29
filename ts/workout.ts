@@ -35,28 +35,34 @@ function fillWorkout(): void {
 		header.innerText = value.name;
 		div_row8.appendChild(header);
 		/** The attributes under the header but above the description. Each attribute has its own span.*/
-		const attribs = document.createElement('p');
-		attribs.classList.add('attributes');
+		const attributes = document.createElement('p');
+		attributes.classList.add('attributes');
 		/** A span for the type of exercise.*/
 		const oType = document.createElement('span');
-		oType.classList.add('difficulty');
+		oType.classList.add('fw-bold', 'me-3');
 		oType.innerText =
 			(value.type)?
 				value.type
 				: "-";
-		attribs.appendChild(oType);
+		attributes.appendChild(oType);
 		// The musclegroups a exercise uses as tags under the description.
 		if(value.spiergroepen) {
 			// Converting the comma seperated list into an array and iterating over it.
 			value.spiergroepen.split(',').forEach(function(this: any, value: string, _index: number, _array: string[]): void {
 				/**A span for each musslegroup.*/
 				const attrib = document.createElement('span');
-				attrib.classList.add('musclegroup');
+				attrib.classList.add('musclegroup', 'me-3');
 				attrib.innerText = value;
-				attribs.appendChild(attrib);
+				attributes.appendChild(attrib);
 			});
 		}
-		div_row8.appendChild(attribs);
+		if(value.duration) {
+			const duration = document.createElement('span');
+				duration.classList.add('duration');
+				duration.innerText = value.duration.toString() + ' sec';
+				attributes.appendChild(duration);
+		}
+		div_row8.appendChild(attributes);
 		// The description.
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');
