@@ -90,17 +90,23 @@ if(is_int($id) && is_string($pwdKey))
                 </div>
             </div>
             <div class="col-4">
-                <!-- Right side of the page -->
-                <div class="profileFavourites">
-                    <div class="title d-flex flex-column align-items-center">
-                        <h2 class="text-center fw-bold">Favoriete Oefeningen</h2>
-                        <hr class="mt-1">
-                    </div>
-                    <!-- The content of the favourites section -->
-                    <div class="content d-flex justify-content-center">
-                        <a class="btn btn-primary m-auto mt-2" href="?page=favorieten">Zie alle favorieten oefeningen</a>
-                    </div>
-                </div>  
+                <form id="js-filters" aria-label="Filters">
+                    <!-- Right side of the page -->
+                    <div class="profileFavourites">
+                        <div class="title d-flex flex-column align-items-center">
+                            <h2 class="text-center fw-bold">Favoriete Oefeningen</h2>
+                            <hr class="mt-1">
+                        </div>
+                        <!-- The content of the favourites section -->
+                        <section id="js-oefeningen"></section>
+
+
+
+                        <!-- <div class="content d-flex justify-content-center">
+                            <a class="btn btn-primary m-auto mt-2" href="?page=favorieten">Zie alle favorieten oefeningen</a>
+                        </div> -->
+                    </div>  
+                </form>
             </div>
         </div>
     </div>
