@@ -1,3 +1,13 @@
+<?php
+
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['titel']) && isset($_POST['beschrijving'])){
+		$string = "INSERT INTO site_mail (mail_name, mail_title, mail_description, mail_address) VALUES (' " . $_POST['name'] . "', '" . $_POST['titel'] . "', '" . $_POST['beschrijving'] ."', '" . $_POST['email'] ."')";
+		DatbQuery(null, $string);
+	}
+}
+?>
+
 <!-- The section of the Contact page -->
 <section class="contact-section">
 	<div class="container">
@@ -11,22 +21,23 @@
 				<h5>Formulier</h5>
 				<hr class="w-25">
 				<!-- Form -->
-				<form>
+				<form method=post>
+					<input type="hidden" name="page" value="contact">
 					<div class="mb-3">
 						<label for="formName" class="form-label">Name</label>
-						<input type="name" class="form-control w-75" id="formName">
+						<input type="name" class="form-control w-75" id="formName" name="name" required>
 					</div>
 					<div class="mb-3">
 						<label for="formEmail" class="form-label">Email address</label>
-						<input type="email" class="form-control w-75" id="formEmail">
+						<input type="email" class="form-control w-75" id="formEmail" name="email" required>
 					</div>
 					<div class="mb-3">
 						<label for="formTitel" class="form-label">Titel</label>
-						<input type="titel" class="form-control w-75" id="formTitel">
+						<input type="titel" class="form-control w-75" id="formTitel" name="titel" required>
 					</div>
 					<div class="mb-3">
 						<label for="formBeschrijving" class="form-label">Beschrijving</label>
-						<textarea type="beschrijving" class="form-control" rows="5" id="formBeschrijving" name="text"></textarea>
+						<textarea type="beschrijving" class="form-control" rows="5" id="formBeschrijving" name="beschrijving" required></textarea>
 					</div>
 					<button type="submit" class="btn btn-primary text-white w-75">Submit</button>
 				</form>
