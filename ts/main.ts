@@ -4,6 +4,7 @@ import { fillOefeningen } from './oefeningen.js';
 import { fillSchema, schemaMaker } from './schema.js';
 import { fillWorkout } from "./workout.js";
 import { setupFilters } from './tableFunctions.js';
+import { fillUserFavorites } from './userFavorites.js';
 async function main(): Promise<void> {
 	// Called on every page.
 	loginNewUser();
@@ -70,6 +71,15 @@ async function main(): Promise<void> {
 			}
 			fillWorkout();
 			break;
+		case 'user':
+			if(container == null) {
+				console.error('Failed to find element#js-oefeningen');
+				break;
+			}
+			if(oefeningen == null) {
+				await requestOefeningen();
+			}
+			fillUserFavorites(container);
 	}
 }
 // The main function handles the loading of every script and is the only one with an effect when ran.
