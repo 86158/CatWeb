@@ -75,8 +75,8 @@ function fillOefeningen(container: HTMLElement): void {
 		if(value.favorite != undefined && document.querySelector('nav form button[name="logout"]') != null) {
 			const checkboxLabel = document.createElement('label');
 			checkboxLabel.classList.add('customCheckbox');
-			// Add the svg used for the grafic and the input used for the functionality.
-			checkboxLabel.innerHTML = `<svg vieuwBox="0 0 22 22" height="4em" width="4em"><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
+			// Add the svg used for the graphic and the input used for the functionality.
+			checkboxLabel.innerHTML = `<svg viewbox="0 0 22 22" height="4em" width="4em"><use xlink:href="./assets/star.svg#svg-star"/></svg><input type="checkbox" hidden />`;
 			// Select the created input.
 			const checkboxInput = checkboxLabel.querySelector('input') as HTMLInputElement;
 			checkboxLabel.style.fill = (value.favorite)? "yellow" : "none";
@@ -84,7 +84,7 @@ function fillOefeningen(container: HTMLElement): void {
 			checkboxInput.checked = value.favorite;
 			// checkboxInput.id = element.ID.toString();
 			checkboxInput.addEventListener('input',
-				// Change whether the item is favorited or not.
+				// Change whether the item is favorite or not.
 				function(this: HTMLInputElement, ev: Event): void {
 					// Disable the button from being triggered while handling this function.
 					this.disabled = true;

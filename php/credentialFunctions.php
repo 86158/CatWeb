@@ -133,8 +133,10 @@ function getPerms($username, string $pwd) {
 			} else {
 				$m_output = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `username`=?', 's', $username);
 			}
-			if(!is_object($m_output) || $m_output->num_rows == 0)
+			if(!is_object($m_output))
 				return 'Database request failed at SELECT `pwd`';
+			elseif($m_output->num_rows == 0)
+				return 'Onbekende gebruiker';
 			$m_result = $m_output->fetch_assoc();
 		} finally {
 			if(is_object($m_output)) $m_output->close();
