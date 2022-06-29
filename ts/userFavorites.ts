@@ -18,7 +18,7 @@ function fillUserFavorites(container: HTMLElement) {
 	(data as site_oefeningen[]).forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
 		if(value.favorite != true || document.querySelector('nav form button[name="logout"]') == null) return;
 		const article = document.createElement('article');
-		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row-oefeningen", "row", "static-height");
+		article.classList.add('oefeningen', "oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-5", "row-oefeningen", "row", "static-height");
 		const div_row8 = document.createElement('div');
 		div_row8.classList.add('col-8');
 		const div_row = document.createElement('div');
@@ -26,11 +26,8 @@ function fillUserFavorites(container: HTMLElement) {
 		// The header element
 		const header = document.createElement('h4');
 		header.innerText = value.name;
-		header.classList.add('col-6');
+		header.classList.add('col-12');
 		div_row.appendChild(header);
-		const div_col6 = document.createElement('div');
-		div_col6.classList.add('col-6');
-		div_row.appendChild(div_col6);
 		/** The attributes under the header but above the description. Each attribute has its own span.*/
 		const attributes = document.createElement('p');
 		attributes.classList.add('attributes');
