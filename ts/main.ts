@@ -24,7 +24,7 @@ async function main(): Promise<void> {
 				alertDiv.classList.add('alert');
 				modalContent.insertBefore(alertDiv, modalContent.lastElementChild);
 			} else console.error('Failed to find modal.');
-		} else console.error('Failed to find modal button.');
+		}
 	}
 	const page = searchParams.get('page');
 	// Get the elements we'll need prepaired. We don't check if they exist yet as we may not actually use them.
