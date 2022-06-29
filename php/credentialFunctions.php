@@ -134,7 +134,7 @@ function getPerms($username, string $pwd) {
 			} else {
 				$m_output = DatbQuery(null, 'SELECT `ID`, `pwd`, `perms`, `email`, `username` FROM `site_users` WHERE `username`=?', 's', $username);
 			}
-			if(!is_resource($m_output))
+			if(!is_object($m_output))
 				return 'Database request failed at SELECT `pwd`';
 			elseif($m_output->num_rows == 0)
 				return 'Onbekende gebruiker';
@@ -173,7 +173,7 @@ function getPerms($username, string $pwd) {
 		// Get the token.
 		try {
 			$m_output = DatbQuery(null, 'SELECT `token`, TIMESTAMPDIFF(MINUTE, `tokenTime`, NOW()) as `timeDif`, `perms` FROM `site_users` WHERE `ID`=?', 'i', $username);
-			if(!is_resource($m_output) || $m_output->num_rows == 0) {
+			if(!is_object($m_output) || $m_output->num_rows == 0) {
 				unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
 				return 'Database request failed at SELECT `token`';
 			}
@@ -238,7 +238,7 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 function getInfo(int $id, string $pwdKey) {
 	try {
 		$m_output = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
-		if(!is_resource($m_output))
+		if(!is_object($m_output))
 			return 'Database request mislukt at SELECT `encryptedkey`';
 		if($m_output->num_rows == 0) {
 			return 'Database returned a empty result set';
@@ -270,7 +270,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 	// Check if the connection succeeded.
 	if($m_conn->connect_error) return $m_conn->connect_error;
 	$m_output = DatbQuery($m_conn, 'SELECT `encryptedkey` FROM `site_users` WHERE `ID`=?', 'i', $id);
-	if(!is_resource($m_output) || $m_output->num_rows == 0)
+	if(!is_object($m_output) || $m_output->num_rows == 0)
 		return 'Database request mislukt at SELECT `encryptedkey`';
 	$m_result = $m_output->fetch_assoc();
 	$m_output->close();
@@ -351,7 +351,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $user);
 		else
 			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `username`=?', 's', $user);
-		if(!is_resource($m_output) || $m_output->num_rows == 0)
+		if(!is_object($m_output) || $m_output->num_rows == 0)
 			return 'Database request failed at SELECT *';
 		/** @var array<string|null|int>|null $m_result */
 		$m_result = $m_output->fetch_assoc();
