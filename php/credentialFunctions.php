@@ -68,6 +68,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 					$m_query = $conn->query('SELECT @@global.max_allowed_packet');
 					$max_allowed_packet = $m_query->fetch_array(MYSQLI_NUM)[0];
 				} finally {
+					// Ensure all resources are closed to prevent memory leaks.
 					$m_query->close();
 				}
 				if(!is_int($max_allowed_packet))
@@ -109,7 +110,7 @@ function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$v
 				$m_prep->affected_rows : $m_prep->error;
 		return $m_result;
 	} finally {
-		// Close connections and free results.
+		// Ensure all resources are closed to prevent memory leaks.
 		if($m_prep) $m_prep->close();
 		if($conn && $m_close) $conn->close();
 	}
@@ -139,6 +140,7 @@ function getPerms($username, string $pwd) {
 				return 'Onbekende gebruiker';
 			$m_result = $m_output->fetch_assoc();
 		} finally {
+			// Ensure all resources are closed to prevent memory leaks.
 			if(is_resource($m_output)) $m_output->close();
 		}
 		/** @var string $m_mail */
@@ -154,6 +156,7 @@ function getPerms($username, string $pwd) {
 			$m_output = DatbQuery(null, "UPDATE `site_users` SET `token`=?, `tokenTime` = NOW() WHERE `ID`=?", 'ii', $m_token, $m_ID);
 			if($m_output !== 1) return 'Database request failed at UPDATE `users` SET `token`';
 		} finally {
+			// Ensure all resources are closed to prevent memory leaks.
 			if(is_resource($m_output)) $m_output->close();
 		}
 		// Using a encrypted email as the Key Encryption Key. The Data Encryption Key is never even put in $_SESSION
@@ -176,6 +179,7 @@ function getPerms($username, string $pwd) {
 			}
 			$m_result = $m_output->fetch_assoc();
 		} finally {
+			// Ensure all resources are closed to prevent memory leaks.
 			$m_output->close();
 		}
 		$permLevel = $m_result['perms'];
@@ -188,6 +192,7 @@ function getPerms($username, string $pwd) {
 			try {
 				$m_result = DatbQuery(null, 'UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $username);
 			} finally {
+				// Ensure all resources are closed to prevent memory leaks.
 				if(is_resource($m_result)) $m_result->close();
 			}
 			unset($_SESSION['loginToken'], $_SESSION['ID'], $_SESSION['username'], $_SESSION['pwdKey']);
@@ -319,6 +324,7 @@ function createAccount(string $FirstName, string $LastName, string $email, strin
 		if(is_string($m_output)) return $m_output;
 		return null;
 	} finally {
+		// Ensure all resources are closed to prevent memory leaks.
 		if(is_resource($m_output)) $m_output->close();
 	}
 }
@@ -399,7 +405,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 			$m_return = (is_string($m_output))? $m_output : "Failed to replace database entry.\nTrace: `". var_export($m_output, true) .'`';
 		return $m_return;
 	} finally {
-		// Close all objects to prevent memory leaks.
+		// Ensure all resources are closed to prevent memory leaks.
 		if(is_resource($m_output)) $m_output->close();
 		if(is_resource($m_conn)) $m_conn->close();
 	}
