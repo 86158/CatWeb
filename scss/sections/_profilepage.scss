@@ -33,9 +33,18 @@
         hr {
             width: 50%;
         }
-
+        
+        // gaat misschien weg
         a {
             color: $white;
+        }
+    }
+
+    .profileFavourites {
+        img {
+            width: 100%;
+            height: 50px;
+            object-fit: cover;
         }
     }
 }
