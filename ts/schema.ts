@@ -158,6 +158,7 @@ function calcDuration(): void {
 		if(result == null) continue;
 		output += Number(result);
 	}
+	duration.title = "Totale tijd van oefeningen: "+ output + " seconden";
 	if(output == 0)
 		duration.innerText = 'Tijd: 0';
 	else if(output < 120)
