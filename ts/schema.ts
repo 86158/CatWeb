@@ -11,8 +11,6 @@ function fillSchema(container: HTMLElement) {
 	if(!(data instanceof Array)) return console.error('Failed to parse JSON from sessionStorage');
 	// Clear placeholders
 	container.innerHTML = "";
-	// Add classes
-	container.classList.add('col-7', 'col-custom', 'mt-3', 'overflow-auto');
 	// For each row we add a article to the container.
 	// The element is created filled with data and then added to its container.
 	(data as site_oefeningen[]).forEach((value: site_oefeningen, _index: number, _array: site_oefeningen[]): void => {
