@@ -45,29 +45,35 @@ function fillSchema(container: HTMLElement) {
 		});
 		div_col6.appendChild(overflowShowHide);
 		div_row.appendChild(div_col6);
-		/** The atributes under the header but above the description. Each atribute has its own span.*/
-		const atribs = document.createElement('p');
-		atribs.classList.add('atributes');
+		/** The attributes under the header but above the description. Each attribute has its own span.*/
+		const attributes = document.createElement('p');
+		attributes.classList.add('attributes');
 		//A span for the type of exercise.
 		const oType = document.createElement('span');
-		oType.classList.add('difficulty');
+		oType.classList.add('fw-bold', 'me-3');
 		oType.innerText =
 			(value.type)?
 				value.type
 				: "-";
-		atribs.appendChild(oType);
-		// The musslegroups a exercise uses as tags under the description.
+		attributes.appendChild(oType);
+		// The musclegroups a exercise uses as tags under the description.
 		if(value.spiergroepen) {
 			// Converting the comma seperated list into an array and iterating over it.
 			value.spiergroepen.split(',').forEach(element => {
 				// Each musslegroup has it's own span.
 				const attrib = document.createElement('span');
-				attrib.classList.add('musclegroup');
+				attrib.classList.add('musclegroup', 'me-3');
 				attrib.innerText = element;
-				atribs.appendChild(attrib);
+				attributes.appendChild(attrib);
 			});
 		}
-		div_row.appendChild(atribs);
+		if(value.duration) {
+			const duration = document.createElement('span');
+				duration.classList.add('duration');
+				duration.innerText = value.duration.toString() + ' sec';
+				attributes.appendChild(duration);
+		}
+		div_row.appendChild(attributes);
 		/** The description of the oefening.*/
 		const desc = document.createElement('p');
 		desc.classList.add('explanation');

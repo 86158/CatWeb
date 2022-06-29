@@ -34,3 +34,48 @@ body {
 hr {
     margin: 0 0 20px 0 !important;
 }
+article.oefeningen-schema {
+	.col-8 {
+		position: relative;
+
+		p {
+			&.attributes {
+				margin-bottom: .5rem;
+	
+				>span.musclegroup {
+					font-style: italic;
+				}
+			}
+	
+			&.explanation {
+				>ul, ol {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+	button {
+		width: 100%;
+	}
+
+	label.customCheckbox {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: unset;
+	}
+}
+
+#js-filters div.filters {
+	input[type="search"] {
+		height: 100%;
+		width: 100%;
+	}
+	>div {
+		min-width: 11rem;
+	}
+	>div.col-1 {
+		min-width: 6rem;
+	}
+}
