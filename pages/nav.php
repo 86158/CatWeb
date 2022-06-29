@@ -51,7 +51,7 @@
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle">
-									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username pattern="\w+" maxlength=60 required></label>
+									<label class="username fw-bold fs-5">Gebruikersnaam<input type=text autocomplete=username name=Username maxlength=60 required></label>
 									<label class="password fw-bold fs-5">Wachtwoord<input type=password name=Password autocomplete=current-password pattern="[^\0\n\f\r\t\v]+" required></label>
 								</fieldset>
 								<fieldset class="fieldset-signup p-0" hidden>
