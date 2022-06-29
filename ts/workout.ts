@@ -15,7 +15,7 @@ function fillWorkout(): void {
 		document.getElementById("js-benen"),
 		document.getElementById("js-schouders")
 	];
-	if(containers[0] == null || containers[1] == null || containers[2] == null) {
+	if(containers[0] == null || containers[1] == null || containers[2] == null || containers[3] == null || containers[4] == null || containers[6] == null || containers[5] == null || containers[7] == null || containers[8] == null) {
 		return console.error("Missing element");
 	}
 	/** @const {HTMLElement[]} container */
@@ -125,6 +125,7 @@ function fillWorkout(): void {
 		}
 		// Because there's potentially multiple or no categories the article belongs to we add a copy to each and delete the original.
 		(value.workout as string[]).forEach(function(this: HTMLElement[], value: string, _index: number, _obj: string[]): void {
+			console.log(value);
 			switch(value) {
 				case "Cardio":
 					(this[0] as HTMLElement).appendChild(article.cloneNode(true));
