@@ -47,10 +47,10 @@ function returnPage(): string {
 	} else {
 		// With password.
 		if(isset($_POST['formID']) && $_POST['formID'] === 'login')
-			$m_perms = getPerms($_POST['Username'], $_POST['Password']);
+			$m_perms = getPerms(strval($_POST['Username']), $_POST['Password']);
 		// Login with token.
 		else if(isset($_SESSION['loginToken']) && isset($_SESSION['ID']))
-			$m_perms = getPerms($_SESSION['ID'], $_SESSION['loginToken']);
+			$m_perms = getPerms(intval($_SESSION['ID']), $_SESSION['loginToken']);
 		if(is_string($m_perms)) {
 			// Rewrite the URL to include a login error message.
 			$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
