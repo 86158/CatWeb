@@ -27,7 +27,7 @@ function fillWorkout(): void {
 	(data as site_oefeningen[]).forEach(function(this: any, value: site_oefeningen, _index: number, _array: site_oefeningen[]): void {
 		if(value.workout == null || value.workout.length < 1) return;
 		const article = document.createElement('article');
-		article.classList.add("border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row");
+		article.classList.add("oefeningen-schema", "border", "border-dark", "rounded", "my-3", "py-2", "me-1", "row");
 		// The header element
 		const div_row8 = document.createElement('div');
 		div_row8.classList.add('col-8');
@@ -121,8 +121,7 @@ function fillWorkout(): void {
 					});
 				}
 			);
-			
-			article.appendChild(checkboxLabel);
+			div_row8.appendChild(checkboxLabel);
 		}
 		// Because there's potentially multiple or no categories the article belongs to we add a copy to each and delete the original.
 		(value.workout as string[]).forEach(function(this: HTMLElement[], value: string, _index: number, _obj: string[]): void {
