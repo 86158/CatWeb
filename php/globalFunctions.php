@@ -66,13 +66,14 @@ function returnPage(): string {
 	}
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
 		$m_result = updateUser();
-		if(isset($m_result)) {
-			// Rewrite the URL to include a error message.
-			$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
-			$request_uri = http_build_query(array_merge($_GET, ['alert'=>urlencode($m_result)])); // Build a new query params
-			header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url .'?'. $request_uri); // Rebuild the URL
-			exit();
-		}
+		// Rewrite the URL to include a error message.
+		$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
+		// Build a new query params
+		$request_uri = isset($m_result)?
+			http_build_query(array_merge($_GET, ['alert'=>urlencode($m_result)])) :
+			http_build_query(['page'=>'home','alert'=>urlencode('Changed profile information.')]);
+		header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url .'?'. $request_uri); // Rebuild the URL
+		exit();
 	}
 	if(isset($_GET['page'])) {
 		$page = $_GET['page'];
