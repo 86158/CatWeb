@@ -11,8 +11,9 @@ async function main(): Promise<void> {
 	// Get the page we are on.
 	const searchParams = new URLSearchParams(window.location.search);
 	// Check if we need to make a login error message
-	const alert = searchParams.get('alert');
+	var alert = searchParams.get('alert');
 	if(alert != null) {
+		alert = decodeURIComponent(alert).replace(/\+/g, ' ');
 		console.warn(alert);
 		const modalButton = document.querySelector<HTMLButtonElement>('nav button[data-bs-target="#exampleModal"]');
 		if(modalButton != null) {
@@ -20,7 +21,7 @@ async function main(): Promise<void> {
 			const modalContent = document.querySelector<HTMLDivElement>('nav div.modal-content');
 			if(modalContent != null) {
 				const alertDiv = document.createElement('div');
-				alertDiv.innerText = decodeURIComponent(alert).replace(/\+/g, ' ');
+				alertDiv.innerText = alert;
 				alertDiv.classList.add('alert');
 				modalContent.insertBefore(alertDiv, modalContent.lastElementChild);
 			} else console.error('Failed to find modal.');
@@ -39,9 +40,8 @@ async function main(): Promise<void> {
 				break;
 			}
 			// For those that use oefeningen we ensure we have the data stored.
-			if(oefeningen == null) {
+			if(oefeningen == null)
 				await requestOefeningen();
-			}
 			fillOefeningen(container);
 			if(!(filterform instanceof HTMLFormElement)) {
 				console.warn('Failed to find form#js-filters');
@@ -54,9 +54,8 @@ async function main(): Promise<void> {
 				console.error('Failed to find element#js-oefeningen');
 				break;
 			}
-			if(oefeningen == null) {
+			if(oefeningen == null)
 				await requestOefeningen();
-			}
 			fillSchema(container);
 			schemaMaker();
 			if(!(filterform instanceof HTMLFormElement)) {
@@ -66,9 +65,8 @@ async function main(): Promise<void> {
 			setupFilters(filterform, container);
 			break;
 		case 'work':
-			if(oefeningen == null) {
+			if(oefeningen == null)
 				await requestOefeningen();
-			}
 			fillWorkout();
 			break;
 		case 'user':
@@ -76,9 +74,13 @@ async function main(): Promise<void> {
 				console.error('Failed to find element#js-oefeningen');
 				break;
 			}
-			if(oefeningen == null) {
-				await requestOefeningen();
+			// Add error information to the formdiv.
+			const formDiv = document.querySelector<HTMLDivElement>('section.profilepage-section div.profileInformation');
+			if(formDiv != null) {
+				formDiv.title = (alert != null)? alert : '';
 			}
+			if(oefeningen == null)
+				await requestOefeningen();
 			fillUserFavorites(container);
 	}
 }
