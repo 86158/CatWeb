@@ -22,7 +22,7 @@ function showSchema(){
     while($arrayNumber < count($schemaShow[0])){
         //check if it's the beginning of a new plan
         if($schemaShow[0][$arrayNumber]['ID_schema'] > $newSchema){
-            echo "<div class='rounded border border-dark p-2'><h1>Schema " . $schemaShow[0][$arrayNumber]['ID_schema'] ." </h1>";
+            echo "<div class='rounded border border-dark p-2'><h1 class='text-center'>Schema " . $schemaShow[0][$arrayNumber]['ID_schema'] ." </h1>";
         }
         ?>
         <!-- set all of the excersices here -->
@@ -38,7 +38,7 @@ function showSchema(){
             <div class="col-4">
                 <img class="img-end" src="img/oefeningFoto/<?php echo explode("\n", $schemaShow[0][$arrayNumber]['link'])[0] ?>" alt="image">
             </div>
-            <hr>
+ 
         </div>
         <?php
         //reset the variable to the ID of the plan and raise the number to check for next item in array

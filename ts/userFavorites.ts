@@ -117,5 +117,6 @@ function fillUserFavorites(container: HTMLElement) {
 		article.appendChild(div3);
 		(container as HTMLElement).appendChild(article);
 	});
+	if(container.childElementCount == 0) container.innerHTML = '<p class="text-center">Geen items gemarkeerd als favoriet.</p>';
 }
 export {fillUserFavorites}
