@@ -13,12 +13,13 @@ function showSchema(){
     }
     $arrayNumber = 0;
     $newSchema = 0;
-    echo '<div class=container><div class="section-resultBYW"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div>';
+    echo '<section class="resultBYW-section"><div class="content"><div>';
     while($arrayNumber < count($schemaShow[0])){
         if($schemaShow[0][$arrayNumber]['ID_schema'] > $newSchema){
-            echo "<div class='rounded border border-dark p-2'><h1>Schema " . $schemaShow[0][$arrayNumber]['ID_schema'] ." </h1>";
+            echo "<div class='rounded border border-dark p-2'><h1 class='text-center'>Schema " . $schemaShow[0][$arrayNumber]['ID_schema'] ." </h1>";
         }
         ?>
+        <hr class="mt-3">
         <div class="row">
             <div class="col-8">
                 <h4 class="text-center"><?php echo $schemaShow[0][$arrayNumber]['name'] ?></h4>
@@ -31,7 +32,7 @@ function showSchema(){
             <div class="col-4">
                 <img class="img-end" src="img/oefeningFoto/<?php echo explode("\n", $schemaShow[0][$arrayNumber]['link'])[0] ?>" alt="image">
             </div>
-            <hr>
+ 
         </div>
         <?php
         $newSchema = $schemaShow[0][$arrayNumber]['ID_schema'];
