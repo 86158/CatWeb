@@ -45,8 +45,8 @@
 								<input type=hidden name=formID value=login>
 								<br><br>
 								<fieldset class="fieldset-signup p-0" hidden>
-									<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=FirstName pattern="\w*"></label>
-									<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=LastName pattern="\w*"></label>
+									<label class="fw-bold fs-5">Voornaam<input type=text autocomplete=given-name name=FirstName pattern="[\p{L}\p{N}_ ]*"></label>
+									<label class="fw-bold fs-5">Achternaam<input type=text autocomplete=family-name name=LastName pattern="[\p{L}\p{N}_ ]*"></label>
 									<label class="email fw-bold fs-5">E-mail<input type=email autocomplete=email name=Mail></label>
 								</fieldset>
 								<fieldset class="login-form align-middle">

@@ -322,9 +322,9 @@ function createAccount(mysqli $conn = null, string $email, string $pwd, ?string 
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if(!preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd)) return 'Invallid characters in password';
-	if(isset($username) && !preg_match('/^\w+$/', $username)) return 'Invallid characters in username';
-	if(isset($FirstName) && !preg_match('/^\w+$/', $FirstName)) return 'Invallid characters in FirstName';
-	if(isset($LastName) && !preg_match('/^\w+$/', $LastName)) return 'Invallid characters in LastName';
+	if(isset($username) && !preg_match('/^[\p{L}\p{N}_ ]+$/', $username)) return 'Invallid characters in username';
+	if(isset($FirstName) && !preg_match('/^[\p{L}\p{N}_ ]+$/', $FirstName)) return 'Invallid characters in FirstName';
+	if(isset($LastName) && !preg_match('/^[\p{L}\p{N}_ ]+$/', $LastName)) return 'Invallid characters in LastName';
 	$m_pass = createPass($email, $pwd);
 	if($m_pass === null) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	$m_iv = '0000000000000069';
@@ -412,13 +412,13 @@ function modifyAccount(?mysqli $conn = null, $user, string $pwd, ?string $pwd_ne
 		$m_encryptedkey_new = openssl_encrypt($m_userKey_new, 'aes-256-cbc-hmac-sha256', $m_pwdkey_new, 0, $m_iv);
 		if($m_encryptedkey_new === false) return 'Failed to create new encryptedkey';
 		// If the new values are not acceptable the old values are used.
-		if(!isset($username) || !preg_match('/^\w+$/', $username))
+		if(!isset($username) || !preg_match('/^[\p{L}\p{N}_ ]+$/', $username))
 			$username = $m_result['username'];
 		if(!isset($perms))
 			$perms = $m_result['perms'];
-		if(!isset($FirstName) || !preg_match('/^\w+$/', $FirstName))
+		if(!isset($FirstName) || !preg_match('/^[\p{L}\p{N}_ ]+$/', $FirstName))
 			$FirstName	=	($m_result['FirstName'])?	openssl_decrypt($m_result['FirstName'],	'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
-		if(!isset($LastName) || !preg_match('/^\w+$/', $LastName))
+		if(!isset($LastName) || !preg_match('/^[\p{L}\p{N}_ ]+$/', $LastName))
 			$LastName	=	($m_result['LastName'])?	openssl_decrypt($m_result['LastName'],		'aes-256-cbc-hmac-sha256', $m_userKey_old, 0, $m_iv) : null;
 		if($FirstName === false || $LastName === false)
 			return 'Failed to decrypt original values';
