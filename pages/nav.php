@@ -17,8 +17,7 @@
 					<li class="nav-item"><a class="nav-link text-white pe-4 h5" href="?page=contact">Contact</a></li>
 				</ul>
 				<form class="d-flex">
-					<!-- Change the content based on whether the user is logged in or not. -->
-					<?php echo (isset($_SESSION['ID']))?
+					<?php echo (isset($_SESSION['ID']))? // Change the content based on whether the user is logged in or not.
 						'<div class="dropdown show">
 							<a href="?page=user" class="btn btn-primary p-2 me-5">'. $_SESSION['username'] .'</a>
 							<div class="dropdown-content">

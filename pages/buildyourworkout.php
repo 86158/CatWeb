@@ -1,4 +1,5 @@
 <?php
+//gather all of the functions from functionsBuildYourWorkout.php
 CheckIfPageReloaded();
 SessionAdd();
 SessionChange();

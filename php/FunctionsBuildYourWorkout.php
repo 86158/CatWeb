@@ -206,22 +206,27 @@
 
 	// Every session is added by making it in order
 	function SessionAdd(){
+		//check if workoutStart exists in session
 		if(!isset($_SESSION['workoutStart']))
 		{
 			$_SESSION['workoutStart'] = '';
 		}
+		//check if workoutGeslacht exists in session
 		if(!isset($_SESSION['workoutGeslacht']))
 		{
 			$_SESSION['workoutGeslacht'] = '';
 		}
+		//check if workoutDoel exists in session
 		if(!isset($_SESSION['workoutDoel']))
 		{
 			$_SESSION['workoutDoel'] = array();
 		}
+		//check if workoutSpier exists in session
 		if(!isset($_SESSION['workoutSpier']))
 		{
 			$_SESSION['workoutSpier'] = array();
 		}
+		//check if workoutAantal exists in session
 		if(!isset($_SESSION['workoutAantal']))
 		{
 			$_SESSION['workoutAantal'] = '';
@@ -230,7 +235,7 @@
 
 	// Making a function where we can change the session if the button is pressed
 	function SessionChange(){
-		if(isset($_POST['start'])) {
+		if(isset($_POST['start'])){
 			$_SESSION['workoutStart'] = $_POST['start'];
 		}
 		if(isset($_POST['geslacht'])) {
@@ -255,6 +260,7 @@
 
 	// Checking if the page is reloading
 	function CheckIfPageReloaded(){
+		//if the entire page is left and than returned to all variables are reset
 		if($_SERVER['REQUEST_METHOD'] != 'POST'){
 			unset($_SESSION['workoutStart']);
 			unset($_SESSION['workoutGeslacht']);
@@ -283,11 +289,13 @@
 	}
 
 	function AddJS() {
+		//adds the javascript to the page
 		echo '<div class="js-local" hidden><script src="js/ajax_communication.js" defer></script><script src="js/tableFunctions.js" defer></script></div>';
 	}
 
 	// Function of the submit button
 	function SubmitButton() {
+		//change the submit button depending on where you are in the form
 		if($_SESSION['workoutStart'] == false) {
 			echo '<div class="button-start d-flex justify-content-center mt-4"><button type=submit class="btn btn-primary">Start</button></div>';
 		} elseif(empty($_SESSION['workoutSpier'])) {
@@ -306,6 +314,7 @@
 			LEFT JOIN (
 				site_link_media ml JOIN site_media m ON ml.mediaID = m.ID
 			) ON ml.oefeningenID = o.ID WHERE ";
+			//check to see what goals the person has and add these
 		foreach($_SESSION['workoutDoel'] as $value) {
 			if('afslanken' != $value) {
 				$string .= "`type` LIKE '$value' ";
@@ -317,6 +326,7 @@
 			}
 		}
 		$string .= ' OR ';
+		//check to see what muscles the person wants to strength
 		foreach($_SESSION['workoutSpier'] as $value){
 			$string .= "`spiergroepen` LIKE '$value'";
 			if($value != end($_SESSION['workoutSpier'])){
@@ -333,9 +343,12 @@
 		}
 		$amount =  count($oefeningen[0]);
 		$Cycle = 0;
+		//keep showing new excersices until the amount that the person wants to see has been reached
 		while ($Cycle < $_SESSION['workoutAantal']){
+			//show an random array in the entire request
 			$selectedArray = rand(0, $amount - 1);
 			?>
+			<!-- show every excercise -->
 			<div class="row">
 				<div class="col-8">
 					<h4 class="text-center"><?php echo $oefeningen[0][$selectedArray]['name'] ?></h4>
@@ -351,6 +364,7 @@
 			</div>
 			<?php
 			$Cycle++;
+			//check to see if it's not the end of the cycle yet and add an black line underneath the excercise
 			if($Cycle != $_SESSION['workoutAantal']){
 				echo "<hr class='mt-3'>";
 			}
