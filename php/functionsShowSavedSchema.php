@@ -33,6 +33,7 @@ function showSchema(){
             </div>
         </div>
         <?php
+        $newSchema = $schemaShow[0][$arrayNumber]['ID_schema'];
         $arrayNumber++;
     }
     echo '</div></div></div><div>';
