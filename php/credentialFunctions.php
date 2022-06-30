@@ -315,6 +315,7 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
  * @param ?string $FirstName The FistName of the user. Defaults to `null`.
  * @param ?string $LastName The LastName of the user. Defaults to `null`.
  * @return null|string `null` on success. Error message on failure.
+ * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
 */
 function createAccount(mysqli $conn = null, string $email, string $pwd, ?string $username = null, int $perms = 0, ?string $FirstName = null, ?string $LastName = null): ?string {
 	$m_close = false;
@@ -427,6 +428,8 @@ function modifyAccount(?mysqli $conn = null, $user, string $pwd, ?string $pwd_ne
 			$LastName = openssl_encrypt($LastName,	'aes-256-cbc-hmac-sha256', $m_userKey_new, 0, $m_iv);
 		if($FirstName === false || $LastName === false)
 			return 'Failed to encrypt new values';
+		// Require the user to re-authenticate.
+		session_unset();
 		// Use UPDATE to prevent overwriting other existing users.
 		$m_output = DatbQuery($conn,
 			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = NULL, `tokenTime` = NULL WHERE `ID` = ?',
@@ -434,8 +437,9 @@ function modifyAccount(?mysqli $conn = null, $user, string $pwd, ?string $pwd_ne
 			$email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName, $m_result['ID']
 		);
 		$m_return = null;
-		if($m_result !== 1)
+		if($m_output !== 1) {
 			$m_return = (is_string($m_output))? $m_output : "Failed to replace database entry.\nTrace: `". var_export($m_output, true) .'`';
+		}
 		return $m_return;
 	} finally {
 		// Ensure all resources are closed to prevent memory leaks.

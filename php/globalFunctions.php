@@ -47,22 +47,23 @@ function returnPage(): string {
 	// Create new user.
 	} elseif(isset($_POST['formID']) && $_POST['formID'] === 'newUser') {
 		$m_result = createAccount(null, $_POST['Mail'], $_POST['Password'], $_POST['Username'], 0, $_POST['FirstName'], $_POST['LastName']);
-		if(is_string($m_result)) echo '<p class=error role=alert>'. $m_result .'</p>';
+		if(is_string($m_result)) $m_perms = $m_result;
 	// Login
 	} else {
 		// With password.
 		if(isset($_POST['formID']) && $_POST['formID'] === 'login')
 			$m_perms = getPerms(strval($_POST['Username']), $_POST['Password']);
 		// Login with token.
-		else if(isset($_SESSION['loginToken']) && isset($_SESSION['ID']))
+		elseif(isset($_SESSION['loginToken']) && isset($_SESSION['ID'])) {
 			$m_perms = getPerms(intval($_SESSION['ID']), $_SESSION['loginToken']);
-		if(is_string($m_perms)) {
-			// Rewrite the URL to include a login error message.
-			$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
-			$request_uri = http_build_query(array_merge($_GET, ['alert'=>urlencode($m_perms)])); // Build a new query params
-			header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url .'?'. $request_uri); // Rebuild the URL
-			exit();
 		}
+	}
+	if(is_string($m_perms)) {
+		// Rewrite the URL to include a login error message.
+		$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
+		$request_uri = http_build_query(['page'=>'home', 'alert'=>urlencode($m_perms)]); // Build a new query params
+		header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url .'?'. $request_uri); // Rebuild the URL
+		exit();
 	}
 	if(isset($_POST['formID']) && $_POST['formID'] === 'updateUser' && $m_perms >= 0) {
 		$m_result = updateUser();
@@ -70,7 +71,7 @@ function returnPage(): string {
 		$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
 		// Build a new query params
 		$request_uri = isset($m_result)?
-			http_build_query(array_merge($_GET, ['alert'=>urlencode($m_result)])) :
+			http_build_query(['page'=>'user','alert'=>urlencode($m_result)]) :
 			http_build_query(['page'=>'home','alert'=>urlencode('Changed profile information.')]);
 		header('Location: http://'. $_SERVER['HTTP_HOST'] . $current_url .'?'. $request_uri); // Rebuild the URL
 		exit();
