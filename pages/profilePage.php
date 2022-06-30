@@ -11,7 +11,8 @@ if(is_int($id) && is_string($pwdKey))
     <div class="container-fluid">
         <!-- The image and username of the user -->
         <div class="profile d-flex justify-content-center align-items-center flex-column mt-3">
-            <img class="rounded-circle" src="img/profile.png" alt="Profile Pic">
+            <img class="rounded-circle" src="img/dumbell.jpg" alt="Profile Pic">
+
             <h5 class="mt-2"><?php if(is_array($data) && is_string($data['username'])) echo $data['username']; else echo 'Username';?></h5>
         </div>
         <!-- Bottom of the page -->
