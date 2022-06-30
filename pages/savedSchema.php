@@ -1,6 +1,5 @@
-
 <!-- Beginning of the page to show saved schema -->
-<div class="savedSchema-section">
+<section class="savedSchema-section">
     <div class="container">
         <div class="title text-center">
             <h1>Opgeslagen Schema</h1>
@@ -10,4 +9,4 @@
             showSchema();
         ?>
     </div>
-</div>
+</section>
