@@ -32,7 +32,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Voornaam</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=text name=FirstName autocomplete=given-name pattern="\w*"<?php if(is_array($data) && is_string($data['FirstName'])) echo 'value="', $data['FirstName'], '" ';?>>
+                                <input class="inputs" type=text name=FirstName autocomplete=given-name pattern="\w*"<?php if(is_array($data) && is_string($data['FirstName'])) echo ' value="', $data['FirstName'], '" ';?>>
                             </div>
                         </label>
                         <!-- Last Name -->
@@ -41,7 +41,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Achternaam</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=text name=LastName autocomplete=family-name pattern="\w*"<?php if(is_array($data) && is_string($data['LastName'])) echo 'value="', $data['LastName'], '" ';?>>
+                                <input class="inputs" type=text name=LastName autocomplete=family-name pattern="\w*"<?php if(is_array($data) && is_string($data['LastName'])) echo ' value="', $data['LastName'], '" ';?>>
                             </div>
                         </label>
                         <!-- Email -->
@@ -50,7 +50,7 @@ if(is_int($id) && is_string($pwdKey))
                                 <p class="fw-bold">Email</p>
                             </div>
                             <div class="col-6 text-center">
-                                <input class="inputs" type=email autocomplete=email name=email<?php if(is_array($data) && is_string($data['email'])) echo 'value="', $data['email'], '" ';?>>
+                                <input class="inputs" type=email autocomplete=email name=email<?php if(is_array($data) && is_string($data['email'])) echo ' value="', $data['email'], '" ';?>>
                             </div>
                         </label>
                         <!-- Password -->
