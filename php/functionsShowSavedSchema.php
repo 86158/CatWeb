@@ -17,7 +17,7 @@ function showSchema(){
     $arrayNumber = 0;
     $newSchema = 0;
     //make the containers for the plans
-    echo '<div class="section-resultBYW"><div class="sub-title text-center"></div><div class="content"><div class="rounded border border-dark p-2">';
+    echo '<section class="resultBYW-section"><div class="content"><section>';
     //keep going as long as the array is not over
     while($arrayNumber < count($schemaShow[0])){
         //check if it's the beginning of a new plan
@@ -25,6 +25,7 @@ function showSchema(){
             echo "<div class='rounded border border-dark p-2'><h1 class='text-center'>Schema " . $schemaShow[0][$arrayNumber]['ID_schema'] ." </h1>";
         }
         ?>
+        <hr class="mt-3">
         <!-- set all of the excersices here -->
         <div class="row">
             <div class="col-8">
@@ -38,7 +39,6 @@ function showSchema(){
             <div class="col-4">
                 <img class="img-end" src="img/oefeningFoto/<?php echo explode("\n", $schemaShow[0][$arrayNumber]['link'])[0] ?>" alt="image">
             </div>
- 
         </div>
         <?php
         //reset the variable to the ID of the plan and raise the number to check for next item in array
