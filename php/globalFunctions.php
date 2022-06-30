@@ -39,6 +39,16 @@ function returnPage(): string {
 	$m_perms = -1;
 	// Logout
 	if(isset($_POST['logout'])) {
+		// Mark login tokens as invallid if loggin out.
+		if(isset($_SESSION['ID'])) {
+			try {
+				$m_result = DatbQuery(null, 'UPDATE IGNORE `users` SET `token`=NULL, `tokenTime`=NULL WHERE `ID`=?', 'i', $_SESSION['ID']);
+			} finally {
+				// Ensure all resources are closed to prevent memory leaks.
+				if(is_object($m_result)) $m_result->close();
+				unset($m_result);
+			}
+		}
 		session_unset();
 		// Rewrite the URL to remove login error messages.
 		$current_url = explode('?', $_SERVER['REQUEST_URI'])[0]; // Get the url without query params
