@@ -67,10 +67,15 @@ function fillSchema(container: HTMLElement) {
 		}
 		if(value.duration) {
 			const duration = document.createElement('span');
-				duration.classList.add('duration');
+				duration.classList.add('duration', 'me-3');
 				duration.innerText = value.duration.toString() + ' sec';
 				attributes.appendChild(duration);
 		}
+		//added calories to the oefeningen page
+		const calor = document.createElement('span');
+		calor.classList.add('calor');
+		calor.innerText = "56 cal";
+		attributes.appendChild(calor);
 		div_row.appendChild(attributes);
 		/** The description of the oefening.*/
 		const desc = document.createElement('p');
