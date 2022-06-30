@@ -4,7 +4,7 @@ $id = $_SESSION['ID'];
 $pwdKey = $_SESSION['pwdKey'];
 $data = 'Incorrect/missing ID and pwdKey values';
 if(is_int($id) && is_string($pwdKey))
-	$data = getInfo($id, $pwdKey);
+	$data = getInfo(null, $id, $pwdKey);
 ?>
 <!-- The section of the profile page -->
 <section class="profilepage-section">

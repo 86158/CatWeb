@@ -22,27 +22,26 @@ function strpositions(string $haystack, string $needle, int $offset = 0): array 
 }
 /**
  * Wrapper for class mysqli.
- * @param mysqli|null $conn The connection you want to use. Pass null to use a default mysqli() instance.
- * @param string $query SQL query without terminating semicolon or \g having its Data Manipulation Language (DML) parmeters replaced with `?` and put into ...$vars
+ * @param mysqli|null $conn The connection you want to use. Pass `null` to use a default mysqli() instance.
+ * @param string $query SQL query without terminating semicolon or `\g` having its Data Manipulation Language (DML) parmeters replaced with `?` and put into `...$vars`
  * 
  * The length may not be larger than the max_allowed_packet size of the server.
- * @param string $types A string containing a single character for each arguments passed with ...$vars depending on the type.
+ * @param string $types A string containing a single character for each arguments passed with `...$vars` depending on the type.
  * * 's' for strings
  * * 'd' for floats
  * * 'i' for integers
  * * 'b' for BLOBs
  * 
- * A BLOB is a string that exceeds the max_allowed_packet size of the server. It's send in a diffrent way.
+ * A BLOB is a string that exceeds the `max_allowed_packet` size of the server. It's send in a diffrent way.
  * @param string|int|float|null ...$vars
- * @return mysqli_result|string|int For errors it returns a string, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query will return a mysqli_result object. For other successful queries mysqli_query will return the number of affected rows.
- * @throws InvalidArgumentException If $types does not match the constrants.
+ * @return mysqli_result|string|int For errors it returns a string describing the error, for successful SELECT, SHOW, DESCRIBE or EXPLAIN queries a `mysqli_result` object. For other successful queries the number of affected rows.
  * @see https://php.net/manual/en/class.mysqli.php Used for the actual database communication.
  */
 function DatbQuery(mysqli $conn = null, string $query, string $types = '', ...$vars) {
 	$m_close = false;
 	// Ensure types doesn't contain obvious errors.
-	if(preg_match('/^[idsb]*$/', $types) != 1) throw new InvalidArgumentException('string $types contains invallid characters.');
-	if(strlen($types) != count($vars)) throw new InvalidArgumentException('string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]));
+	if(preg_match('/^[idsb]*$/', $types) != 1) return 'string $types contains invallid characters.';
+	if(strlen($types) != count($vars)) return 'string $types should have the same length as the number of arguments passed with ...$vars'."\n". json_encode(['$types'=>$types,'...$vars'=>$vars, 'strlen($types)'=>strlen($types), 'count($vars)'=>count($vars)]);
 	try {
 		// Ensure connection
 		if($conn == null) {
@@ -229,12 +228,21 @@ function createPass(string $email, string $pwd, ?string $pwd_old = null, ?string
 	return [$m_encrypted_userKey, $m_userKey];
 }
 /** How to get the encrypted data
+ * @param mysqli|null $conn The connection you want to use. Pass `null` to use a default mysqli() instance.
+ * @param int $id The id of the user to get info on.
+ * @param string $pwdKey The key to decrypt the encryptedkey with.
  * @see https://security.stackexchange.com/a/182008 How we handle authentication and encryption.
  * @return array<string,string|false|null>|string Array with the decoded data from the database with false on failure or a string with error message.
 */
-function getInfo(int $id, string $pwdKey) {
+function getInfo(mysqli $conn = null, int $id, string $pwdKey) {
+	$m_close = false;
 	try {
-		$m_output = DatbQuery(null, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
+		// Ensure connection
+		if($conn == null) {
+			$m_close = true;
+			$conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		}
+		$m_output = DatbQuery($conn, 'SELECT `encryptedkey`, `email`, `username`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $id);
 		if(!is_object($m_output))
 			return 'Database request mislukt at SELECT `encryptedkey`';
 		if($m_output->num_rows == 0) {
@@ -243,6 +251,7 @@ function getInfo(int $id, string $pwdKey) {
 		$m_result = $m_output->fetch_assoc();
 	} finally {
 		if(is_object($m_output)) $m_output->close();
+		if(is_object($conn) && $m_close) $conn->close();
 	}
 	$m_iv = '0000000000000069';
 	$m_userKey = openssl_decrypt($m_result['encryptedkey'], 'aes-256-cbc-hmac-sha256', $pwdKey, 0, $m_iv);
@@ -288,15 +297,27 @@ function setInfo(int $id, string $pwdKey, ?string $username = null, ?int $perms 
 	if(isset($LastName) && $LastName != '')
 		$m_results[] = DatbQuery($m_conn, 'UPDATE `site_users` SET `LastName`=? WHERE `ID`=?', 'si', openssl_encrypt($LastName, 'aes-256-cbc-hmac-sha256', $m_userKey, 0, $m_iv), $id);
 	$m_conn->close();
-	$m_error = array_filter($m_results, function($value): bool {return !is_int($value);});
+	$m_error = array_filter($m_results, function($value): bool {
+		$result = !is_int($value);
+		if($value instanceof mysqli_result) $value->close();
+		return $result;
+	});
 	if(count($m_error) != 0) return strval($m_error[0]);
 	return null;
 }
 /**
  * Create a new account with encrypted personal details.
- * @return null|string null on success. Error message on failure.
+ * @param mysqli|null $conn The connection you want to use. Pass `null` to use a default `mysqli()` instance.
+ * @param string $email The email of the user.
+ * @param string $pwd The password to use for the user.
+ * @param ?string $username The username the user goes by. Defaults to `null`.
+ * @param int $perms The permission level of the user. Defaults to `0`.
+ * @param ?string $FirstName The FistName of the user. Defaults to `null`.
+ * @param ?string $LastName The LastName of the user. Defaults to `null`.
+ * @return null|string `null` on success. Error message on failure.
 */
-function createAccount(string $email, string $pwd, ?string $username = null, int $perms = 0, ?string $FirstName = null, ?string $LastName = null): ?string {
+function createAccount(mysqli $conn = null, string $email, string $pwd, ?string $username = null, int $perms = 0, ?string $FirstName = null, ?string $LastName = null): ?string {
+	$m_close = false;
 	// Verify contents
 	if(!preg_match('/^[\w!#$%&\'*+\-\/=?\^_`{|}~]+(?:\.[\w!#$%&\'*+\-\/=?\^_\`{|}~]+)*@(?:(?:(?:[\-\w]+\.)+[a-zA-Z]{2,4})|(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}))$/', $email)) return 'Incorrect e-mail format';
 	if(!preg_match('/^[^\0\n\f\r\t\v]+$/', $pwd)) return 'Invallid characters in password';
@@ -319,15 +340,22 @@ function createAccount(string $email, string $pwd, ?string $username = null, int
 	if($m_vars[2] === false) return 'Encryptie mislukt; Failed to create password hash';
 	if(array_search(false, $m_vars, true) !== false) return 'Encryptie mislukt; Failed to openssl encrypt data';
 	try {
-		$m_output = DatbQuery(null, 'INSERT INTO `site_users` (`email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssiss', ...$m_vars);
+		// Ensure connection
+		if($conn == null) {
+			$m_close = true;
+			$conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		}
+		$m_output = DatbQuery($conn, 'INSERT INTO `site_users` (`email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName`) VALUES (?, ?, ?, ?, ?, ?, ?)', 'ssssiss', ...$m_vars);
 		if(is_string($m_output)) return $m_output;
 		return null;
 	} finally {
 		// Ensure all resources are closed to prevent memory leaks.
 		if(is_object($m_output)) $m_output->close();
+		if($m_close && is_object($conn)) $conn->close();
 	}
 }
 /** Modify data in the account and generate a new userKey to encrypt the data with.
+ * @param mysqli|null $conn The connection you want to use. Pass `null` to use a default mysqli() instance.
  * @param string|int $user The email, username or ID of the account.
  * @param string $pwd The current password of the account.
  * @param ?string $pwd_new The replacement password of the account or `null` to keep the current value.
@@ -338,18 +366,22 @@ function createAccount(string $email, string $pwd, ?string $username = null, int
  * @param ?string $LastName The new LastName of the account or `null` to keep the current value.
  * @return ?string `null` on a success and a string describing the error on a failure.
  */
-function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
+function modifyAccount(?mysqli $conn = null, $user, string $pwd, ?string $pwd_new = null, ?string $email_new, ?string $username = null, ?int $perms = null, ?string $FirstName = null, ?string $LastName = null): ?string {
+	$m_close = false;
 	try {
-		// Create the connection
-		$m_conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		// Ensure connection
+		if($conn == null) {
+			$m_close = true;
+			$conn = new mysqli('127.0.0.1', 'root', '', 'catweb', 3306);
+		}
 		// Get the original values.
 		$m_output = 'Failed to find current user';
 		if(is_int($user))
-			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $user);
+			$m_output = DatbQuery($conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `ID`=?', 'i', $user);
 		elseif(strpos($user, '@') !== false)
-			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $user);
+			$m_output = DatbQuery($conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `email`=?', 's', $user);
 		else
-			$m_output = DatbQuery($m_conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `username`=?', 's', $user);
+			$m_output = DatbQuery($conn, 'SELECT `ID`, `email`, `username`, `pwd`, `encryptedkey`, `perms`, `FirstName`, `LastName` FROM `site_users` WHERE `username`=?', 's', $user);
 		if(!is_object($m_output) || $m_output->num_rows == 0)
 			return 'Database request failed at SELECT *';
 		/** @var array<string|null|int>|null $m_result */
@@ -396,7 +428,7 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 		if($FirstName === false || $LastName === false)
 			return 'Failed to encrypt new values';
 		// Use UPDATE to prevent overwriting other existing users.
-		$m_output = DatbQuery($m_conn,
+		$m_output = DatbQuery($conn,
 			'UPDATE `site_users` SET `email` = ?, `username` = ?, `pwd` = ?, `encryptedkey` = ?, `perms` = ?, `FirstName` = ?, `LastName` = ?, `token` = NULL, `tokenTime` = NULL WHERE `ID` = ?',
 			'ssssissi',
 			$email_new, $username, password_hash($pwd_new . $email_new, '2y'), $m_encryptedkey_new, $perms, $FirstName, $LastName, $m_result['ID']
@@ -408,6 +440,6 @@ function modifyAccount($user, string $pwd, ?string $pwd_new = null, ?string $ema
 	} finally {
 		// Ensure all resources are closed to prevent memory leaks.
 		if(is_object($m_output)) $m_output->close();
-		if(is_object($m_conn)) $m_conn->close();
+		if(is_object($conn) && $m_close) $conn->close();
 	}
 }
