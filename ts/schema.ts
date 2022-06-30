@@ -154,22 +154,31 @@ function schemaMaker(): void {
 function calcDuration(): void {
 	const container = document.getElementById('js-selected');
 	const duration = document.getElementById('js-duration');
-	if(container == null || duration == null) return;
+	const calor = document.getElementById('js-calories');
+	if(container == null || duration == null || calor == null) return;
 	var output: number = 0;
+	var calories: number = 0;
 	// Get the ID of each item and add it to a list.
 	for(let index = 0; index < container.childElementCount; index++) {
 		const schemaOption = container.children[index] as HTMLElement;
 		const result = schemaOption.getAttribute('js-data-duration');
 		if(result == null) continue;
 		output += Number(result);
+		calories = 56*container.childElementCount;
 	}
 	duration.title = "Totale tijd van oefeningen: "+ output + " seconden";
-	if(output == 0)
+	if(output == 0){
 		duration.innerText = 'Tijd: 0';
-	else if(output < 120)
+		calor.innerText = 'Calorieën: 0';
+	}
+	else if(output < 120){
 		duration.innerText = 'Tijd: ~'+ output +' seconden';
-	else
+		calor.innerText = 'Calorieën: ~'+ calories;
+	}
+	else{
 		duration.innerText = 'Tijd: ~'+ Math.round(output / 60) +' minuten';
+		calor.innerText = 'Calorieën: ~'+ calories;
+	}
 }
 /** Get all elements in the list and add create a new schema for the user in the database for them.*/
 function schemaSubmit(): void {
