@@ -12,8 +12,12 @@ function showSchema(){
         $schemaShow[] = $row;
     }
     $arrayNumber = 0;
-    echo '<div class="section-resultBYW"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div class="rounded border border-dark p-2">';
+    $newSchema = 0;
+    echo '<div class=container><div class="section-resultBYW"><div class="sub-title text-center"><p>Bedankt voor het invullen van de vragenlijst, veel plezier met uw eigen gemaakte workout!</p></div><div class="content"><div class="rounded border border-dark p-2">';
     while($arrayNumber < count($schemaShow[0])){
+        if($schemaShow[0][$arrayNumber]['ID_schema'] > $newSchema){
+            echo "<h1>Schema " . $schemaShow[0][$arrayNumber]['ID_schema'] ." </h1>";
+        }
         ?>
         <div class="row">
             <div class="col-8">
@@ -29,8 +33,9 @@ function showSchema(){
             </div>
         </div>
         <?php
+        $newSchema == $schemaShow[0][$arrayNumber]['ID_schema'];
         $arrayNumber++;
     }
-    echo '</div></div></div>';
+    echo '</div></div></div><div>';
 }
 ?>
