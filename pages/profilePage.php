@@ -100,7 +100,7 @@ if(is_int($id) && is_string($pwdKey))
                             </div>
                             <div class="text d-flex gap-4">
                                 <h5>1200 kg</h5>
-                                <h5>750 cal</h5>
+                                <h5>800 cal</h5>
                             </div>
                             <div class="title mt-3">
                                 <h4 class="text-uppercase fw-bold" style="color: #5eb4a8;">30 jun</h4>
