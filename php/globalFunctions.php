@@ -29,7 +29,6 @@ function updateUser(): ?string {
 		$m_vars['FirstName'] = $_POST['FirstName'];
 	if(isset($_POST['LastName']) && is_string($_POST['LastName']))
 		$m_vars['LastName'] = $_POST['LastName'];
-	var_dump($m_vars);
 	return modifyAccount(...$m_vars);
 }
 /** Get the page.
