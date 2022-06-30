@@ -40,6 +40,14 @@
         }
     }
 
+    .col-4 {
+        .week {
+            h4 {
+                color: $primary;
+            }
+        }
+    }
+
     .profileFavourites {
         img {
             width: 100%;

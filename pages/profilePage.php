@@ -78,14 +78,37 @@ if(is_int($id) && is_string($pwdKey))
                 </div>
             </div>
             <div class="col-4">
-                <div class="profileSavedSchema">
+                <div class="column">
+                    <!-- Saved schedule -->
                     <div class="title d-flex flex-column align-items-center">
                         <h2 class="text-center fw-bold">Opgeslagen Schema</h2>
                         <hr class="mt-1" style="width: 50%;">
                     </div>
-                    <!-- The content of the saved schema section -->
+                    <!-- The content of the saved schedule section -->
                     <div class="content d-flex justify-content-center">
                         <a class="btn btn-primary m-auto mt-3" href="?page=savedSchema" style="color: white;">Zie alle opgeslagen Schema's</a>
+                    </div>
+                    <!-- DayOverview -->
+                    <div class="week d-flex flex-column align-items-center mt-5">
+                        <h2 class="text-center fw-bold">Dag -en Weekoverzicht</h2>
+                        <hr class="mt-1" style="width: 50%;">
+                        <!-- The content of the weekoverview section -->
+                        <div class="content d-flex flex-column text-center"> 
+                            <div class="title">
+                                <h4 class="text-uppercase fw-bold" style="color: #5eb4a8;">Week 26</h4>
+                            </div>
+                            <div class="text d-flex gap-4">
+                                <h5>1200 kg</h5>
+                                <h5>750 cal</h5>
+                            </div>
+                            <div class="title mt-3">
+                                <h4 class="text-uppercase fw-bold" style="color: #5eb4a8;">30 jun</h4>
+                            </div>
+                            <div class="text d-flex gap-4">
+                                <h5>300 kg</h5>
+                                <h5>200 cal</h5>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
